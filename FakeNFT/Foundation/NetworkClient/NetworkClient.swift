@@ -61,7 +61,7 @@ struct DefaultNetworkClient: NetworkClient {
             }
         }
         guard let urlRequest = create(request: request) else { return nil }
-
+        
         let task = session.dataTask(with: urlRequest) { data, response, error in
             guard let response = response as? HTTPURLResponse else {
                 onResponse(.failure(NetworkClientError.urlSessionError))
@@ -114,26 +114,43 @@ struct DefaultNetworkClient: NetworkClient {
             assertionFailure("Empty endpoint")
             return nil
         }
-
-        var urlRequest = URLRequest(url: endpoint)
-        urlRequest.httpMethod = request.httpMethod.rawValue
-
-        urlRequest.addValue(RequestConstants.token, forHTTPHeaderField: "X-Practicum-Mobile-Token")
-
+        
+        guard
+            var urlComponents = URLComponents(
+                url: endpoint,
+                resolvingAgainstBaseURL: true
+            )
+        else {
+            assertionFailure("Failed to initialize URL components.")
+            return nil
+        }
+        
         if let dtoDictionary = request.dto?.asDictionary() {
-            var urlComponents = URLComponents()
             let queryItems = dtoDictionary.map { field in
                 URLQueryItem(
                     name: field.key,
                     value: field.value
-                    )
+                )
             }
             urlComponents.queryItems = queryItems
-            urlRequest.httpBody = urlComponents.query?.data(using: .utf8)
-            urlRequest.setValue("application/json", forHTTPHeaderField: "Content-Type")
         }
-
+        
+        guard let url = urlComponents.url else {
+            assertionFailure("Failed to get URL.")
+            return nil
+        }
+        
+        var urlRequest = URLRequest(url: url)
+        urlRequest.httpMethod = request.httpMethod.rawValue
+        urlRequest.addValue(RequestConstants.token, forHTTPHeaderField: "X-Practicum-Mobile-Token")
         urlRequest.setValue("application/x-www-form-urlencoded", forHTTPHeaderField: "Content-Type")
+        
+        // TODO: Cтроки из примера, из-за которых запрос с query падает.
+        // Скорее всего, лучше вместо DTO ввести отдельно поле Query
+        // и Body, и каждый писать в соответствующее место.
+        
+        //urlRequest.httpBody = urlComponents.query?.data(using: .utf8)
+        //urlRequest.setValue("application/json", forHTTPHeaderField: "Content-Type")
 
         return urlRequest
     }
