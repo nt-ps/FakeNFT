@@ -1,0 +1,6 @@
+strings:
+  inputs:
+     - FakeNFT/Resources/en.lproj/Localizable.strings
+  outputs:
+    - templateName: structured-swift5
+      output: FakeNFT/DesignSystem/Strings+Generated.swift
