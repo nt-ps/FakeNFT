@@ -109,6 +109,7 @@
 		67A4EA4A2E63573300E4F331 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
 		67A4EA4D2E63573700E4F331 /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = ru.lproj/Localizable.strings; sourceTree = "<group>"; };
 		67E659FE2E63696700A8E052 /* Strings+Generated.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Strings+Generated.swift"; sourceTree = "<group>"; };
+		67E65A002E636D1300A8E052 /* profile_tasks.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = profile_tasks.md; sourceTree = "<group>"; };
 		E19CD5AA2A98B56600CA39A5 /* NftImageCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NftImageCollectionViewCell.swift; sourceTree = "<group>"; };
 		E1A1B9D92AA01CE400C3AFBC /* TabBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarController.swift; sourceTree = "<group>"; };
 		E1CD40D82A96BE7D00BE7FE8 /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = ru.lproj/Main.strings; sourceTree = "<group>"; };
@@ -200,6 +201,7 @@
 			isa = PBXGroup;
 			children = (
 				3A8770EC2E630BE4004BABB9 /* catalogue_tasks.md */,
+				67E65A002E636D1300A8E052 /* profile_tasks.md */,
 			);
 			path = docs;
 			sourceTree = "<group>";
