@@ -23,6 +23,9 @@
 		0CFCB7492A7808900009A829 /* TestCatalogController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CFCB7482A7808900009A829 /* TestCatalogController.swift */; };
 		0CFCB74B2A780EA80009A829 /* UIView+Constraints.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CFCB74A2A780EA80009A829 /* UIView+Constraints.swift */; };
 		0CFCB74E2A7817DC0009A829 /* NftStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CFCB74D2A7817DC0009A829 /* NftStorage.swift */; };
+		3A8773152E634C6A004BABB9 /* WebViewViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A8773142E634C6A004BABB9 /* WebViewViewController.swift */; };
+		3A8773162E634C6A004BABB9 /* WebViewAssembly.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A8773122E634C6A004BABB9 /* WebViewAssembly.swift */; };
+		3A8773172E634C6A004BABB9 /* WebViewPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A8773132E634C6A004BABB9 /* WebViewPresenter.swift */; };
 		3A87731A2E634C81004BABB9 /* TestTabBarItemNavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A8773182E634C81004BABB9 /* TestTabBarItemNavigationController.swift */; };
 		3A87731B2E634C81004BABB9 /* TestTabBarItemViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A8773192E634C81004BABB9 /* TestTabBarItemViewController.swift */; };
 		3F478ECF29DB474E00F6D39E /* Colors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F478ECE29DB474E00F6D39E /* Colors.swift */; };
@@ -85,6 +88,9 @@
 		0CFCB74A2A780EA80009A829 /* UIView+Constraints.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+Constraints.swift"; sourceTree = "<group>"; };
 		0CFCB74D2A7817DC0009A829 /* NftStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NftStorage.swift; sourceTree = "<group>"; };
 		3A8770EC2E630BE4004BABB9 /* catalogue_tasks.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = catalogue_tasks.md; sourceTree = "<group>"; };
+		3A8773122E634C6A004BABB9 /* WebViewAssembly.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebViewAssembly.swift; sourceTree = "<group>"; };
+		3A8773132E634C6A004BABB9 /* WebViewPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebViewPresenter.swift; sourceTree = "<group>"; };
+		3A8773142E634C6A004BABB9 /* WebViewViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebViewViewController.swift; sourceTree = "<group>"; };
 		3A8773182E634C81004BABB9 /* TestTabBarItemNavigationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestTabBarItemNavigationController.swift; sourceTree = "<group>"; };
 		3A8773192E634C81004BABB9 /* TestTabBarItemViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestTabBarItemViewController.swift; sourceTree = "<group>"; };
 		3F478ECE29DB474E00F6D39E /* Colors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Colors.swift; sourceTree = "<group>"; };
@@ -207,6 +213,16 @@
 			path = docs;
 			sourceTree = "<group>";
 		};
+		3A87725E2E632AC3004BABB9 /* WebView */ = {
+			isa = PBXGroup;
+			children = (
+				3A8773122E634C6A004BABB9 /* WebViewAssembly.swift */,
+				3A8773132E634C6A004BABB9 /* WebViewPresenter.swift */,
+				3A8773142E634C6A004BABB9 /* WebViewViewController.swift */,
+			);
+			path = WebView;
+			sourceTree = "<group>";
+		};
 		3F478ECD29DB473000F6D39E /* DesignSystem */ = {
 			isa = PBXGroup;
 			children = (
@@ -283,6 +299,7 @@
 		3F6806C729CBBC5B00B4F915 /* Scenes  */ = {
 			isa = PBXGroup;
 			children = (
+				3A87725E2E632AC3004BABB9 /* WebView */,
 				E1A1B9D82AA01C9700C3AFBC /* TabBarController */,
 				0CF2C2D92A783C1600FDC837 /* Common */,
 				0CFCB7472A7808870009A829 /* Catalog */,
@@ -545,6 +562,9 @@
 				3F6806D729CBC50A00B4F915 /* CellsReusingUtils.swift in Sources */,
 				0C79EE612A76DCD600EE90EA /* NftByIdRequest.swift in Sources */,
 				E19CD5AB2A98B56600CA39A5 /* NftImageCollectionViewCell.swift in Sources */,
+				3A8773152E634C6A004BABB9 /* WebViewViewController.swift in Sources */,
+				3A8773162E634C6A004BABB9 /* WebViewAssembly.swift in Sources */,
+				3A8773172E634C6A004BABB9 /* WebViewPresenter.swift in Sources */,
 				0CF2C2E12A784C7000FDC837 /* LinePageControl.swift in Sources */,
 				3F6806D329CBBE9600B4F915 /* NetworkRequest.swift in Sources */,
 				0CFCB7492A7808900009A829 /* TestCatalogController.swift in Sources */,
