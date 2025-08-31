@@ -6,19 +6,42 @@ final class TabBarController: UITabBarController {
 
     private let catalogTabBarItem = UITabBarItem(
         title: L10n.Tab.catalog,
-        image: UIImage(systemName: "square.stack.3d.up.fill"),
+        image: UIImage(resource: .catalogTab),
         tag: 0
     )
-
+    
+    // TODO: Удалить!
+    private let testCatalogTabBarItem = UITabBarItem(
+        title: L10n.Tab.catalog,
+        image: UIImage(systemName: "square.stack.3d.up.fill"),
+        tag: 1
+    )
+    
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        let appearance = UITabBarAppearance()
+        appearance.configureWithTransparentBackground()
+        appearance.backgroundColor = .white // TODO: Assets.
+        tabBar.standardAppearance = appearance
+        tabBar.scrollEdgeAppearance = appearance
+        // tabBar.tintColor = .blue // TODO: Assets.
 
-        let catalogController = TestCatalogViewController(
+        let catalogueController = CatalogueNavigationController(
             servicesAssembly: servicesAssembly
         )
-        catalogController.tabBarItem = catalogTabBarItem
+        catalogueController.tabBarItem = catalogTabBarItem
+        
+        // TODO: Удалить!
+        let testCatalogController = TestCatalogViewController(
+            servicesAssembly: servicesAssembly
+        )
+        testCatalogController.tabBarItem = testCatalogTabBarItem
 
-        viewControllers = [catalogController]
+        viewControllers = [
+            catalogueController,
+            testCatalogController // TODO: Удалить!
+        ]
 
         view.backgroundColor = .systemBackground
     }

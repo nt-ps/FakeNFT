@@ -105,6 +105,7 @@ struct DefaultNetworkClient: NetworkClient {
                 onResponse(.failure(error))
             }
         }
+        L10n.Catalog.openNft
     }
 
     // MARK: - Private

@@ -1,20 +1,19 @@
 import Foundation
 import UIKit // TODO: Удалить после того, как будет протянута сеть.
 
-enum NftFields: String, CodingKey {
-    case createdAt, name, images, rating, description, price, author, id
+enum CollectionFields: String, CodingKey {
+    case createdAt, name, cover, nfts, description, author, id
 }
 
-struct Nft: Decodable {
+struct Collection: Decodable {
     
     // MARK: - Internal Properties
     
     let createdAt: Date
     let name: String
-    let images: [URL]
-    let rating: Int
+    let cover: URL? // TODO: Удалить опционал после того, как будет протянута сеть.
+    let nfts: [String]
     let description: String
-    let price: Float
     let author: String
     let id: String
     
@@ -26,23 +25,23 @@ struct Nft: Decodable {
     init(
         name: String,
         coverImage: UIImage?,
-        rating: Int,
-        price: Float,
+        nfts: [String],
+        description: String,
+        author: String,
         id: String
     ) {
         self.createdAt = Date()
         self.name = name
-        self.images = []
-        self.rating = rating
-        self.description = ""
-        self.price = price
-        self.author = ""
-        self.id = id
         self.coverImage = coverImage
+        self.cover = nil
+        self.nfts = nfts
+        self.description = description
+        self.author = author
+        self.id = id
     }
     
     init(from decoder: Decoder) throws {
-        let container = try decoder.container(keyedBy: NftFields.self)
+        let container = try decoder.container(keyedBy: CollectionFields.self)
         
         let dateString = try container.decode(String.self, forKey: .createdAt)
         guard
@@ -58,10 +57,9 @@ struct Nft: Decodable {
         createdAt = date
         
         name = try container.decode(String.self, forKey: .name)
-        images = try container.decode([URL].self, forKey: .images)
-        rating = try container.decode(Int.self, forKey: .rating)
+        cover = try container.decode(URL.self, forKey: .cover)
+        nfts = try container.decode([String].self, forKey: .nfts)
         description = try container.decode(String.self, forKey: .description)
-        price = try container.decode(Float.self, forKey: .price)
         author = try container.decode(String.self, forKey: .author)
         id = try container.decode(String.self, forKey: .id)
         

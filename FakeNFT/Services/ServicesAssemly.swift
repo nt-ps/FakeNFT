@@ -17,4 +17,9 @@ final class ServicesAssembly {
             storage: nftStorage
         )
     }
+    
+    // TODO: Протянуть сеть.
+    var collectionService: CollectionServiceProtocol {
+        CollectionMockService()
+    }
 }
