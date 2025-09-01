@@ -17,6 +17,36 @@ final class CatalogueViewController: UITableViewController, CatalogueViewControl
         action: #selector(didTapSortButton)
     )
     
+    private lazy var sortAlert: UIAlertController = {
+        let alert = UIAlertController(
+            title: L10n.SortAlert.title,
+            message: nil,
+            preferredStyle: .actionSheet
+        )
+        
+        let sortByNameAction = UIAlertAction(
+            title: L10n.SortAlert.byName,
+            style: .default
+        ) { [weak self] _ in
+            self?.sortAndUpdateTable(by: .name)
+        }
+        
+        let sortByAmountAction = UIAlertAction(
+            title: L10n.SortAlert.byAmount,
+            style: .default
+        ) { [weak self] _ in
+            self?.sortAndUpdateTable(by: .nfts)
+        }
+        
+        let cancelAction = UIAlertAction(title: L10n.SortAlert.close, style: .cancel)
+        
+        alert.addAction(sortByNameAction)
+        alert.addAction(sortByAmountAction)
+        alert.addAction(cancelAction)
+        
+        return alert
+    } ()
+    
     // MARK: - UI Properties
     
     private let tableYSpacing: CGFloat = 10
@@ -45,6 +75,8 @@ final class CatalogueViewController: UITableViewController, CatalogueViewControl
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        view.backgroundColor = .AppColors.white
         
         let appearance = UINavigationBarAppearance()
         appearance.configureWithTransparentBackground()
@@ -89,20 +121,44 @@ final class CatalogueViewController: UITableViewController, CatalogueViewControl
         
         navigationController?.pushViewController(viewController, animated: true)
          */
+        
+        present(sortAlert, animated: true)
     }
     
     // MARK: - Catalogue View Controller Protocol
     
     func updateTableViewAnimated(from newСollections: [Collection]) {
-        let oldCount = collections.count
-        let newCount = newСollections.count
+        let oldCollections = collections
         collections = newСollections
-        if oldCount != newCount {
+        
+        let oldNumber = oldCollections.count
+        let newNumber = newСollections.count
+        let difference = newNumber - oldNumber
+        
+        if difference != 0 {
             tableView.performBatchUpdates {
-                let indexPaths = (oldCount..<newCount).map { i in
-                    IndexPath(row: i, section: 0)
+                if difference > 0 {
+                    let insertedIndexPaths = (oldNumber..<newNumber).map { i in
+                        IndexPath(row: i, section: 0)
+                    }
+                    tableView.insertRows(at: insertedIndexPaths, with: .automatic)
+                } else {
+                    let deletedIndexPaths = (newNumber..<oldNumber).map { i in
+                        IndexPath(row: i, section: 0)
+                    }
+                    tableView.deleteRows(at: deletedIndexPaths, with: .automatic)
                 }
-                tableView.insertRows(at: indexPaths, with: .automatic)
+                
+                let reloadedIndexPaths: [IndexPath] = (0..<min(oldNumber, newNumber)).reduce(
+                    into: []
+                ) { (result, i) in
+                    if oldCollections[i].id != newСollections[i].id {
+                        let indexPath = IndexPath(row: i, section: 0)
+                        result.append(indexPath)
+                    }
+                }
+                tableView.reloadRows(at: reloadedIndexPaths, with: .automatic)
+                
             } completion: { _ in }
         }
     }
@@ -162,5 +218,17 @@ final class CatalogueViewController: UITableViewController, CatalogueViewControl
         cell.cover = collection.coverImage
         cell.name = collection.name
         cell.counterValue = collection.nfts.count
+    }
+    
+    private func sortAndUpdateTable(by field: CollectionFields) {
+        if presenter.sort(by: field) {
+            presenter.fetchNextPage()
+            scrollToTop()
+        }
+    }
+    
+    private func scrollToTop() {
+        let topRow = IndexPath(row: 0, section: 0)
+        tableView.scrollToRow(at: topRow, at: .top, animated: true)
     }
 }

@@ -1,15 +1,8 @@
 import Foundation
 
 final class CollectionMockService: CollectionServiceProtocol {
-
-    var sortField: CollectionFields = .name {
-        didSet {
-            collections.removeAll()
-            lastLoadedPage = 0
-        }
-    }
-    
     private var collections: [Collection] = []
+    private var sortField: CollectionFields = .name
     
     private let pageSize: Int = 6
     private var lastLoadedPage: Int = 0
@@ -34,5 +27,16 @@ final class CollectionMockService: CollectionServiceProtocol {
             guard let self else { return }
             completion(.success(self.collections))
         }
+    }
+    
+    func sort(by field: CollectionFields) -> Bool {
+        if sortField != field {
+            sortField = field
+            collections.removeAll()
+            lastLoadedPage = 0
+            return true
+        }
+        
+        return false
     }
 }

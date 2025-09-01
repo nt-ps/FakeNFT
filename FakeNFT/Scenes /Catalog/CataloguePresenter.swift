@@ -4,6 +4,7 @@ protocol CataloguePresenterProtocol {
     var view: CatalogueViewControllerProtocol? { get set }
     
     func fetchNextPage()
+    func sort(by field: CollectionFields) -> Bool
 }
 
 final class CataloguePresenter: CataloguePresenterProtocol {
@@ -26,5 +27,9 @@ final class CataloguePresenter: CataloguePresenterProtocol {
                 // TODO: При протягивании сетевого слоя добавить вывод алерта.
             }
         }
+    }
+    
+    func sort(by field: CollectionFields) -> Bool {
+        collectionService.sort(by: field)
     }
 }

@@ -22,11 +22,15 @@ final class TabBarController: UITabBarController {
         
         let appearance = UITabBarAppearance()
         appearance.configureWithTransparentBackground()
-        appearance.backgroundColor = .white // TODO: Assets.
+        appearance.backgroundColor = .AppColors.white
+        appearance.stackedLayoutAppearance.normal.iconColor = .AppColors.black
+        appearance.stackedLayoutAppearance.normal.titleTextAttributes = [
+            .foregroundColor: UIColor.AppColors.black
+        ]
         tabBar.standardAppearance = appearance
         tabBar.scrollEdgeAppearance = appearance
-        // tabBar.tintColor = .blue // TODO: Assets.
-
+        tabBar.tintColor = .UniversalColors.blue
+        
         let catalogueController = CatalogueNavigationController(
             servicesAssembly: servicesAssembly
         )
