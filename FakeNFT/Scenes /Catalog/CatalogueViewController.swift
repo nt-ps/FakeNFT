@@ -11,7 +11,7 @@ final class CatalogueViewController: UITableViewController, CatalogueViewControl
     // MARK: - Views
     
     private lazy var sortButton: UIBarButtonItem = .init(
-        image: UIImage(resource: .filtrationButton),
+        image: UIImage(resource: .Icons.sort),
         style: .plain,
         target: self,
         action: #selector(didTapSortButton)

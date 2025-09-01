@@ -6,7 +6,7 @@ final class TabBarController: UITabBarController {
 
     private let catalogTabBarItem = UITabBarItem(
         title: L10n.Tab.catalog,
-        image: UIImage(resource: .catalogTab),
+        image: UIImage(resource: .Icons.catalogTab),
         tag: 0
     )
     
@@ -29,7 +29,7 @@ final class TabBarController: UITabBarController {
         ]
         tabBar.standardAppearance = appearance
         tabBar.scrollEdgeAppearance = appearance
-        tabBar.tintColor = .UniversalColors.blue
+        tabBar.tintColor = .AppColors.Universal.blue
         
         let catalogueController = CatalogueNavigationController(
             servicesAssembly: servicesAssembly

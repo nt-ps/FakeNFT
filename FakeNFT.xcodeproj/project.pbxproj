@@ -267,15 +267,6 @@
 			path = Requests;
 			sourceTree = "<group>";
 		};
-		3A8773282E6370F8004BABB9 /* Examples */ = {
-			isa = PBXGroup;
-			children = (
-				3FC8C39029D2453B0081F015 /* ExamplePutRequest.swift */,
-				0CFCB73F2A78002A0009A829 /* ExamplePutService.swift */,
-			);
-			path = Examples;
-			sourceTree = "<group>";
-		};
 		3A8773292E643748004BABB9 /* Collection */ = {
 			isa = PBXGroup;
 			children = (
@@ -307,6 +298,15 @@
 				3AAB08422E64D0A60079920F /* MockData.swift */,
 			);
 			path = CatalogueEpicMock;
+			sourceTree = "<group>";
+		};
+		3AAB090D2E65B9C90079920F /* Requests */ = {
+			isa = PBXGroup;
+			children = (
+				3FC8C39029D2453B0081F015 /* ExamplePutRequest.swift */,
+				0C79EE622A76DD1900EE90EA /* RequestConstants.swift */,
+			);
+			path = Requests;
 			sourceTree = "<group>";
 		};
 		3F478ECD29DB473000F6D39E /* DesignSystem */ = {
@@ -375,12 +375,11 @@
 		3F6806C629CBBC4E00B4F915 /* Services */ = {
 			isa = PBXGroup;
 			children = (
-				3AAB08412E64D0A10079920F /* CatalogueEpicMock */,
+				3AAB090D2E65B9C90079920F /* Requests */,
 				3A8773292E643748004BABB9 /* Collection */,
-				3A8773282E6370F8004BABB9 /* Examples */,
 				3A87731E2E6366C5004BABB9 /* Nft */,
 				0C79EE6B2A76DE2E00EE90EA /* ServicesAssemly.swift */,
-				0C79EE622A76DD1900EE90EA /* RequestConstants.swift */,
+				0CFCB73F2A78002A0009A829 /* ExamplePutService.swift */,
 			);
 			path = Services;
 			sourceTree = "<group>";
@@ -470,6 +469,7 @@
 				3F68069F29CBBAF200B4F915 /* Assets.xcassets */,
 				3F6806A129CBBAF200B4F915 /* LaunchScreen.storyboard */,
 				67A4EA4B2E63573300E4F331 /* Localizable.strings */,
+				3AAB08412E64D0A10079920F /* CatalogueEpicMock */,
 			);
 			path = Resources;
 			sourceTree = "<group>";
