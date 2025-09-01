@@ -27,11 +27,13 @@ final class TabBarController: UITabBarController {
             servicesAssembly: servicesAssembly
         )
         
-        statisticsController.tabBarItem = statisticsTabBarItem
+        let statisticsNavigationController = UINavigationController(rootViewController: statisticsController)
+        
+        statisticsNavigationController.tabBarItem = statisticsTabBarItem
         
         catalogController.tabBarItem = catalogTabBarItem
 
-        viewControllers = [catalogController, statisticsController]
+        viewControllers = [catalogController, statisticsNavigationController]
 
         view.backgroundColor = .systemBackground
     }

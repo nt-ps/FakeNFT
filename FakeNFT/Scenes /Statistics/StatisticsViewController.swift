@@ -46,6 +46,7 @@ final class StatisticsViewController: UIViewController {
     private func setupUI() {
         view.backgroundColor = .AppColors.white
         
+        sortButton.tintColor = .AppColors.black
         navigationItem.rightBarButtonItem = sortButton
         
         view.addSubview(tableView)
@@ -63,8 +64,32 @@ final class StatisticsViewController: UIViewController {
         tableView.register(StatCell.self, forCellReuseIdentifier: "StatCell")
     }
     
-    @objc func sortButtonDidTupped() {
+    private func showSortAlert() {
+        let alertController = UIAlertController(title: "Сортировка",
+                                                message: nil,
+                                                preferredStyle: .actionSheet)
+        let byNameAction = UIAlertAction(title: "По имени",
+                                         style: .default) {[weak self] _ in
+            self?.sortButton.tintColor = .red
+        }
         
+        let byRatingAction = UIAlertAction(title: "По рейтингу",
+                                           style: .default) {[weak self] _ in
+            self?.sortButton.tintColor = .blue
+        }
+        
+        let closeAction = UIAlertAction(title: "Закрыть",
+                                        style: .cancel)
+        
+        alertController.addAction(byNameAction)
+        alertController.addAction(byRatingAction)
+        alertController.addAction(closeAction)
+        
+        present(alertController, animated: true)
+    }
+    
+    @objc func sortButtonDidTupped() {
+        showSortAlert()
     }
 }
 
