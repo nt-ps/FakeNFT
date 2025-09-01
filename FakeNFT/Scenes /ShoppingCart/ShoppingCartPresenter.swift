@@ -16,5 +16,11 @@ protocol ShoppingCartPresenterProtocol: AnyObject {
 
 
 final class ShoppingCartPresenterImplementation: ShoppingCartPresenterProtocol {
+    private let shoppingCartView: ShoppingCartViewProtocol
+    private let shoppingCartModel: ShoppingCartModelProtocol
     
+    init(shoppingCartView: ShoppingCartViewProtocol, shoppingCartModel: ShoppingCartModelProtocol) {
+        self.shoppingCartView = shoppingCartView
+        self.shoppingCartModel = shoppingCartModel
+    }
 }

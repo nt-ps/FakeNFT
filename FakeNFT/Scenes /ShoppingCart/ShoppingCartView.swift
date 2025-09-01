@@ -9,14 +9,14 @@ import UIKit
 
 
 
-protocol ShoppingCartViewControllerProtocol: AnyObject {
+protocol ShoppingCartViewProtocol: AnyObject {
     
 }
 
 
 
-final class ShoppingCartViewControllerImplementation: UIViewController {
-    private weak var presenter: ShoppingCartPresenterProtocol?
+final class ShoppingCartViewControllerImplementation: UIViewController, ShoppingCartViewProtocol {
+    weak var shoppingCartPresenter: ShoppingCartPresenterProtocol?
 }
 
 

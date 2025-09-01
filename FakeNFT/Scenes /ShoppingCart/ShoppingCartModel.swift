@@ -16,5 +16,10 @@ protocol ShoppingCartModelProtocol: AnyObject {
 
 
 final class ShoppingCartModelImplementation: ShoppingCartModelProtocol {
+    weak var shoppingCartPresenter: ShoppingCartPresenterProtocol?
+    private let servicesAssembly: ServicesAssembly
     
+    init(servicesAssembly: ServicesAssembly) {
+        self.servicesAssembly = servicesAssembly
+    }
 }
