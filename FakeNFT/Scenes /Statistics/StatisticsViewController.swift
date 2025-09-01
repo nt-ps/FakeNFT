@@ -20,7 +20,7 @@ final class StatisticsViewController: UIViewController {
         action: #selector(sortButtonDidTupped)
     )
     
-    private let mockUsers: [User] = [
+    private var mockUsers: [User] = [
            User(id: 1, name: "Bill", username: "@bill", nftCount: 2, avatarURL: nil),
            User(id: 2, name: "Alla", username: "@alla", nftCount: 4, avatarURL: nil),
            User(id: 3, name: "Mads", username: "@mads", nftCount: 6, avatarURL: nil),
@@ -40,6 +40,7 @@ final class StatisticsViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        sortByRating()
         setupUI()
     }
     
@@ -70,12 +71,12 @@ final class StatisticsViewController: UIViewController {
                                                 preferredStyle: .actionSheet)
         let byNameAction = UIAlertAction(title: "По имени",
                                          style: .default) {[weak self] _ in
-            self?.sortButton.tintColor = .red
+            self?.sortByName()
         }
         
         let byRatingAction = UIAlertAction(title: "По рейтингу",
                                            style: .default) {[weak self] _ in
-            self?.sortButton.tintColor = .blue
+            self?.sortByRating()
         }
         
         let closeAction = UIAlertAction(title: "Закрыть",
@@ -86,6 +87,16 @@ final class StatisticsViewController: UIViewController {
         alertController.addAction(closeAction)
         
         present(alertController, animated: true)
+    }
+    
+    private func sortByName() {
+        mockUsers.sort { $0.name < $1.name }
+        tableView.reloadData()
+    }
+    
+    private func sortByRating() {
+        mockUsers.sort { $0.nftCount > $1.nftCount }
+        tableView.reloadData()
     }
     
     @objc func sortButtonDidTupped() {
