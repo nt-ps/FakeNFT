@@ -1,11 +1,15 @@
 import Foundation
 
+// MARK: - Protocol
+
 protocol CataloguePresenterProtocol {
     var view: CatalogueViewControllerProtocol? { get set }
     
     func fetchNextPage()
     func sort(by field: CollectionFields) -> Bool
 }
+
+// MARK: - Implementation
 
 final class CataloguePresenter: CataloguePresenterProtocol {
     
@@ -24,7 +28,7 @@ final class CataloguePresenter: CataloguePresenterProtocol {
                 self?.view?.updateTableViewAnimated(from: collections)
             case .failure:
                 print("[\(#function)] Failed to load collection page.")
-                // TODO: При протягивании сетевого слоя добавить вывод алерта.
+                // TODO: При протягивании сети добавить вывод алерта.
             }
         }
     }

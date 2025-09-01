@@ -10,7 +10,7 @@ final class TabBarController: UITabBarController {
         tag: 0
     )
     
-    // TODO: Удалить!
+    // TODO: Удалить после добавления всех вкладок.
     private let testCatalogTabBarItem = UITabBarItem(
         title: L10n.Tab.catalog,
         image: UIImage(systemName: "square.stack.3d.up.fill"),
@@ -36,7 +36,7 @@ final class TabBarController: UITabBarController {
         )
         catalogueController.tabBarItem = catalogTabBarItem
         
-        // TODO: Удалить!
+        // TODO: Удалить после добавления всех вкладок.
         let testCatalogController = TestCatalogViewController(
             servicesAssembly: servicesAssembly
         )

@@ -105,7 +105,6 @@ struct DefaultNetworkClient: NetworkClient {
                 onResponse(.failure(error))
             }
         }
-        L10n.Catalog.openNft
     }
 
     // MARK: - Private
@@ -126,8 +125,8 @@ struct DefaultNetworkClient: NetworkClient {
             return nil
         }
         
-        if let dtoDictionary = request.dto?.asDictionary() {
-            let queryItems = dtoDictionary.map { field in
+        if let queryDictionary = request.query?.dictionary {
+            let queryItems = queryDictionary.map { field in
                 URLQueryItem(
                     name: field.key,
                     value: field.value
@@ -140,18 +139,26 @@ struct DefaultNetworkClient: NetworkClient {
             assertionFailure("Failed to get URL.")
             return nil
         }
-        
+
         var urlRequest = URLRequest(url: url)
         urlRequest.httpMethod = request.httpMethod.rawValue
+
         urlRequest.addValue(RequestConstants.token, forHTTPHeaderField: "X-Practicum-Mobile-Token")
+
+        if let dtoDictionary = request.dto?.asDictionary() {
+            var urlComponents = URLComponents()
+            let queryItems = dtoDictionary.map { field in
+                URLQueryItem(
+                    name: field.key,
+                    value: field.value
+                    )
+            }
+            urlComponents.queryItems = queryItems
+            urlRequest.httpBody = urlComponents.query?.data(using: .utf8)
+            urlRequest.setValue("application/json", forHTTPHeaderField: "Content-Type")
+        }
+
         urlRequest.setValue("application/x-www-form-urlencoded", forHTTPHeaderField: "Content-Type")
-        
-        // TODO: Cтроки из примера, из-за которых запрос с query падает.
-        // Скорее всего, лучше вместо DTO ввести отдельно поле Query
-        // и Body, и каждый писать в соответствующее место.
-        
-        //urlRequest.httpBody = urlComponents.query?.data(using: .utf8)
-        //urlRequest.setValue("application/json", forHTTPHeaderField: "Content-Type")
 
         return urlRequest
     }

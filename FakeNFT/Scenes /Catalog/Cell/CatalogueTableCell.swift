@@ -1,6 +1,6 @@
 import UIKit
 
-final class CatalogueTableCell: UITableViewCell {
+final class CatalogueTableCell: UITableViewCell, ReuseIdentifying {
     
     // MARK: - Views
     
@@ -69,10 +69,6 @@ final class CatalogueTableCell: UITableViewCell {
     
     private let xSpacing: CGFloat = 16
     private let ySpacing: CGFloat = 10
-    
-    // MARK: - Static Properties
-    
-    static let reuseIdentifier = String(describing: CatalogueTableCell.self)
     
     // MARK: - Internal Properties
     

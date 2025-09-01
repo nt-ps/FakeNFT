@@ -5,10 +5,11 @@ struct NftsRequest: NetworkRequest {
         URL(string: "\(RequestConstants.baseURL)/api/v1/nft")
     }
     var httpMethod: HttpMethod
+    var query: Query?
     var dto: Dto?
     
-    init(query: NftsQuery? = nil) {
+    init(query: NftApiQuery? = nil) {
         self.httpMethod = .get
-        self.dto = query
+        self.query = query
     }
 }

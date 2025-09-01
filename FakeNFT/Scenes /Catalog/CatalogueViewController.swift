@@ -1,12 +1,18 @@
 import UIKit
 
+// MARK: - Protocol
+
 protocol CatalogueViewControllerProtocol: AnyObject {
     var presenter: CataloguePresenterProtocol { get }
     
-    func updateTableViewAnimated(from newСollections: [Collection])
+    func updateTableViewAnimated(from newCollections: [Collection])
 }
 
+// MARK: - Implementation
+
 final class CatalogueViewController: UITableViewController, CatalogueViewControllerProtocol {
+    
+    // TODO: При добавлении сети добавить ProgressHUD.
     
     // MARK: - Views
     
@@ -90,7 +96,7 @@ final class CatalogueViewController: UITableViewController, CatalogueViewControl
         
         tableView.register(
             CatalogueTableCell.self,
-            forCellReuseIdentifier: CatalogueTableCell.reuseIdentifier
+            forCellReuseIdentifier: CatalogueTableCell.defaultReuseIdentifier
         )
         
         tableView.dataSource = self
@@ -127,39 +133,37 @@ final class CatalogueViewController: UITableViewController, CatalogueViewControl
     
     // MARK: - Catalogue View Controller Protocol
     
-    func updateTableViewAnimated(from newСollections: [Collection]) {
+    func updateTableViewAnimated(from newCollections: [Collection]) {
         let oldCollections = collections
-        collections = newСollections
+        collections = newCollections
         
         let oldNumber = oldCollections.count
-        let newNumber = newСollections.count
+        let newNumber = newCollections.count
         let difference = newNumber - oldNumber
-        
-        if difference != 0 {
-            tableView.performBatchUpdates {
-                if difference > 0 {
-                    let insertedIndexPaths = (oldNumber..<newNumber).map { i in
-                        IndexPath(row: i, section: 0)
-                    }
-                    tableView.insertRows(at: insertedIndexPaths, with: .automatic)
-                } else {
-                    let deletedIndexPaths = (newNumber..<oldNumber).map { i in
-                        IndexPath(row: i, section: 0)
-                    }
-                    tableView.deleteRows(at: deletedIndexPaths, with: .automatic)
+
+        tableView.performBatchUpdates {
+            if difference > 0 {
+                let insertedIndexPaths = (oldNumber..<newNumber).map { i in
+                    IndexPath(row: i, section: 0)
                 }
-                
-                let reloadedIndexPaths: [IndexPath] = (0..<min(oldNumber, newNumber)).reduce(
-                    into: []
-                ) { (result, i) in
-                    if oldCollections[i].id != newСollections[i].id {
-                        let indexPath = IndexPath(row: i, section: 0)
-                        result.append(indexPath)
-                    }
+                tableView.insertRows(at: insertedIndexPaths, with: .automatic)
+            } else if difference < 0 {
+                let deletedIndexPaths = (newNumber..<oldNumber).map { i in
+                    IndexPath(row: i, section: 0)
                 }
-                tableView.reloadRows(at: reloadedIndexPaths, with: .automatic)
-                
-            } completion: { _ in }
+                tableView.deleteRows(at: deletedIndexPaths, with: .automatic)
+            }
+            
+            let reloadedIndexPaths: [IndexPath] = (0..<min(oldNumber, newNumber)).reduce(
+                into: []
+            ) { (result, i) in
+                if oldCollections[i].id != newCollections[i].id {
+                    let indexPath = IndexPath(row: i, section: 0)
+                    result.append(indexPath)
+                }
+            }
+            tableView.reloadRows(at: reloadedIndexPaths, with: .automatic)
+            
         }
     }
     
@@ -175,7 +179,7 @@ final class CatalogueViewController: UITableViewController, CatalogueViewControl
         cellForRowAt indexPath: IndexPath
     ) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(
-            withIdentifier: CatalogueTableCell.reuseIdentifier,
+            withIdentifier: CatalogueTableCell.defaultReuseIdentifier,
             for: indexPath
         )
                 
@@ -198,7 +202,7 @@ final class CatalogueViewController: UITableViewController, CatalogueViewControl
         }
     }
     
-    // MARK: - Tabel Delegate Methods
+    // MARK: - Table Delegate Methods
     
     override func tableView(
         _ tableView: UITableView,

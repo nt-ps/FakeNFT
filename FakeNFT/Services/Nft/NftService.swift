@@ -3,6 +3,8 @@ import Foundation
 typealias NftsCompletion = (Result<[Nft], Error>) -> Void
 typealias NftCompletion = (Result<Nft, Error>) -> Void
 
+// MARK: - Protocol
+
 protocol NftService {
     func loadNfts(
         sortBy sortField: NftFields?,
@@ -11,6 +13,8 @@ protocol NftService {
     
     func loadNft(id: String, completion: @escaping NftCompletion)
 }
+
+// MARK: - Implementation
 
 final class NftServiceImpl: NftService {
 
@@ -26,7 +30,7 @@ final class NftServiceImpl: NftService {
         sortBy sortField: NftFields? = nil,
         completion: @escaping NftsCompletion
     ) {
-        let query = NftsQuery(sortBy: sortField)
+        let query = NftApiQuery(sortBy: sortField)
         let request = NftsRequest(query: query)
         networkClient.send(request: request, type: [Nft].self) { [weak storage] result in
             switch result {

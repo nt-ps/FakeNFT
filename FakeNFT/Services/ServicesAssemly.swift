@@ -18,8 +18,7 @@ final class ServicesAssembly {
         )
     }
     
-    // TODO: Протянуть сеть.
     var collectionService: CollectionServiceProtocol {
-        CollectionMockService()
+        CollectionMockService() // TODO: Протянуть сюда фактический сервис.
     }
 }

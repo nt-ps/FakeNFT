@@ -27,7 +27,7 @@ final class WebViewPresenter: WebViewPresenterProtocol {
         self.request = request
     }
     
-    // MARK: - Internal Mathods
+    // MARK: - Internal Methods
     
     func viewDidLoad() {
         didUpdateProgressValue(0)

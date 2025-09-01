@@ -25,7 +25,7 @@ final class WebViewViewController: UIViewController, WebViewViewControllerProtoc
     
     private lazy var progressView: UIProgressView = {
         let progressView = UIProgressView()
-        progressView.progressTintColor = .black // TODO: Assets
+        progressView.progressTintColor = .AppColors.black
         progressView.translatesAutoresizingMaskIntoConstraints = false
         return progressView
     } ()
@@ -43,7 +43,7 @@ final class WebViewViewController: UIViewController, WebViewViewControllerProtoc
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        view.backgroundColor = .white // TODO: Assets
+        view.backgroundColor = .AppColors.white
 
         navigationController?.setNavigationBarHidden(false, animated: true)
         
