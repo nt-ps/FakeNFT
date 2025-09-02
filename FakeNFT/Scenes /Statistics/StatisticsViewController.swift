@@ -2,7 +2,8 @@ import UIKit
 
 
 final class StatisticsViewController: UIViewController {
-    let servicesAssembly: ServicesAssembly
+    private var presenter: StatisticsPresenterProtocol
+    private var publishedUsers: [User] = []
     
     private lazy var tableView: UITableView = {
         let tableView = UITableView()
@@ -20,28 +21,26 @@ final class StatisticsViewController: UIViewController {
         action: #selector(sortButtonDidTupped)
     )
     
-    private var mockUsers: [User] = [
-           User(id: 1, name: "Bill", username: "@bill", nftCount: 2, avatarURL: nil),
-           User(id: 2, name: "Alla", username: "@alla", nftCount: 4, avatarURL: nil),
-           User(id: 3, name: "Mads", username: "@mads", nftCount: 6, avatarURL: nil),
-           User(id: 4, name: "Timothée", username: "@timothee", nftCount: 8, avatarURL: nil),
-           User(id: 5, name: "Lea", username: "@lea", nftCount: 9, avatarURL: nil),
-           User(id: 6, name: "Eric", username: "@eric", nftCount: 11, avatarURL: nil)
-       ]
-
-    init(servicesAssembly: ServicesAssembly) {
-        self.servicesAssembly = servicesAssembly
+    init(presenter: StatisticsPresenterProtocol) {
+        self.presenter = presenter
         super.init(nibName: nil, bundle: nil)
+        self.presenter.view = self
     }
-
+    
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        sortByRating()
         setupUI()
+        presenter.viewDidLoad()
+    }
+    
+    func usersDidUpdated(_ users: [User]) {
+        publishedUsers = users
+        tableView.reloadData()
     }
     
     private func setupUI() {
@@ -71,12 +70,12 @@ final class StatisticsViewController: UIViewController {
                                                 preferredStyle: .actionSheet)
         let byNameAction = UIAlertAction(title: "По имени",
                                          style: .default) {[weak self] _ in
-            self?.sortByName()
+            self?.presenter.sortByName()
         }
         
         let byRatingAction = UIAlertAction(title: "По рейтингу",
                                            style: .default) {[weak self] _ in
-            self?.sortByRating()
+            self?.presenter.sortByRating()
         }
         
         let closeAction = UIAlertAction(title: "Закрыть",
@@ -89,16 +88,6 @@ final class StatisticsViewController: UIViewController {
         present(alertController, animated: true)
     }
     
-    private func sortByName() {
-        mockUsers.sort { $0.name < $1.name }
-        tableView.reloadData()
-    }
-    
-    private func sortByRating() {
-        mockUsers.sort { $0.nftCount > $1.nftCount }
-        tableView.reloadData()
-    }
-    
     @objc func sortButtonDidTupped() {
         showSortAlert()
     }
@@ -108,7 +97,7 @@ extension StatisticsViewController: UITableViewDataSource,
                                     UITableViewDelegate {
     func tableView(_ tableView: UITableView,
                    numberOfRowsInSection section: Int) -> Int {
-        mockUsers.count
+        publishedUsers.count
     }
     
     func tableView(_ tableView: UITableView,
@@ -120,7 +109,7 @@ extension StatisticsViewController: UITableViewDataSource,
             return UITableViewCell()
         }
         
-        let user = mockUsers[indexPath.row]
+        let user = publishedUsers[indexPath.row]
         cell.configure(with: user, position: indexPath.row + 1)
         return cell
         

@@ -23,9 +23,8 @@ final class TabBarController: UITabBarController {
             servicesAssembly: servicesAssembly
         )
         
-        let statisticsController = StatisticsViewController(
-            servicesAssembly: servicesAssembly
-        )
+        let statisticsPresenter = StatisticsPresenter(servicesAssembly: servicesAssembly)
+        let statisticsController = StatisticsViewController(presenter: statisticsPresenter)
         
         let statisticsNavigationController = UINavigationController(rootViewController: statisticsController)
         
