@@ -24,6 +24,11 @@ final class NFTTableViewCell: UITableViewCell {
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
+    
+    // MARK: UI Actions
+    @objc private func deleteFromCartButtonTapped() {
+        
+    }
 }
 
 
@@ -33,6 +38,10 @@ private extension NFTTableViewCell {
         setUpNFTImageView()
         setUpNFTNameLabel()
         setUpRatingImageView()
+        setUpPriceLabel()
+        setUpPriceValueLabel()
+        setUpDeleteFromCartButton()
+        backgroundColor = .clear
     }
     
     private func setUpNFTNameLabel() {
@@ -43,6 +52,7 @@ private extension NFTTableViewCell {
             NFTNameLabel.leadingAnchor.constraint(equalTo: NFTImageView.trailingAnchor, constant: 20),
         ])
         NFTNameLabel.font = .systemFont(ofSize: 17, weight: .bold)
+        NFTNameLabel.text = "NFTs name"
     }
     
     private func setUpRatingImageView() {
@@ -52,6 +62,7 @@ private extension NFTTableViewCell {
             ratingImageView.topAnchor.constraint(equalTo: NFTNameLabel.bottomAnchor, constant: 4),
             ratingImageView.leadingAnchor.constraint(equalTo: NFTImageView.trailingAnchor, constant: 20)
         ])
+        ratingImageView.image = UIImage(resource: .Icons.Rating.three)
     }
     
     private func setUpNFTImageView() {
@@ -63,6 +74,73 @@ private extension NFTTableViewCell {
             NFTImageView.widthAnchor.constraint(equalToConstant: 108),
             NFTImageView.heightAnchor.constraint(equalToConstant: 108)
         ])
+        NFTImageView.layer.cornerRadius = 12
+        NFTImageView.layer.masksToBounds = true
+    }
+    
+    private func setUpPriceLabel() {
+        priceLabel.translatesAutoresizingMaskIntoConstraints = false
+        contentView.addSubview(priceLabel)
+        NSLayoutConstraint.activate([
+            priceLabel.leadingAnchor.constraint(equalTo: NFTImageView.trailingAnchor, constant: 20),
+            priceLabel.topAnchor.constraint(equalTo: ratingImageView.bottomAnchor, constant: 12)
+        ])
+        priceLabel.text = L10n.Cart.price
+        priceLabel.font = .systemFont(ofSize: 13, weight: .regular)
+        if traitCollection.userInterfaceStyle == .dark {
+            priceLabel.textColor = .white
+        } else {
+            priceLabel.textColor = UIColor(hexString: "#1A1B22")
+        }
+    }
+    
+    private func setUpPriceValueLabel() {
+        priceValueLabel.translatesAutoresizingMaskIntoConstraints = false
+        contentView.addSubview(priceValueLabel)
+        NSLayoutConstraint.activate([
+            priceValueLabel.leadingAnchor.constraint(equalTo: NFTImageView.trailingAnchor, constant: 20),
+            priceValueLabel.topAnchor.constraint(equalTo: priceLabel.bottomAnchor, constant: 2)
+        ])
+        priceValueLabel.text = "N $$$$$"
+        if traitCollection.userInterfaceStyle == .dark {
+            priceValueLabel.textColor = .white
+        } else {
+            priceValueLabel.textColor = UIColor(hexString: "#1A1B22")
+        }
+    }
+    
+    private func setUpDeleteFromCartButton() {
+        deleteFromCartButton.translatesAutoresizingMaskIntoConstraints = false
+        contentView.addSubview(deleteFromCartButton)
+        NSLayoutConstraint.activate([
+            deleteFromCartButton.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16),
+            deleteFromCartButton.centerYAnchor.constraint(equalTo: contentView.centerYAnchor)
+        ])
+        deleteFromCartButton.setImage(UIImage(resource: .Icons.Cart.delete), for: .normal)
+        if traitCollection.userInterfaceStyle == .dark {
+            deleteFromCartButton.tintColor = .white
+        } else {
+            deleteFromCartButton.tintColor = UIColor(hexString: "#1A1B22")
+        }
+        deleteFromCartButton.addTarget(self, action: #selector(deleteFromCartButtonTapped), for: .touchUpInside)
     }
 }
 
+
+// MARK: Dark theme implementation
+extension NFTTableViewCell {
+    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        super.traitCollectionDidChange(previousTraitCollection)
+        if traitCollection.userInterfaceStyle == .dark {
+            NFTNameLabel.textColor = .white
+            priceLabel.textColor = .white
+            priceValueLabel.textColor = .white
+            deleteFromCartButton.tintColor = .white
+        } else {
+            NFTNameLabel.textColor = UIColor(hexString: "#1A1B22")
+            priceLabel.textColor = UIColor(hexString: "#1A1B22")
+            priceValueLabel.textColor = UIColor(hexString: "#1A1B22")
+            deleteFromCartButton.tintColor = UIColor(hexString: "#1A1B22")
+        }
+    }
+}

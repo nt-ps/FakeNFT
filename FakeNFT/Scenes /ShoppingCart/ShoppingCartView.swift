@@ -105,8 +105,9 @@ private extension ShoppingCartViewControllerImplementation {
             NFTTableView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
             NFTTableView.bottomAnchor.constraint(equalTo: goToPaymentButtonBackgroundView.topAnchor)
         ])
+        NFTTableView.backgroundColor = .clear
+        NFTTableView.separatorStyle = .none
         NFTTableView.register(NFTTableViewCell.self, forCellReuseIdentifier: "NFTTableViewCell")
-        NFTTableView.backgroundColor = .blue
     }
     
     private func setUpGoToPaymentButtonBackgroundView() {
@@ -187,7 +188,6 @@ extension ShoppingCartViewControllerImplementation {
         super.traitCollectionDidChange(previousTraitCollection)
         if traitCollection.userInterfaceStyle == .dark {
             view.backgroundColor = UIColor(hexString: "#1A1B22")
-            NFTTableView.backgroundColor = UIColor(hexString: "#1A1B22")
             filterButton.tintColor = .white
             goToPaymentButtonBackgroundView.backgroundColor = UIColor(hexString: "#2C2C2E")
             NFTsCounterLabel.textColor = .white
@@ -195,7 +195,6 @@ extension ShoppingCartViewControllerImplementation {
             goToPaymentButton.titleLabel?.textColor = UIColor(hexString: "#1A1B22")
         } else {
             view.backgroundColor = .white
-            NFTTableView.backgroundColor = .white
             filterButton.tintColor = UIColor(hexString: "#1A1B22")
             goToPaymentButtonBackgroundView.backgroundColor = UIColor(hexString: "#F7F7F8")
             NFTsCounterLabel.textColor = UIColor(hexString: "#1A1B22")
