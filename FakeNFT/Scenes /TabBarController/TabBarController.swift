@@ -1,9 +1,8 @@
 import UIKit
 
 final class TabBarController: UITabBarController {
-
     var servicesAssembly: ServicesAssembly!
-
+    
     private let catalogTabBarItem = UITabBarItem(
         title: L10n.Tab.catalog,
         image: UIImage(systemName: "square.stack.3d.up.fill"),
@@ -15,10 +14,11 @@ final class TabBarController: UITabBarController {
         image: UIImage(resource: .Icons.statisticTab),
         tag: 3
     )
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        
+        tabBar.unselectedItemTintColor = .AppColors.black
         let catalogController = TestCatalogViewController(
             servicesAssembly: servicesAssembly
         )
@@ -31,9 +31,9 @@ final class TabBarController: UITabBarController {
         statisticsNavigationController.tabBarItem = statisticsTabBarItem
         
         catalogController.tabBarItem = catalogTabBarItem
-
+        
         viewControllers = [catalogController, statisticsNavigationController]
-
+        
         view.backgroundColor = .systemBackground
     }
 }

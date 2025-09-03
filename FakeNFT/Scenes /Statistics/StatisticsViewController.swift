@@ -21,6 +21,14 @@ final class StatisticsViewController: UIViewController {
         action: #selector(sortButtonDidTupped)
     )
     
+    private lazy var activityIndicator: UIActivityIndicatorView = {
+        var activityIndicator = UIActivityIndicatorView(style: .large)
+        activityIndicator.color = .black
+        activityIndicator.hidesWhenStopped = true
+        activityIndicator.translatesAutoresizingMaskIntoConstraints = false
+        return activityIndicator
+    }()
+    
     init(presenter: StatisticsPresenterProtocol) {
         self.presenter = presenter
         super.init(nibName: nil, bundle: nil)
@@ -34,13 +42,16 @@ final class StatisticsViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        tabBarController?.tabBar.backgroundColor = .AppColors.white
         setupUI()
+        activityIndicator.startAnimating()
         presenter.viewDidLoad()
     }
     
     func usersDidUpdated(_ users: [User]) {
         publishedUsers = users
         tableView.reloadData()
+        activityIndicator.stopAnimating()
     }
     
     private func setupUI() {
@@ -49,9 +60,14 @@ final class StatisticsViewController: UIViewController {
         sortButton.tintColor = .AppColors.black
         navigationItem.rightBarButtonItem = sortButton
         
+        view.addSubview(activityIndicator)
+        
         view.addSubview(tableView)
         
         NSLayoutConstraint.activate([
+            activityIndicator.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            activityIndicator.centerYAnchor.constraint(equalTo: view.centerYAnchor),
+            
             tableView.topAnchor.constraint(equalTo: view.topAnchor, constant: 104),
             tableView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 16),
             tableView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -16),
@@ -124,12 +140,12 @@ extension StatisticsViewController: UITableViewDataSource,
                    didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
     }
-}
-
-struct User: Hashable {
-    let id: Int
-    let name: String
-    let username: String
-    let nftCount: Int
-    let avatarURL: String?
+    
+    func tableView(_ tableView: UITableView,
+                   willDisplay cell: UITableViewCell,
+                   forRowAt indexPath: IndexPath) {
+        if indexPath.row == publishedUsers.count - 1 {
+            presenter.loadMoreUsers()
+        }
+    }
 }

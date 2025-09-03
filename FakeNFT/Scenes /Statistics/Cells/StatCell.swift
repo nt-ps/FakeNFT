@@ -1,4 +1,5 @@
 import UIKit
+import Kingfisher
 
 final class StatCell: UITableViewCell {
     private lazy var positionLabel: UILabel = {
@@ -79,9 +80,10 @@ final class StatCell: UITableViewCell {
             avatarImage.leadingAnchor.constraint(equalTo: grayBackgroundView.leadingAnchor, constant: 16),
             avatarImage.widthAnchor.constraint(equalToConstant: 28),
             avatarImage.heightAnchor.constraint(equalToConstant: 28),
-
+            
             nameLabel.centerYAnchor.constraint(equalTo: grayBackgroundView.centerYAnchor),
             nameLabel.leadingAnchor.constraint(equalTo: avatarImage.trailingAnchor, constant: 8),
+            nameLabel.trailingAnchor.constraint(equalTo: nftCountLabel.leadingAnchor, constant: -16),
             
             nftCountLabel.centerYAnchor.constraint(equalTo: grayBackgroundView.centerYAnchor),
             nftCountLabel.trailingAnchor.constraint(equalTo: grayBackgroundView.trailingAnchor, constant: -16)
@@ -92,7 +94,18 @@ final class StatCell: UITableViewCell {
         positionLabel.text = "\(position)"
         nameLabel.text = user.name
         nftCountLabel.text = "\(user.nftCount)"
-        avatarImage.image = .Icons.profileTab
+        
+        if let avatarURL = user.avatarURL {
+            let placeholder = UIImage(resource: .Icons.profileTab)
+            
+            avatarImage.kf.setImage(
+                with: avatarURL,
+                placeholder: placeholder,
+                options: [.transition(.fade(0.2))]
+            )
+        } else {
+            avatarImage.image = UIImage(resource: .Icons.profileTab)
+        }
     }
     
     override func prepareForReuse() {
@@ -100,6 +113,7 @@ final class StatCell: UITableViewCell {
         positionLabel.text = nil
         nameLabel.text = nil
         avatarImage.image = nil
+        avatarImage.kf.cancelDownloadTask()
         nftCountLabel.text = nil
     }
 }
