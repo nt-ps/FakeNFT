@@ -5,7 +5,7 @@ enum CollectionFields: String, CodingKey {
     case createdAt, name, cover, nfts, description, author, id
 }
 
-struct Collection: Decodable {
+struct Collection: Decodable, Hashable {
     
     // MARK: - Internal Properties
     
@@ -64,5 +64,13 @@ struct Collection: Decodable {
         id = try container.decode(String.self, forKey: .id)
         
         coverImage = nil // TODO: Удалить после того, как будет протянута сеть.
+    }
+    
+    // MARK: - Hashable Protocol
+    
+    static func ==(lhs: Self, rhs: Self) -> Bool { lhs.id == rhs.id }
+    
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(id)
     }
 }

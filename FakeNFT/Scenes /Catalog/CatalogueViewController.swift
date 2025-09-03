@@ -1,5 +1,7 @@
 import UIKit
 
+typealias CatalogueDataSourceSnapshot = NSDiffableDataSourceSnapshot<CatalogueTableSection, Collection>
+
 // MARK: - Protocol
 
 protocol CatalogueViewControllerProtocol: AnyObject {
@@ -24,6 +26,8 @@ final class CatalogueViewController: UITableViewController, CatalogueViewControl
     )
     
     private lazy var sortAlert: UIAlertController = {
+        // TODO: Сохранять выбранный способ сортировки в UserDefaults.
+        
         let alert = UIAlertController(
             title: L10n.SortAlert.title,
             message: nil,
@@ -63,8 +67,8 @@ final class CatalogueViewController: UITableViewController, CatalogueViewControl
     let presenter: CataloguePresenterProtocol
     
     // MARK: - Private Properties
-    
-    private var collections: [Collection] = []
+
+    private lazy var dataSource = CatalogueDataSource(tableView)
     
     // MARK: - Initializers
 
@@ -99,8 +103,8 @@ final class CatalogueViewController: UITableViewController, CatalogueViewControl
             forCellReuseIdentifier: CatalogueTableCell.defaultReuseIdentifier
         )
         
-        tableView.dataSource = self
         tableView.delegate = self
+        tableView.dataSource = dataSource
         
         tableView.contentInset = UIEdgeInsets(
             top: tableYSpacing, left: 0, bottom: tableYSpacing, right: 0
@@ -134,72 +138,10 @@ final class CatalogueViewController: UITableViewController, CatalogueViewControl
     // MARK: - Catalogue View Controller Protocol
     
     func updateTableViewAnimated(from newCollections: [Collection]) {
-        let oldCollections = collections
-        collections = newCollections
-        
-        let oldNumber = oldCollections.count
-        let newNumber = newCollections.count
-        let difference = newNumber - oldNumber
-
-        tableView.performBatchUpdates {
-            if difference > 0 {
-                let insertedIndexPaths = (oldNumber..<newNumber).map { i in
-                    IndexPath(row: i, section: 0)
-                }
-                tableView.insertRows(at: insertedIndexPaths, with: .automatic)
-            } else if difference < 0 {
-                let deletedIndexPaths = (newNumber..<oldNumber).map { i in
-                    IndexPath(row: i, section: 0)
-                }
-                tableView.deleteRows(at: deletedIndexPaths, with: .automatic)
-            }
-            
-            let reloadedIndexPaths: [IndexPath] = (0..<min(oldNumber, newNumber)).reduce(
-                into: []
-            ) { (result, i) in
-                if oldCollections[i].id != newCollections[i].id {
-                    let indexPath = IndexPath(row: i, section: 0)
-                    result.append(indexPath)
-                }
-            }
-            tableView.reloadRows(at: reloadedIndexPaths, with: .automatic)
-            
-        }
-    }
-    
-    // MARK: - Table Data Source Methods
-    
-    override func tableView(
-        _ tableView: UITableView,
-        numberOfRowsInSection section: Int
-    ) -> Int { collections.count }
-    
-    override func tableView(
-        _ tableView: UITableView,
-        cellForRowAt indexPath: IndexPath
-    ) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(
-            withIdentifier: CatalogueTableCell.defaultReuseIdentifier,
-            for: indexPath
-        )
-                
-        guard let catalogueTableCell = cell as? CatalogueTableCell else {
-            return UITableViewCell()
-        }
-        
-        configCell(for: catalogueTableCell, with: indexPath)
-        
-        return catalogueTableCell
-    }
-    
-    override func tableView(
-        _ tableView: UITableView,
-        willDisplay cell: UITableViewCell,
-        forRowAt indexPath: IndexPath
-    ) {
-        if indexPath.row + 1 == collections.count {
-            presenter.fetchNextPage()
-        }
+        var snapshot = CatalogueDataSourceSnapshot()
+        snapshot.appendSections([CatalogueTableSection.main])
+        snapshot.appendItems(newCollections, toSection: .main)
+        dataSource.apply(snapshot, animatingDifferences: true)
     }
     
     // MARK: - Table Delegate Methods
@@ -211,18 +153,16 @@ final class CatalogueViewController: UITableViewController, CatalogueViewControl
         // TODO: Использовать при выборе ячейки.
     }
     
+    override func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+        if
+            indexPath.section == tableView.numberOfSections - 1,
+            indexPath.row == tableView.numberOfRows(inSection: indexPath.section) - 1
+        {
+            presenter.fetchNextPage()
+        }
+    }
+    
     // MARK: - UI Updates
-    
-    private func configCell(for cell: CatalogueTableCell, with indexPath: IndexPath) {
-        let collection = collections[indexPath.row]
-        configCell(cell, from: collection)
-    }
-    
-    private func configCell(_ cell: CatalogueTableCell, from collection: Collection) {
-        cell.cover = collection.coverImage
-        cell.name = collection.name
-        cell.counterValue = collection.nfts.count
-    }
     
     private func sortAndUpdateTable(by field: CollectionFields) {
         if presenter.sort(by: field) {
@@ -234,5 +174,17 @@ final class CatalogueViewController: UITableViewController, CatalogueViewControl
     private func scrollToTop() {
         let topRow = IndexPath(row: 0, section: 0)
         tableView.scrollToRow(at: topRow, at: .top, animated: true)
+    }
+    
+    // MARK: - Private Methods
+    
+    func reuse<T: UITableViewCell & ReuseIdentifying>(
+        _ type: T.Type,
+        indexPath: IndexPath
+    ) -> T? {
+        tableView.dequeueReusableCell(
+            withIdentifier: T.defaultReuseIdentifier,
+            for: indexPath
+        ) as? T
     }
 }
