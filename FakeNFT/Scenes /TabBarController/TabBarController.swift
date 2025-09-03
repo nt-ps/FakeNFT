@@ -40,10 +40,10 @@ final class TabBarController: UITabBarController {
             servicesAssembly: servicesAssembly
         )
 
-        viewControllers = [
-            catalogueController,
-            testCatalogController // TODO: Удалить!
-        ]
+ //       viewControllers = [
+ //           catalogueController,
+ //           testCatalogController // TODO: Удалить!
+ //       ]
 
         view.backgroundColor = .systemBackground
     }

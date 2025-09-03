@@ -66,11 +66,3 @@ private extension NFTTableViewCell {
     }
 }
 
-
-// MARK: dark theme implementation
-private extension NFTTableViewCell {
-    private func setUpColorsInCellDependingOnTheme() {
-        
-    }
-}
-
