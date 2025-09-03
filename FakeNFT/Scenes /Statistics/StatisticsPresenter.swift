@@ -8,17 +8,34 @@ protocol StatisticsPresenterProtocol {
     func loadMoreUsers()
 }
 
+enum SortType: String {
+    case rating
+    case name
+}
+
 final class StatisticsPresenter: StatisticsPresenterProtocol {
     private let servicesAssembly: ServicesAssembly
     weak var view: StatisticsViewController?
     
     private var users: [User] = []
     private var isLoading = false
-    private var currentSortIsRating = true
     private var currentPage = 0
+    private var currentSortType: SortType {
+        didSet{
+            UserDefaults.standard.set(currentSortType.rawValue, forKey: UserDefaultsKeys.sortType)
+        }
+    }
+    
     
     init(servicesAssembly: ServicesAssembly) {
         self.servicesAssembly = servicesAssembly
+        
+        if let savedSortTypeRawValue = UserDefaults.standard.string(forKey: UserDefaultsKeys.sortType),
+           let savedSortType = SortType(rawValue: savedSortTypeRawValue) {
+            currentSortType = savedSortType
+        } else {
+            currentSortType = .rating
+        }
     }
     
     func viewDidLoad() {
@@ -26,13 +43,13 @@ final class StatisticsPresenter: StatisticsPresenterProtocol {
     }
     
     func sortByName() {
-        currentSortIsRating = false
+        currentSortType = .name
         users.sort { $0.name < $1.name }
         view?.usersDidUpdated(users)
     }
     
     func sortByRating() {
-        currentSortIsRating = true
+        currentSortType = .rating
         users.sort { $0.rating > $1.rating }
         view?.usersDidUpdated(users)
     }
@@ -57,7 +74,12 @@ final class StatisticsPresenter: StatisticsPresenterProtocol {
             case .success(let users):
                 print("Успешная загрузка \(users.count) пользователей")
                 self.users.isEmpty ? self.users = users : self.users.append(contentsOf: users)
-                self.currentSortIsRating ? sortByRating() : sortByName()
+                switch self.currentSortType {
+                case .rating:
+                    self.sortByRating()
+                case .name:
+                    self.sortByName()
+                }
             case .failure(let error):
                 if self.currentPage > 0 {
                     self.currentPage -= 1
