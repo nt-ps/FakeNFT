@@ -4,11 +4,13 @@ final class TabBarController: UITabBarController {
 
     var servicesAssembly: ServicesAssembly!
 
-    private let catalogTabBarItem = UITabBarItem(
+    private let catalogueTabBarItem = UITabBarItem(
         title: L10n.Tab.catalog,
         image: UIImage(resource: .Icons.catalogTab),
         tag: 0
     )
+    
+    private let shoppingCartTabBarItem = UITabBarItem(title: L10n.Tab.cart, image: .Icons.cartTab, tag: 2)
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -27,21 +29,16 @@ final class TabBarController: UITabBarController {
         let catalogueController = CatalogueNavigationController(
             servicesAssembly: servicesAssembly
         )
-        catalogController.tabBarItem = catalogTabBarItem
+        catalogueController.tabBarItem = catalogueTabBarItem
 
-        viewControllers = [catalogController]
-        catalogController.tabBarItem = catalogTabBarItem
-        
         let shoppingCartNavigationController = configureShoppingCart()
         
-        viewControllers = [catalogController, shoppingCartNavigationController]
-        catalogueController.tabBarItem = catalogTabBarItem
+        viewControllers = [catalogueController, shoppingCartNavigationController]
         
         // TODO: Удалить после добавления всех вкладок.
         let testCatalogController = TestCatalogViewController(
             servicesAssembly: servicesAssembly
         )
-        testCatalogController.tabBarItem = testCatalogTabBarItem
 
         viewControllers = [
             catalogueController,
