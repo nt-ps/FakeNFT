@@ -23,19 +23,20 @@ final class TabBarController: UITabBarController {
         )
         catalogController.tabBarItem = catalogTabBarItem
         
-        let shoppingCartViewController = configureShoppingCart()
-        viewControllers = [catalogController, shoppingCartViewController]
+        let shoppingCartNavigationController = configureShoppingCart()
+        
+        viewControllers = [catalogController, shoppingCartNavigationController]
 
         view.backgroundColor = .systemBackground
     }
     
-    private func configureShoppingCart() -> ShoppingCartViewControllerImplementation {
+    private func configureShoppingCart() -> UIViewController {
         let shoppingCartModel = ShoppingCartModelImplementation(servicesAssembly: servicesAssembly)
         let shoppingCartViewController = ShoppingCartViewControllerImplementation()
         let shoppingCartPresenter = ShoppingCartPresenterImplementation(shoppingCartView: shoppingCartViewController, shoppingCartModel: shoppingCartModel)
         shoppingCartViewController.shoppingCartPresenter = shoppingCartPresenter
         shoppingCartModel.shoppingCartPresenter = shoppingCartPresenter
         shoppingCartViewController.tabBarItem = shoppingCartTabBarItem
-        return shoppingCartViewController
+        return UINavigationController(rootViewController: shoppingCartViewController)
     }
 }
