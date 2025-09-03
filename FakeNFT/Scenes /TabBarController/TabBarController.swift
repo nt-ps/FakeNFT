@@ -9,6 +9,18 @@ final class TabBarController: UITabBarController {
         image: UIImage(systemName: "square.stack.3d.up.fill"),
         tag: 0
     )
+    
+    private var profileNavigationController: UINavigationController {
+        let navigationController = ProfileNavigationController()
+        
+        navigationController.tabBarItem = UITabBarItem(
+            title: L10n.Tab.profile,
+            image: .Icons.profileTab,
+            selectedImage: nil
+        )
+        
+        return navigationController
+    }
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -18,7 +30,7 @@ final class TabBarController: UITabBarController {
         )
         catalogController.tabBarItem = catalogTabBarItem
 
-        viewControllers = [catalogController]
+        viewControllers = [catalogController, profileNavigationController]
 
         view.backgroundColor = .systemBackground
     }
