@@ -6,26 +6,47 @@ final class TabBarController: UITabBarController {
 
     private let catalogTabBarItem = UITabBarItem(
         title: L10n.Tab.catalog,
-        image: UIImage(systemName: "square.stack.3d.up.fill"),
+        image: UIImage(resource: .Icons.catalogTab),
         tag: 0
     )
-    private let shoppingCartTabBarItem = UITabBarItem(
-        title: L10n.Tab.cart,
-        image: .Icons.cartTab,
-        tag: 1
-    )
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        let catalogController = TestCatalogViewController(
+        
+        let appearance = UITabBarAppearance()
+        appearance.configureWithTransparentBackground()
+        appearance.backgroundColor = .AppColors.white
+        appearance.stackedLayoutAppearance.normal.iconColor = .AppColors.black
+        appearance.stackedLayoutAppearance.normal.titleTextAttributes = [
+            .foregroundColor: UIColor.AppColors.black
+        ]
+        tabBar.standardAppearance = appearance
+        tabBar.scrollEdgeAppearance = appearance
+        tabBar.tintColor = .AppColors.Universal.blue
+        
+        let catalogueController = CatalogueNavigationController(
             servicesAssembly: servicesAssembly
         )
+        catalogController.tabBarItem = catalogTabBarItem
+
+        viewControllers = [catalogController]
         catalogController.tabBarItem = catalogTabBarItem
         
         let shoppingCartNavigationController = configureShoppingCart()
         
         viewControllers = [catalogController, shoppingCartNavigationController]
+        catalogueController.tabBarItem = catalogTabBarItem
+        
+        // TODO: Удалить после добавления всех вкладок.
+        let testCatalogController = TestCatalogViewController(
+            servicesAssembly: servicesAssembly
+        )
+        testCatalogController.tabBarItem = testCatalogTabBarItem
+
+        viewControllers = [
+            catalogueController,
+            testCatalogController // TODO: Удалить!
+        ]
 
         view.backgroundColor = .systemBackground
     }
