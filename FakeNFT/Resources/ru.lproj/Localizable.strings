@@ -1,0 +1,65 @@
+"tab.catalog" = "Каталог";
+"tab.profile" = "Профиль";
+"tab.cart" = "Корзина";
+"tab.statistics" = "Статистика";
+
+"sortAlert.title" = "Сортировка";
+"sortAlert.byName" = "По названию";
+"sortAlert.byAmount" = "По количеству NFT";
+"sortAlert.byPrice" = "По цене";
+"sortAlert.byRating" = "По рейтингу";
+"sortAlert.close" = "Закрыть";
+
+"cart.price" = "Цена";
+"cart.toPayment" = "К оплате";
+"cart.deleteAlert.message" = "Вы уверены, что хотите\nудалить объект из корзины?";
+"cart.deleteAlert.delete" = "Удалить";
+"cart.deleteAlert.cancel" = "Вернуться";
+"cart.empty" = "Корзина пуста";
+
+"payment.title" = "Выберите способ оплаты";
+"payment.userAgreement.text" = "Совершая покупку, вы соглашаетесь с условиями";
+"payment.userAgreement.link" = "Пользовательского соглашения";
+"payment.pay" = "Оплатить";
+"payment.failureAlert.title" = "Не удалось произвести\nоплату";
+"payment.failureAlert.repeat" = "Повторить";
+"payment.failureAlert.cancel" = "Отмена";
+"payment.success.title" = "Успех! Оплата прошла,\nпоздравляем с покупкой!";
+"payment.backToCataloge" = "Вернуться в каталог";
+
+"editProfile.name" = "Имя";
+"editProfile.description" = "Описание";
+"editProfile.website" = "Сайт";
+"editProfile.avatar.alert.title" = "Фото профиля";
+"editProfile.avatar.alert.change" = "Изменить фото";
+"editProfile.avatar.alert.delete" = "Удалить фото";
+"editProfile.avatar.alert.cancel" = "Отмена";
+"editProfile.avatar.changeAlert.title" = "Ссылка на фото";
+"editProfile.avatar.changeAlert.save" = "Сохранить";
+"editProfile.avatar.alert.cancel" = "Отмена";
+"editProfile.saveAlert.title" = "Уверены,\nчто хотите выйти?";
+"editProfile.saveAlert.save" = "Выйти";
+"editProfile.saveAlert.cancel" = "Отмена";
+
+"profile.myNFT.title" = "Мои NFT";
+"profile.favouriteNFT.title" = "Избранные NFT";
+
+"myNFT.title" = "Мои NFT";
+"myNFT.price" = "Цена";
+"myNFT.from" = "от";
+"myNFT.empty" = "У Вас еще нет NFT";
+
+"favouriteNFT.title" = "Избранные NFT";
+"favouriteNFT.empty" = "У Вас еще нет избранных NFT";
+
+"statistics.goToWebsite" = "Перейти на сайт пользователя";
+"statistics.collectionNFT" = "Коллекция NFT";
+"statistics.failureAlert.title" = "Не удалось получить\nданные";
+"statistics.failureAlert.repeat" = "Повторить";
+"statistics.failureAlert.cancel" = "Отмена";
+
+"catalog.openNft" = "Открыть Nft";
+"error.network" = "Произошла ошибка сети";
+"error.unknown" = "Произошла неизвестная ошибка";
+"error.repeat" = "Повторить";
+"error.title" = "Ошибка";

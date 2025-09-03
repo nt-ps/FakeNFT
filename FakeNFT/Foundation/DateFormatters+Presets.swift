@@ -1,6 +1,10 @@
 import Foundation
 
 extension DateFormatter {
-    // We use static var because creating a dateFormatter is an expensive operation and we should do it once
-    static var defaultDateFormatter: ISO8601DateFormatter = .init()
+    static var defaultDateFormatter: ISO8601DateFormatter = {
+        let dateFormatter = ISO8601DateFormatter()
+        dateFormatter.formatOptions.insert(.withFractionalSeconds)
+        dateFormatter.formatOptions.insert(.withTimeZone)
+        return dateFormatter
+    } ()
 }
