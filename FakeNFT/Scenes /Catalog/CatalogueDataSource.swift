@@ -1,6 +1,6 @@
 import UIKit
 
-// MARK: - Table Section Model
+// MARK: - Table View Section Model
 
 enum CatalogueTableSection: Int, CaseIterable {
     case main

@@ -69,6 +69,7 @@ final class CatalogueViewController: UITableViewController, CatalogueViewControl
     // MARK: - Private Properties
 
     private lazy var dataSource = CatalogueDataSource(tableView)
+    private var collections: [Collection] = []
     
     // MARK: - Initializers
 
@@ -138,19 +139,26 @@ final class CatalogueViewController: UITableViewController, CatalogueViewControl
     // MARK: - Catalogue View Controller Protocol
     
     func updateTableViewAnimated(from newCollections: [Collection]) {
+        collections = newCollections
+        
         var snapshot = CatalogueDataSourceSnapshot()
         snapshot.appendSections([CatalogueTableSection.main])
-        snapshot.appendItems(newCollections, toSection: .main)
+        snapshot.appendItems(collections, toSection: .main)
         dataSource.apply(snapshot, animatingDifferences: true)
     }
     
-    // MARK: - Table Delegate Methods
+    // MARK: - Table View Delegate Methods
     
     override func tableView(
         _ tableView: UITableView,
         didSelectRowAt indexPath: IndexPath
     ) {
-        // TODO: Использовать при выборе ячейки.
+        // TODO: Раскомментировать когда будет налажен экран коллекции.
+        /*
+        let collection = collections[indexPath.row]
+        let viewController = presenter.collectionViewAssembler.build(with: collection)
+        navigationController?.pushViewController(viewController, animated: true)
+         */
     }
     
     override func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
