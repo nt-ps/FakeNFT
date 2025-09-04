@@ -81,20 +81,20 @@ final class StatisticsViewController: UIViewController {
     }
     
     private func showSortAlert() {
-        let alertController = UIAlertController(title: "Сортировка",
+        let alertController = UIAlertController(title: L10n.SortAlert.title,
                                                 message: nil,
                                                 preferredStyle: .actionSheet)
-        let byNameAction = UIAlertAction(title: "По имени",
+        let byNameAction = UIAlertAction(title: L10n.SortAlert.byFirstName,
                                          style: .default) {[weak self] _ in
             self?.presenter.sortByName()
         }
         
-        let byRatingAction = UIAlertAction(title: "По рейтингу",
+        let byRatingAction = UIAlertAction(title: L10n.SortAlert.byRating,
                                            style: .default) {[weak self] _ in
             self?.presenter.sortByRating()
         }
         
-        let closeAction = UIAlertAction(title: "Закрыть",
+        let closeAction = UIAlertAction(title: L10n.SortAlert.close,
                                         style: .cancel)
         
         alertController.addAction(byNameAction)

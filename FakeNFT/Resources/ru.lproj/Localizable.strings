@@ -9,6 +9,7 @@
 "sortAlert.byPrice" = "По цене";
 "sortAlert.byRating" = "По рейтингу";
 "sortAlert.close" = "Закрыть";
+"sortAlert.byFirstName" = "По имени";
 
 "cart.price" = "Цена";
 "cart.toPayment" = "К оплате";
