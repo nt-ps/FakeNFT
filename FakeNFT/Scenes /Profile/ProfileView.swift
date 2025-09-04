@@ -38,19 +38,19 @@ final class ProfileView: UIView {
         }
     }
     
-    private let scrollView: UIScrollView = {
+    private lazy var scrollView: UIScrollView = {
         let scrollView = UIScrollView()
         scrollView.contentInset.bottom = Constants.ScrollView.bottomContentInset
         return scrollView
     }()
 
-    private let contentView: UIView = {
+    private lazy var contentView: UIView = {
         let view = UIView()
         view.isSkeletonable = true
         return view
     }()
 
-    private let websiteLabel: UILabel = {
+    private lazy var websiteLabel: UILabel = {
         let label = UILabel()
         label.font = .caption1
         label.textColor = .blue

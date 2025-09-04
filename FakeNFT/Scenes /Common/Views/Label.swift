@@ -22,7 +22,6 @@ final class Label: UILabel {
         self.text = text
     }
 
-
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }

@@ -10,7 +10,7 @@ import UIKit
 final class TextField: UITextField {
 
     // MARK: Properties
-    private let padding: UIEdgeInsets
+    private var padding: UIEdgeInsets
     
     private enum Constants {
         static let cornerRadius: CGFloat = 12
@@ -40,15 +40,9 @@ final class TextField: UITextField {
         return originalRect.offsetBy(dx: -10, dy: 0)
     }
 
-    override func textRect(forBounds bounds: CGRect) -> CGRect {
-        return bounds.inset(by: padding)
-    }
+    override func textRect(forBounds bounds: CGRect) -> CGRect { bounds.inset(by: padding) }
 
-    override func placeholderRect(forBounds bounds: CGRect) -> CGRect {
-        return bounds.inset(by: padding)
-    }
+    override func placeholderRect(forBounds bounds: CGRect) -> CGRect { bounds.inset(by: padding) }
 
-    override func editingRect(forBounds bounds: CGRect) -> CGRect {
-        return bounds.inset(by: padding)
-    }
+    override func editingRect(forBounds bounds: CGRect) -> CGRect { bounds.inset(by: padding) }
 }

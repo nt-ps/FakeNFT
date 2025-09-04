@@ -8,28 +8,26 @@
 import UIKit
 import SkeletonView
 
-import UIKit
-import SkeletonView
-
-
 final class ProfileInfoView: UIView {
     private enum Constants {
         static let avatarSize: CGFloat = 70
         static let nameLeading: CGFloat = 16
         static let descriptionTop: CGFloat = 20
+        
+        static let defaultDescriptionText: String = "This user hasn't added a description yet."
     }
 
     // MARK: - Subviews
     let avatarView = AvatarImageView()
 
-    let nameLabel: Label = {
+    lazy var nameLabel: Label = {
         let label = Label()
         label.numberOfLines = 2
         label.isSkeletonable = true
         return label
     }()
 
-    let descriptionLabel: UITextView = {
+    lazy var descriptionLabel: UITextView = {
         let textView = UITextView()
         textView.backgroundColor = .AppColors.white
         textView.textColor = .AppColors.black
@@ -92,9 +90,8 @@ final class ProfileInfoView: UIView {
     // MARK: Update
     func configure(name: String?, description: String?, avatarURL: String?) {
         nameLabel.text = name
-        descriptionLabel.text = description ?? "This user hasn't added a description yet."
+        descriptionLabel.text = description ?? Constants.defaultDescriptionText
         
-        // Проверяем аватар на специальные символы
         let cleanedAvatarURL = cleanAvatarURL(avatarURL)
         avatarView.setAvatar(urlString: cleanedAvatarURL)
     }

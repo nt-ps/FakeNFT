@@ -87,20 +87,20 @@ final class EditProfileView: UIView {
         arrangedSubviews: [nameStackView, descriptionStackView, websiteStackView]
     )
 
-    private let saveButton: Button = {
+    private lazy var saveButton: Button = {
         let button = Button()
         button.setTitle(L10n.EditProfile.Avatar.ChangeAlert.save, for: .normal)
         return button
     }()
     
-    let loadingView: UIView = {
+    lazy var loadingView: UIView = {
         let view = UIView()
         view.backgroundColor = UIColor.black.withAlphaComponent(0.5)
         view.isHidden = true
         return view
     }()
     
-    let activityIndicator: UIActivityIndicatorView = {
+    lazy var activityIndicator: UIActivityIndicatorView = {
         let indicator = UIActivityIndicatorView(style: .large)
         indicator.color = .AppColors.white
         indicator.hidesWhenStopped = true
