@@ -24,11 +24,7 @@ final class CollectionViewAssembly: CollectionViewAssemblyProtocol {
             for: collection,
             nftService: servicesAssembler.nftService
         )
-        let layout = UICollectionViewFlowLayout()
-        let viewController = CollectionViewController(
-            presenter: presenter,
-            collectionViewLayout: layout
-        )
+        let viewController = CollectionViewController(presenter: presenter)
         presenter.view = viewController
         return viewController
     }
@@ -39,11 +35,7 @@ final class CollectionViewAssembly: CollectionViewAssemblyProtocol {
             for: nftIds,
             nftService: servicesAssembler.nftService
         )
-        let layout = UICollectionViewFlowLayout()
-        let viewController = CollectionViewController(
-            presenter: presenter,
-            collectionViewLayout: layout
-        )
+        let viewController = CollectionViewController(presenter: presenter)
         presenter.view = viewController
         return viewController
     }

@@ -16,13 +16,47 @@ final class CollectionViewController: UICollectionViewController, CollectionView
     
     // MARK: - Private Properties
 
-    private lazy var dataSource = CollectionDataSource(collectionView)
+    private lazy var dataSource: CollectionDataSource = .init(collectionView)
+    
+    private static let layout: UICollectionViewCompositionalLayout = {
+        let itemSize = NSCollectionLayoutSize(
+            widthDimension: .fractionalWidth(1.0 / 3.0),
+            heightDimension: .fractionalHeight(1.0)
+        )
+        let item = NSCollectionLayoutItem(layoutSize: itemSize)
+        
+        let groupSize = NSCollectionLayoutSize(
+            widthDimension: .fractionalWidth(1.0),
+            heightDimension: .estimated(44)
+        )
+        let group = NSCollectionLayoutGroup.horizontal(
+            layoutSize: groupSize,
+            subitems: [item]
+        )
+        
+        let headerSize = NSCollectionLayoutSize(
+            widthDimension: .fractionalWidth(1.0),
+            heightDimension: .estimated(44)
+        )
+        let sectionHeader = NSCollectionLayoutBoundarySupplementaryItem(
+            layoutSize: headerSize,
+            elementKind: UICollectionView.elementKindSectionHeader,
+            alignment: .top
+        )
+        
+        let section = NSCollectionLayoutSection(group: group)
+        section.boundarySupplementaryItems = [sectionHeader]
+        
+        let layout = UICollectionViewCompositionalLayout(section: section)
+        
+        return layout
+    } ()
     
     // MARK: - Initializers
 
-    init(presenter: CollectionPresenterProtocol, collectionViewLayout: UICollectionViewLayout) {
+    init(presenter: CollectionPresenterProtocol) {
         self.presenter = presenter
-        super.init(collectionViewLayout: collectionViewLayout)
+        super.init(collectionViewLayout: CollectionViewController.layout)
     }
 
     required init?(coder: NSCoder) {
@@ -34,7 +68,7 @@ final class CollectionViewController: UICollectionViewController, CollectionView
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        view.backgroundColor = .red
+        collectionView.backgroundColor = .AppColors.white
         
         collectionView.register(CollectionCollectionCell.self)
         collectionView.register(
@@ -55,28 +89,5 @@ final class CollectionViewController: UICollectionViewController, CollectionView
         snapshot.appendSections([CollectionCollectionSection.main])
         snapshot.appendItems([], toSection: .main)
         dataSource.apply(snapshot, animatingDifferences: true)
-    }
-}
-
-extension CollectionViewController: UICollectionViewDelegateFlowLayout {
-    func collectionView(
-        _ collectionView: UICollectionView,
-        layout collectionViewLayout: UICollectionViewLayout,
-        referenceSizeForHeaderInSection section: Int
-    ) -> CGSize {
-        /*
-        // Get the view for the first header
-        let indexPath = IndexPath(row: 0, section: section)
-        let headerView = self.collectionView(collectionView, viewForSupplementaryElementOfKind: UICollectionView.elementKindSectionHeader, at: indexPath)
-
-        // Use this view to calculate the optimal size based on the collection view's width
-        return headerView.systemLayoutSizeFitting(CGSize(width: collectionView.frame.width, height: UIView.layoutFittingExpandedSize.height),
-                                                  withHorizontalFittingPriority: .required, // Width is fixed
-                                                  verticalFittingPriority: .fittingSizeLevel) // Height can be as large as needed
-         */
-        CGSize(
-            width: collectionView.frame.width,
-            height: 500
-        )
     }
 }

@@ -4,21 +4,11 @@ final class CollectionCollectionHeader: UICollectionReusableView, ReuseIdentifyi
     
     // MARK: - Views
     
-    private lazy var cellStackView: UIStackView = {
-        let cellStackView = UIStackView(
-            arrangedSubviews: [coverImageView, infoStackView]
-        )
-        cellStackView.axis = .vertical
-        cellStackView.alignment = .leading
-        cellStackView.spacing = cellStackSpacing
-        cellStackView.translatesAutoresizingMaskIntoConstraints = false
-        return cellStackView
-    } ()
-    
     private lazy var coverImageView: UIImageView = {
         let coverImageView = UIImageView()
         coverImageView.image = UIImage(resource: .CatalogueMock.peachCover) // TODO: Удалить!
         coverImageView.contentMode = .scaleAspectFill
+        coverImageView.clipsToBounds = true
         coverImageView.layer.masksToBounds = true
         coverImageView.layer.cornerRadius = coverCornerRadius
         coverImageView.layer.maskedCorners = [.layerMinXMaxYCorner, .layerMaxXMaxYCorner]
@@ -99,8 +89,8 @@ final class CollectionCollectionHeader: UICollectionReusableView, ReuseIdentifyi
     
     // MARK: - UI Properties
     
-    private let cellStackSpacing: CGFloat = 16
-    private let infoXSpacing: CGFloat = 16
+    private let infoStackSpacing: CGFloat = 16
+    
     private let titleStackSpacing: CGFloat = 8
     private let authorStackSpacing: CGFloat = 4
     
@@ -114,9 +104,8 @@ final class CollectionCollectionHeader: UICollectionReusableView, ReuseIdentifyi
     override init(frame: CGRect) {
         super.init(frame: frame)
         
-        backgroundColor = .clear
-        
-        addSubview(cellStackView)
+        addSubview(coverImageView)
+        addSubview(infoStackView)
         setConstraints()
     }
     
@@ -125,33 +114,47 @@ final class CollectionCollectionHeader: UICollectionReusableView, ReuseIdentifyi
         print("\(String(describing: CollectionCollectionHeader.self)).init(coder:) has not been implemented")
     }
     
+    // MARK: - Overrided Methods
+    
+    override func preferredLayoutAttributesFitting(
+        _ layoutAttributes: UICollectionViewLayoutAttributes
+    ) -> UICollectionViewLayoutAttributes {
+        layoutAttributes.size = systemLayoutSizeFitting(
+            layoutAttributes.size,
+            withHorizontalFittingPriority: .required,
+            verticalFittingPriority: .fittingSizeLevel
+        )
+        return layoutAttributes
+    }
+    
     // MARK: - UI Updates
     
     private func setConstraints() {
         NSLayoutConstraint.activate([
-            cellStackView.leadingAnchor.constraint(equalTo: safeAreaLayoutGuide.leadingAnchor),
-            cellStackView.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor),
-            cellStackView.trailingAnchor.constraint(equalTo: safeAreaLayoutGuide.trailingAnchor),
-            cellStackView.bottomAnchor.constraint(lessThanOrEqualTo: safeAreaLayoutGuide.bottomAnchor),
-            
-            coverImageView.leadingAnchor.constraint(equalTo: cellStackView.leadingAnchor),
-            coverImageView.topAnchor.constraint(equalTo: cellStackView.topAnchor),
-            coverImageView.trailingAnchor.constraint(equalTo: cellStackView.trailingAnchor),
+            coverImageView.leadingAnchor.constraint(equalTo: leadingAnchor),
+            coverImageView.topAnchor.constraint(equalTo: topAnchor),
+            coverImageView.trailingAnchor.constraint(equalTo: trailingAnchor),
             coverImageView.heightAnchor.constraint(
                 equalTo: coverImageView.widthAnchor,
                 multiplier: coverAspectRatio
             ),
+
+            authorButton.heightAnchor.constraint(equalToConstant: authorButtonHeight),
             
             infoStackView.leadingAnchor.constraint(
-                equalTo: cellStackView.leadingAnchor,
-                constant: infoXSpacing
+                equalTo: leadingAnchor,
+                constant: infoStackSpacing
+            ),
+            infoStackView.topAnchor.constraint(
+                equalTo: coverImageView.bottomAnchor,
+                constant: infoStackSpacing
             ),
             infoStackView.trailingAnchor.constraint(
-                equalTo: cellStackView.trailingAnchor,
-                constant: -infoXSpacing
+                equalTo: trailingAnchor,
+                constant: -infoStackSpacing
             ),
-            
-            authorButton.heightAnchor.constraint(equalToConstant: authorButtonHeight)
+            infoStackView.bottomAnchor.constraint(lessThanOrEqualTo: bottomAnchor)
         ])
     }
 }
+
