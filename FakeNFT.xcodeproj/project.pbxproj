@@ -43,6 +43,9 @@
 		3AAB091E2E6A19760079920F /* CollectionDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AAB091D2E6A19670079920F /* CollectionDataSource.swift */; };
 		3AAB09202E6C3B4D0079920F /* CollectionCollectionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AAB091F2E6C3B4B0079920F /* CollectionCollectionCell.swift */; };
 		3AAB09222E6C3B910079920F /* CollectionCollectionHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AAB09212E6C3B890079920F /* CollectionCollectionHeader.swift */; };
+		3AAB09452E6CD2780079920F /* LikeButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AAB09442E6CD2740079920F /* LikeButton.swift */; };
+		3AAB09472E6CDD270079920F /* CartButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AAB09462E6CDD230079920F /* CartButton.swift */; };
+		3AAB09492E6CE0750079920F /* RatingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AAB09482E6CE0670079920F /* RatingView.swift */; };
 		3F478ECF29DB474E00F6D39E /* Colors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F478ECE29DB474E00F6D39E /* Colors.swift */; };
 		3F478ED129DB476500F6D39E /* Fonts.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F478ED029DB476500F6D39E /* Fonts.swift */; };
 		3F603CCD29DB4A53000C43D7 /* ProgressHUD in Frameworks */ = {isa = PBXBuildFile; productRef = 3F603CCC29DB4A53000C43D7 /* ProgressHUD */; };
@@ -124,6 +127,9 @@
 		3AAB091D2E6A19670079920F /* CollectionDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectionDataSource.swift; sourceTree = "<group>"; };
 		3AAB091F2E6C3B4B0079920F /* CollectionCollectionCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectionCollectionCell.swift; sourceTree = "<group>"; };
 		3AAB09212E6C3B890079920F /* CollectionCollectionHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectionCollectionHeader.swift; sourceTree = "<group>"; };
+		3AAB09442E6CD2740079920F /* LikeButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LikeButton.swift; sourceTree = "<group>"; };
+		3AAB09462E6CDD230079920F /* CartButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CartButton.swift; sourceTree = "<group>"; };
+		3AAB09482E6CE0670079920F /* RatingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RatingView.swift; sourceTree = "<group>"; };
 		3F478ECE29DB474E00F6D39E /* Colors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Colors.swift; sourceTree = "<group>"; };
 		3F478ED029DB476500F6D39E /* Fonts.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Fonts.swift; sourceTree = "<group>"; };
 		3F68069329CBBAF100B4F915 /* FakeNFT.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FakeNFT.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -217,6 +223,9 @@
 		0CF2C2DF2A784C5600FDC837 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				3AAB09482E6CE0670079920F /* RatingView.swift */,
+				3AAB09462E6CDD230079920F /* CartButton.swift */,
+				3AAB09442E6CD2740079920F /* LikeButton.swift */,
 				0CF2C2E02A784C7000FDC837 /* LinePageControl.swift */,
 			);
 			path = Views;
@@ -641,6 +650,7 @@
 				0C79EE662A76DDFF00EE90EA /* NftDetailViewController.swift in Sources */,
 				3AAB09222E6C3B910079920F /* CollectionCollectionHeader.swift in Sources */,
 				E1A1B9DA2AA01CE400C3AFBC /* TabBarController.swift in Sources */,
+				3AAB09472E6CDD270079920F /* CartButton.swift in Sources */,
 				3F478ED129DB476500F6D39E /* Fonts.swift in Sources */,
 				0C79EE6A2A76DE1000EE90EA /* NftDetailAssembly.swift in Sources */,
 				3FC8C39329D246BA0081F015 /* DateFormatters+Presets.swift in Sources */,
@@ -648,6 +658,7 @@
 				3A87732D2E6439B6004BABB9 /* Collection.swift in Sources */,
 				3A87732B2E643764004BABB9 /* CollectionService.swift in Sources */,
 				0CFCB7422A78013E0009A829 /* Nft.swift in Sources */,
+				3AAB09452E6CD2780079920F /* LikeButton.swift in Sources */,
 				0CF2C2DD2A783CE600FDC837 /* ErrorView.swift in Sources */,
 				0C79EE682A76DE0900EE90EA /* NftDetailPresenter.swift in Sources */,
 				3F68069B29CBBAF100B4F915 /* ProductDetailsTableViewController.swift in Sources */,
@@ -667,6 +678,7 @@
 				3FC8C39129D2453B0081F015 /* ExamplePutRequest.swift in Sources */,
 				0CFCB7462A78064B0009A829 /* NftDetailCellModel.swift in Sources */,
 				0CFCB74B2A780EA80009A829 /* UIView+Constraints.swift in Sources */,
+				3AAB09492E6CE0750079920F /* RatingView.swift in Sources */,
 				3AAB08452E64D8E70079920F /* CollectionMockService.swift in Sources */,
 				67E659FF2E63696B00A8E052 /* Strings+Generated.swift in Sources */,
 				3AAB091E2E6A19760079920F /* CollectionDataSource.swift in Sources */,

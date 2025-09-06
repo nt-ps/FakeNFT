@@ -18,45 +18,20 @@ final class CollectionViewController: UICollectionViewController, CollectionView
 
     private lazy var dataSource: CollectionDataSource = .init(collectionView)
     
-    private static let layout: UICollectionViewCompositionalLayout = {
-        let itemSize = NSCollectionLayoutSize(
-            widthDimension: .fractionalWidth(1.0 / 3.0),
-            heightDimension: .fractionalHeight(1.0)
-        )
-        let item = NSCollectionLayoutItem(layoutSize: itemSize)
-        
-        let groupSize = NSCollectionLayoutSize(
-            widthDimension: .fractionalWidth(1.0),
-            heightDimension: .estimated(44)
-        )
-        let group = NSCollectionLayoutGroup.horizontal(
-            layoutSize: groupSize,
-            subitems: [item]
-        )
-        
-        let headerSize = NSCollectionLayoutSize(
-            widthDimension: .fractionalWidth(1.0),
-            heightDimension: .estimated(44)
-        )
-        let sectionHeader = NSCollectionLayoutBoundarySupplementaryItem(
-            layoutSize: headerSize,
-            elementKind: UICollectionView.elementKindSectionHeader,
-            alignment: .top
-        )
-        
-        let section = NSCollectionLayoutSection(group: group)
-        section.boundarySupplementaryItems = [sectionHeader]
-        
-        let layout = UICollectionViewCompositionalLayout(section: section)
-        
-        return layout
-    } ()
+    // MARK: - UI Properties
+    
+    private static var cellPerGroup: CGFloat = 3
+    private static var cellSpacing: CGFloat = 8
+    private static var groupXSpacing: CGFloat = 16
+    private static var sectionTopSpacing: CGFloat = 24
+    private static var sectionBottomSpacing: CGFloat = 20
     
     // MARK: - Initializers
 
     init(presenter: CollectionPresenterProtocol) {
         self.presenter = presenter
-        super.init(collectionViewLayout: CollectionViewController.layout)
+        let layout = CollectionViewController.createLayout(withHeader: true)
+        super.init(collectionViewLayout: layout)
     }
 
     required init?(coder: NSCoder) {
@@ -87,7 +62,60 @@ final class CollectionViewController: UICollectionViewController, CollectionView
     func updateCollectionViewAnimated() {
         var snapshot = CollectionDataSourceSnapshot()
         snapshot.appendSections([CollectionCollectionSection.main])
-        snapshot.appendItems([], toSection: .main)
+        snapshot.appendItems(MockData.nfts, toSection: .main)
         dataSource.apply(snapshot, animatingDifferences: true)
+    }
+    
+    // MARK: - Private Mathods
+    
+    private static func createLayout(withHeader: Bool) -> UICollectionViewCompositionalLayout {
+        let itemSize = NSCollectionLayoutSize(
+            widthDimension: .fractionalWidth(1.0 / cellPerGroup),
+            heightDimension: .estimated(44)
+        )
+        let item = NSCollectionLayoutItem(layoutSize: itemSize)
+        
+        let groupSize = NSCollectionLayoutSize(
+            widthDimension: .fractionalWidth(1.0),
+            heightDimension: .estimated(44)
+        )
+        let group = NSCollectionLayoutGroup.horizontal(
+            layoutSize: groupSize,
+            subitems: [item]
+        )
+        group.interItemSpacing = .fixed(cellSpacing)
+        group.contentInsets = .init(
+            top: 0,
+            leading: groupXSpacing,
+            bottom: 0,
+            trailing: groupXSpacing
+        )
+        
+        let section = NSCollectionLayoutSection(group: group)
+        section.interGroupSpacing = cellSpacing
+        section.contentInsets = .init(
+            top: sectionTopSpacing,
+            leading: 0,
+            bottom: sectionBottomSpacing,
+            trailing: 0
+        )
+        
+        if withHeader {
+            let headerSize = NSCollectionLayoutSize(
+                widthDimension: .fractionalWidth(1.0),
+                heightDimension: .estimated(44)
+            )
+            let sectionHeader = NSCollectionLayoutBoundarySupplementaryItem(
+                layoutSize: headerSize,
+                elementKind: UICollectionView.elementKindSectionHeader,
+                alignment: .top
+            )
+            
+            section.boundarySupplementaryItems = [sectionHeader]
+        }
+        
+        let layout = UICollectionViewCompositionalLayout(section: section)
+        
+        return layout
     }
 }

@@ -52,7 +52,7 @@ struct MockData {
         )
     ]
     
-    private static var nfts: [Nft] = [
+    static var nfts: [Nft] = [
         Nft(
             name: "Archie", coverImage: UIImage(resource: .NftMock.archieCover),
             rating: 2, price: 1, id: "Archie"
