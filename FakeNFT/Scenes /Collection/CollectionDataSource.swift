@@ -16,7 +16,9 @@ final class CollectionDataSource: UICollectionViewDiffableDataSource<CollectionC
         super.init(
             collectionView: collectionView
         ) { (collectionView, indexPath, item) -> UICollectionViewCell? in
-            return UICollectionViewCell()
+            let cell: CollectionCollectionCell = collectionView.dequeueReusableCell(indexPath: indexPath)
+            // configuration cell
+            return cell
         }
     }
     
@@ -27,7 +29,15 @@ final class CollectionDataSource: UICollectionViewDiffableDataSource<CollectionC
         viewForSupplementaryElementOfKind kind: String,
         at indexPath: IndexPath
     ) -> UICollectionReusableView {
-        // TODO: Метод для получения хедера.
+        if kind == UICollectionView.elementKindSectionHeader
+        {
+            let header: CollectionCollectionHeader = collectionView.dequeueReusableSupplementaryView(
+                indexPath: indexPath,
+                kind: kind
+            )
+            return header
+        }
+        
         return UICollectionViewCell()
     }
 }

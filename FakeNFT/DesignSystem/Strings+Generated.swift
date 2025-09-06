@@ -171,6 +171,10 @@ internal enum L10n {
     /// Statistics
     internal static let statistics = L10n.tr("Localizable", "tab.statistics", fallback: "Statistics")
   }
+  internal enum Collection {
+    /// Author caption
+    internal static let authorCaption = L10n.tr("Localizable", "collection.authorCaption", fallback: "Author caption")
+  }
 }
 // swiftlint:enable explicit_type_interface function_parameter_count identifier_name line_length
 // swiftlint:enable nesting type_body_length type_name vertical_whitespace_opening_braces

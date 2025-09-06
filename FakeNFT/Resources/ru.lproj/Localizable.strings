@@ -63,3 +63,5 @@
 "error.unknown" = "Произошла неизвестная ошибка";
 "error.repeat" = "Повторить";
 "error.title" = "Ошибка";
+
+"collection.authorCaption" = "Автор коллекции:";

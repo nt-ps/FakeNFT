@@ -18,14 +18,33 @@ final class CollectionViewAssembly: CollectionViewAssemblyProtocol {
     
     // MARK: - Internal Properties
     
+    // Экран Collection.
     func build(with collection: Collection) -> UIViewController {
         let presenter = CollectionPresenter(
             for: collection,
             nftService: servicesAssembler.nftService
         )
-        let viewController = CollectionViewController(presenter: presenter)
+        let layout = UICollectionViewFlowLayout()
+        let viewController = CollectionViewController(
+            presenter: presenter,
+            collectionViewLayout: layout
+        )
+        presenter.view = viewController
+        return viewController
+    }
+    
+    // Экран Users collection.
+    func build(with nftIds: [UUID]) -> UIViewController {
+        let presenter = CollectionPresenter(
+            for: nftIds,
+            nftService: servicesAssembler.nftService
+        )
+        let layout = UICollectionViewFlowLayout()
+        let viewController = CollectionViewController(
+            presenter: presenter,
+            collectionViewLayout: layout
+        )
         presenter.view = viewController
         return viewController
     }
 }
-

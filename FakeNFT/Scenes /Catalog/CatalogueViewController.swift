@@ -99,10 +99,7 @@ final class CatalogueViewController: UITableViewController, CatalogueViewControl
         navigationItem.backButtonDisplayMode = .minimal
         navigationItem.rightBarButtonItem = sortButton
         
-        tableView.register(
-            CatalogueTableCell.self,
-            forCellReuseIdentifier: CatalogueTableCell.defaultReuseIdentifier
-        )
+        tableView.register(CatalogueTableCell.self)
         
         tableView.delegate = self
         tableView.dataSource = dataSource
@@ -153,15 +150,16 @@ final class CatalogueViewController: UITableViewController, CatalogueViewControl
         _ tableView: UITableView,
         didSelectRowAt indexPath: IndexPath
     ) {
-        // TODO: Раскомментировать когда будет налажен экран коллекции.
-        /*
         let collection = collections[indexPath.row]
         let viewController = presenter.collectionViewAssembler.build(with: collection)
         navigationController?.pushViewController(viewController, animated: true)
-         */
     }
     
-    override func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+    override func tableView(
+        _ tableView: UITableView,
+        willDisplay cell: UITableViewCell,
+        forRowAt indexPath: IndexPath
+    ) {
         if
             indexPath.section == tableView.numberOfSections - 1,
             indexPath.row == tableView.numberOfRows(inSection: indexPath.section) - 1
@@ -182,17 +180,5 @@ final class CatalogueViewController: UITableViewController, CatalogueViewControl
     private func scrollToTop() {
         let topRow = IndexPath(row: 0, section: 0)
         tableView.scrollToRow(at: topRow, at: .top, animated: true)
-    }
-    
-    // MARK: - Private Methods
-    
-    func reuse<T: UITableViewCell & ReuseIdentifying>(
-        _ type: T.Type,
-        indexPath: IndexPath
-    ) -> T? {
-        tableView.dequeueReusableCell(
-            withIdentifier: T.defaultReuseIdentifier,
-            for: indexPath
-        ) as? T
     }
 }

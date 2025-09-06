@@ -14,12 +14,8 @@ final class CatalogueDataSource: UITableViewDiffableDataSource<CatalogueTableSec
     
     init(_ tableView: UITableView) {
         super.init(tableView: tableView) { (tableView, indexPath, item) -> UITableViewCell? in
-            guard
-                let cell = tableView.reuse(CatalogueTableCell.self, indexPath: indexPath)
-            else { return nil }
-            
+            let cell: CatalogueTableCell = tableView.dequeueReusableCell(indexPath: indexPath)
             CatalogueDataSource.configCell(cell, from: item)
-            
             return cell
         }
     }

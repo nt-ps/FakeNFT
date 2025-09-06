@@ -14,7 +14,9 @@ final class CollectionPresenter: CollectionPresenterProtocol {
     
     // MARK: - Private Properties
     
-    private let collection: Collection
+    private var collection: Collection?
+    private var nftIds: [UUID]?
+    
     private let nftService: NftService
     
     // MARK: - Initializers
@@ -24,6 +26,14 @@ final class CollectionPresenter: CollectionPresenterProtocol {
         nftService: NftService
     ) {
         self.collection = collection
+        self.nftService = nftService
+    }
+    
+    init(
+        for nftIds: [UUID],
+        nftService: NftService
+    ) {
+        self.nftIds = nftIds
         self.nftService = nftService
     }
     

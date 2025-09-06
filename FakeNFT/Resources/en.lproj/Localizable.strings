@@ -63,3 +63,5 @@
 "error.unknown" = "An unknown error has occurred";
 "error.repeat" = "Repeat";
 "error.title" = "Error";
+
+"collection.authorCaption" = "Collection author:";
