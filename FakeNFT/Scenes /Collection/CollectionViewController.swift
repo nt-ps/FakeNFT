@@ -43,6 +43,19 @@ final class CollectionViewController: UICollectionViewController, CollectionView
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        let scrollAppearance = UINavigationBarAppearance()
+        scrollAppearance.configureWithTransparentBackground()
+        
+        let standardAppearance = UINavigationBarAppearance()
+        standardAppearance.configureWithTransparentBackground()
+        standardAppearance.backgroundColor = .AppColors.white
+        
+        navigationController?.navigationBar.standardAppearance = standardAppearance
+        navigationController?.navigationBar.compactAppearance = standardAppearance
+        navigationController?.navigationBar.scrollEdgeAppearance = scrollAppearance
+        
+        tabBarController?.tabBar.isHidden = true
+        
         collectionView.backgroundColor = .AppColors.white
         
         collectionView.register(CollectionCollectionCell.self)
@@ -54,11 +67,12 @@ final class CollectionViewController: UICollectionViewController, CollectionView
         collectionView.delegate = self
         collectionView.dataSource = dataSource
         
-        // TODO: Test
-        updateCollectionViewAnimated()
+        collectionView.contentInsetAdjustmentBehavior = .never
+    
+        updateCollectionViewAnimated() // TODO: Удалить!
     }
     
-    // TODO: Test
+    // TODO: Удалить!
     func updateCollectionViewAnimated() {
         var snapshot = CollectionDataSourceSnapshot()
         snapshot.appendSections([CollectionCollectionSection.main])
