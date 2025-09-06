@@ -9,6 +9,7 @@
 "sortAlert.byPrice" = "By price";
 "sortAlert.byRating" = "By rating";
 "sortAlert.close" = "Close";
+"sortAlert.byFirstName" = "By name";
 
 "cart.price" = "Price";
 "cart.toPayment" = "To be paid";

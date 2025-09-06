@@ -1,9 +1,8 @@
 import UIKit
 
 final class TabBarController: UITabBarController {
-
     var servicesAssembly: ServicesAssembly!
-
+    
     private let catalogTabBarItem = UITabBarItem(
         title: L10n.Tab.catalog,
         image: UIImage(resource: .Icons.catalogTab),
@@ -17,19 +16,15 @@ final class TabBarController: UITabBarController {
         tag: 1
     )
     
+    private let statisticsTabBarItem = UITabBarItem(
+        title: L10n.Tab.statistics,
+        image: UIImage(resource: .Icons.statisticTab),
+        tag: 3
+    )
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        let appearance = UITabBarAppearance()
-        appearance.configureWithTransparentBackground()
-        appearance.backgroundColor = .AppColors.white
-        appearance.stackedLayoutAppearance.normal.iconColor = .AppColors.black
-        appearance.stackedLayoutAppearance.normal.titleTextAttributes = [
-            .foregroundColor: UIColor.AppColors.black
-        ]
-        tabBar.standardAppearance = appearance
-        tabBar.scrollEdgeAppearance = appearance
-        tabBar.tintColor = .AppColors.Universal.blue
+        tabBar.unselectedItemTintColor = .AppColors.black
         
         let catalogueController = CatalogueNavigationController(
             servicesAssembly: servicesAssembly
@@ -42,11 +37,18 @@ final class TabBarController: UITabBarController {
         )
         testCatalogController.tabBarItem = testCatalogTabBarItem
 
-        viewControllers = [
-            catalogueController,
-            testCatalogController // TODO: Удалить!
-        ]
-
+        
+        let statisticsPresenter = StatisticsPresenter(servicesAssembly: servicesAssembly)
+        let statisticsController = StatisticsViewController(presenter: statisticsPresenter)
+        
+        let statisticsNavigationController = UINavigationController(rootViewController: statisticsController)
+        
+        statisticsNavigationController.tabBarItem = statisticsTabBarItem
+        
+       
+        
+        viewControllers = [catalogueController, testCatalogController, statisticsNavigationController]
+        
         view.backgroundColor = .systemBackground
     }
 }
