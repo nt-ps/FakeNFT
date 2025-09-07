@@ -22,6 +22,18 @@ final class TabBarController: UITabBarController {
         tag: 3
     )
     
+    private var profileNavigationController: UINavigationController {
+        let navigationController = ProfileNavigationController()
+        
+        navigationController.tabBarItem = UITabBarItem(
+            title: L10n.Tab.profile,
+            image: .Icons.profileTab,
+            selectedImage: nil
+        )
+        
+        return navigationController
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         tabBar.unselectedItemTintColor = .AppColors.black
@@ -29,6 +41,7 @@ final class TabBarController: UITabBarController {
         let catalogueController = CatalogueNavigationController(
             servicesAssembly: servicesAssembly
         )
+        
         catalogueController.tabBarItem = catalogTabBarItem
         
         // TODO: Удалить после добавления всех вкладок.
@@ -36,7 +49,6 @@ final class TabBarController: UITabBarController {
             servicesAssembly: servicesAssembly
         )
         testCatalogController.tabBarItem = testCatalogTabBarItem
-
         
         let statisticsPresenter = StatisticsPresenter(servicesAssembly: servicesAssembly)
         let statisticsController = StatisticsViewController(presenter: statisticsPresenter)
@@ -45,9 +57,7 @@ final class TabBarController: UITabBarController {
         
         statisticsNavigationController.tabBarItem = statisticsTabBarItem
         
-       
-        
-        viewControllers = [catalogueController, testCatalogController, statisticsNavigationController]
+        viewControllers = [catalogueController, testCatalogController, statisticsNavigationController, profileNavigationController]
         
         view.backgroundColor = .systemBackground
     }
