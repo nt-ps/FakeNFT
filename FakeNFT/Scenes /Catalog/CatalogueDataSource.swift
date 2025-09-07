@@ -23,7 +23,7 @@ final class CatalogueDataSource: UITableViewDiffableDataSource<CatalogueTableSec
     // MARK: - Cell Methods
     
     private static func configCell(_ cell: CatalogueTableCell, from collection: Collection) {
-        cell.cover = collection.coverImage
+        cell.cover = collection.cover
         cell.name = collection.name
         cell.counterValue = collection.nfts.count
     }
