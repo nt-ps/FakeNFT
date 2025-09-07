@@ -114,11 +114,6 @@ final class CatalogueViewController: UITableViewController, CatalogueViewControl
         presenter.fetchNextPage()
     }
     
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        tabBarController?.tabBar.isHidden = false
-    }
-    
     // MARK: - Button Actions
     
     @objc

@@ -4,7 +4,9 @@ typealias CollectionDataSourceSnapshot = NSDiffableDataSourceSnapshot<Collection
 
 // MARK: - Protocol
 
-protocol CollectionViewControllerProtocol { }
+protocol CollectionViewControllerProtocol: AnyObject {
+    var presenter: CollectionPresenterProtocol { get }
+}
 
 // MARK: - Implementation
 
@@ -53,8 +55,6 @@ final class CollectionViewController: UICollectionViewController, CollectionView
         navigationController?.navigationBar.standardAppearance = standardAppearance
         navigationController?.navigationBar.compactAppearance = standardAppearance
         navigationController?.navigationBar.scrollEdgeAppearance = scrollAppearance
-        
-        tabBarController?.tabBar.isHidden = true
         
         collectionView.backgroundColor = .AppColors.white
         

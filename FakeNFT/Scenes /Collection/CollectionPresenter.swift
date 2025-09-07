@@ -2,7 +2,9 @@ import Foundation
 
 // MARK: - Protocol
 
-protocol CollectionPresenterProtocol { }
+protocol CollectionPresenterProtocol {
+    var view: CollectionViewControllerProtocol? { get set }
+}
 
 // MARK: - Implementation
 
@@ -10,7 +12,7 @@ final class CollectionPresenter: CollectionPresenterProtocol {
     
     // MARK: - Internal Properties
     
-    var view: CollectionViewControllerProtocol?
+    weak var view: CollectionViewControllerProtocol?
     
     // MARK: - Private Properties
     

@@ -20,22 +20,27 @@ final class CollectionViewAssembly: CollectionViewAssemblyProtocol {
     
     // Экран Collection.
     func build(with collection: Collection) -> UIViewController {
-        let presenter = CollectionPresenter(
+        var presenter: CollectionPresenterProtocol = CollectionPresenter(
             for: collection,
             nftService: servicesAssembler.nftService
         )
-        let viewController = CollectionViewController(presenter: presenter)
-        presenter.view = viewController
+        let viewController = build(with: &presenter)
         return viewController
     }
     
     // Экран Users collection.
     func build(with nftIds: [UUID]) -> UIViewController {
-        let presenter = CollectionPresenter(
+        var presenter: CollectionPresenterProtocol = CollectionPresenter(
             for: nftIds,
             nftService: servicesAssembler.nftService
         )
+        let viewController = build(with: &presenter)
+        return viewController
+    }
+    
+    private func build(with presenter: inout CollectionPresenterProtocol) -> UIViewController {
         let viewController = CollectionViewController(presenter: presenter)
+        viewController.hidesBottomBarWhenPushed = true
         presenter.view = viewController
         return viewController
     }
