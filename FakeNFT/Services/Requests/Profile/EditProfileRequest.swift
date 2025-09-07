@@ -21,6 +21,8 @@ struct EditProfileRequest: NetworkRequest {
     var dto: Dto? {
         model
     }
+    
+    var query: Query?
 
     init(model: EditProfileModel) {
         self.model = model

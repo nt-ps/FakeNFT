@@ -18,4 +18,5 @@ struct GetProfileRequest: NetworkRequest {
     }
 
     var dto: Dto?
+    var query: Query?
 }
