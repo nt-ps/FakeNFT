@@ -1,6 +1,8 @@
 import Foundation
 
 final class CollectionMockService: CollectionServiceProtocol {
+    func loadBy(id: String, completion: @escaping CollectionCompletion) { }
+    
     private var collections: [Collection] = []
     private var sortField: CollectionFields = .name
     

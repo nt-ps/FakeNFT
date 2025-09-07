@@ -17,6 +17,8 @@ protocol NftService {
 // MARK: - Implementation
 
 final class NftServiceImpl: NftService {
+    
+    // TODO: Дописать по аналогии с CollectionService.
 
     private let networkClient: NetworkClient
     private let storage: NftStorage
@@ -30,7 +32,7 @@ final class NftServiceImpl: NftService {
         sortBy sortField: NftFields? = nil,
         completion: @escaping NftsCompletion
     ) {
-        let query = NftApiQuery(sortBy: sortField)
+        let query = NftsApiQuery(sortBy: sortField)
         let request = NftsRequest(query: query)
         networkClient.send(request: request, type: [Nft].self) { [weak storage] result in
             switch result {
