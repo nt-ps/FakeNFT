@@ -41,6 +41,12 @@ final class CatalogueViewController: UITableViewController, CatalogueViewControl
             self?.sortAndUpdateTable(by: .name)
         }
         
+        /* При запросе с sortBy=nfts сортировка происходит не
+         по размеру массива, а так, будто массив айдишников складывается в
+         строку и происходит сортировка по имени.
+         Реализовывать сортировку в коде считаю неправильным, поскольку
+         для этого нужно отказаться от постраничной загрузки. Оставил
+         так, как есть. */
         let sortByAmountAction = UIAlertAction(
             title: L10n.SortAlert.byAmount,
             style: .default

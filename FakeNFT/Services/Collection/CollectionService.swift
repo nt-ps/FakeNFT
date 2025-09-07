@@ -21,11 +21,12 @@ final class CollectionService: CollectionServiceProtocol {
     private let storage: CollectionStorage
     
     private var collections: [Collection] = []
+    private var isListComplete = false
     
     private var sortField: CollectionFields = .name
     
-    private let pageSize: Int = 10
-    private var lastLoadedPage: Int = 0
+    private let pageSize: Int = 5
+    private var lastLoadedPage: Int = -1
     
     private var task: NetworkTask?
     
@@ -70,7 +71,7 @@ final class CollectionService: CollectionServiceProtocol {
     }
     
     func fetchNextPage(completion: @escaping CollectionsCompletion) {
-        if task != nil {
+        if task != nil || isListComplete {
             return
         }
         
@@ -91,11 +92,15 @@ final class CollectionService: CollectionServiceProtocol {
             DispatchQueue.main.async {
                 switch result {
                 case .success(let page):
-                    self.collections.append(contentsOf: page)
-                    self.storage.save(collections: page)
-                    self.lastLoadedPage = currentPageNumber
-                    
-                    completion(.success(self.collections))
+                    if page.isEmpty {
+                        self.isListComplete = true
+                    } else {
+                        self.collections.append(contentsOf: page)
+                        self.storage.save(collections: page)
+                        self.lastLoadedPage = currentPageNumber
+                        
+                        completion(.success(self.collections))
+                    }
                 case .failure(let error):
                     completion(.failure(error))
                 }
@@ -106,10 +111,11 @@ final class CollectionService: CollectionServiceProtocol {
     }
     
     func sort(by field: CollectionFields) -> Bool {
-        if task != nil, sortField != field {
+        if task == nil, sortField != field {
             sortField = field
             collections.removeAll()
-            lastLoadedPage = 0
+            isListComplete = false
+            lastLoadedPage = -1
             return true
         }
         
