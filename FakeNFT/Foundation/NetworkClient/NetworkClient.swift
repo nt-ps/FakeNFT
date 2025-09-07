@@ -61,7 +61,7 @@ struct DefaultNetworkClient: NetworkClient {
             }
         }
         guard let urlRequest = create(request: request) else { return nil }
-
+        
         let task = session.dataTask(with: urlRequest) { data, response, error in
             print("📡 Response received: \(response?.description ?? "nil")")
             if let httpResponse = response as? HTTPURLResponse {
@@ -125,8 +125,33 @@ struct DefaultNetworkClient: NetworkClient {
             assertionFailure("Empty endpoint")
             return nil
         }
+        
+        guard
+            var urlComponents = URLComponents(
+                url: endpoint,
+                resolvingAgainstBaseURL: true
+            )
+        else {
+            assertionFailure("Failed to initialize URL components.")
+            return nil
+        }
+        
+        if let queryDictionary = request.query?.dictionary {
+            let queryItems = queryDictionary.map { field in
+                URLQueryItem(
+                    name: field.key,
+                    value: field.value
+                )
+            }
+            urlComponents.queryItems = queryItems
+        }
+        
+        guard let url = urlComponents.url else {
+            assertionFailure("Failed to get URL.")
+            return nil
+        }
 
-        var urlRequest = URLRequest(url: endpoint)
+        var urlRequest = URLRequest(url: url)
         urlRequest.httpMethod = request.httpMethod.rawValue
 
         urlRequest.addValue(RequestConstants.token, forHTTPHeaderField: "X-Practicum-Mobile-Token")

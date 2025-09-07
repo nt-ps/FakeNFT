@@ -25,7 +25,7 @@ final class TestCatalogViewController: UIViewController {
         testNftButton.addTarget(self, action: #selector(showNft), for: .touchUpInside)
         testNftButton.setTitleColor(.systemBlue, for: .normal)
     }
-
+    
     @objc
     func showNft() {
         let assembly = NftDetailAssembly(servicesAssembler: servicesAssembly)
