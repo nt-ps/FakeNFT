@@ -12,7 +12,7 @@ protocol CatalogueViewControllerProtocol: AnyObject {
 
 // MARK: - Implementation
 
-final class CatalogueViewController: UITableViewController, CatalogueViewControllerProtocol {
+final class CatalogueViewController: UITableViewController, CatalogueViewControllerProtocol, LoadingView {
     
     // TODO: При добавлении сети добавить ProgressHUD.
     
@@ -63,6 +63,14 @@ final class CatalogueViewController: UITableViewController, CatalogueViewControl
         return alert
     } ()
     
+    lazy var activityIndicator: UIActivityIndicatorView = {
+        var activityIndicator = UIActivityIndicatorView(style: .large)
+        activityIndicator.color = .AppColors.black
+        activityIndicator.hidesWhenStopped = true
+        activityIndicator.translatesAutoresizingMaskIntoConstraints = false
+        return activityIndicator
+    } ()
+    
     // MARK: - UI Properties
     
     private let tableYSpacing: CGFloat = 10
@@ -105,6 +113,9 @@ final class CatalogueViewController: UITableViewController, CatalogueViewControl
         navigationItem.backButtonDisplayMode = .minimal
         navigationItem.rightBarButtonItem = sortButton
         
+        view.addSubview(activityIndicator)
+        activityIndicator.constraintCenters(to: view.safeAreaLayoutGuide)
+        
         tableView.register(CatalogueTableCell.self)
         
         tableView.delegate = self
@@ -139,6 +150,18 @@ final class CatalogueViewController: UITableViewController, CatalogueViewControl
         present(sortAlert, animated: true)
     }
     
+    // MARK: - Overriden Methods
+    
+    override func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        let height = scrollView.frame.size.height
+        let contentYOffset = scrollView.contentOffset.y
+        let distanceFromBottom = scrollView.contentSize.height - contentYOffset
+
+        if distanceFromBottom < height {
+            presenter.fetchNextPage()
+        }
+    }
+
     // MARK: - Catalogue View Controller Protocol
     
     func updateTableViewAnimated(from newCollections: [Collection]) {
@@ -161,21 +184,8 @@ final class CatalogueViewController: UITableViewController, CatalogueViewControl
         navigationController?.pushViewController(viewController, animated: true)
     }
     
-    override func tableView(
-        _ tableView: UITableView,
-        willDisplay cell: UITableViewCell,
-        forRowAt indexPath: IndexPath
-    ) {
-        if
-            indexPath.section == tableView.numberOfSections - 1,
-            indexPath.row == tableView.numberOfRows(inSection: indexPath.section) - 1
-        {
-            presenter.fetchNextPage()
-        }
-    }
-    
     // MARK: - UI Updates
-    
+
     private func sortAndUpdateTable(by field: CollectionFields) {
         if presenter.sort(by: field) {
             presenter.fetchNextPage()

@@ -3,7 +3,7 @@ import Foundation
 // MARK: - Protocol
 
 protocol CataloguePresenterProtocol {
-    var view: CatalogueViewControllerProtocol? { get set }
+    var view: (CatalogueViewControllerProtocol & LoadingView)? { get set }
     var collectionViewAssembler: CollectionViewAssemblyProtocol { get }
     
     func fetchNextPage()
@@ -14,7 +14,7 @@ protocol CataloguePresenterProtocol {
 
 final class CataloguePresenter: CataloguePresenterProtocol {
     
-    weak var view: CatalogueViewControllerProtocol?
+    weak var view: (CatalogueViewControllerProtocol & LoadingView)?
     
     let collectionViewAssembler: CollectionViewAssemblyProtocol
     
@@ -27,8 +27,8 @@ final class CataloguePresenter: CataloguePresenterProtocol {
         self.collectionService = servicesAssembler.collectionService
     }
     
-    func fetchNextPage() {
-        collectionService.fetchNextPage() { [weak self] result in
+    func fetchNextPage() {        
+        let inProcessing = collectionService.fetchNextPage() { [weak self] result in
             switch result {
             case .success(let collections):
                 guard let self else { return }
@@ -37,6 +37,12 @@ final class CataloguePresenter: CataloguePresenterProtocol {
                 print("[\(#function)] Failed to load collection page.")
                 // TODO: При протягивании сети добавить вывод алерта.
             }
+            
+            self?.view?.hideLoading()
+        }
+        
+        if inProcessing {
+            view?.showLoading()
         }
     }
     

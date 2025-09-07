@@ -6,8 +6,8 @@ typealias CollectionsCompletion = (Result<[Collection], Error>) -> Void
 // MARK: - Protocol
 
 protocol CollectionServiceProtocol {
-    func loadBy(id: String, completion: @escaping CollectionCompletion)
-    func fetchNextPage(completion: @escaping CollectionsCompletion)
+    func loadBy(id: String, completion: @escaping CollectionCompletion) -> Bool
+    func fetchNextPage(completion: @escaping CollectionsCompletion) -> Bool
     func sort(by field: CollectionFields) -> Bool
 }
 
@@ -39,14 +39,14 @@ final class CollectionService: CollectionServiceProtocol {
     
     // MARK: - Collection Service Protocol Methods
     
-    func loadBy(id: String, completion: @escaping CollectionCompletion) {
+    func loadBy(id: String, completion: @escaping CollectionCompletion) -> Bool {
         if task != nil {
-            return
+            return false
         }
         
         if let collection = storage.get(by: id) {
             DispatchQueue.main.async { completion(.success(collection)) }
-            return
+            return true
         }
 
         let request = CollectionRequest(id: id)
@@ -68,11 +68,13 @@ final class CollectionService: CollectionServiceProtocol {
                 self.task = nil
             }
         }
+        
+        return true
     }
     
-    func fetchNextPage(completion: @escaping CollectionsCompletion) {
+    func fetchNextPage(completion: @escaping CollectionsCompletion) -> Bool {
         if task != nil || isListComplete {
-            return
+            return false
         }
         
         let currentPageNumber = lastLoadedPage + 1
@@ -94,13 +96,12 @@ final class CollectionService: CollectionServiceProtocol {
                 case .success(let page):
                     if page.isEmpty {
                         self.isListComplete = true
-                    } else {
-                        self.collections.append(contentsOf: page)
-                        self.storage.save(collections: page)
-                        self.lastLoadedPage = currentPageNumber
-                        
-                        completion(.success(self.collections))
                     }
+                    self.collections.append(contentsOf: page)
+                    self.storage.save(collections: page)
+                    self.lastLoadedPage = currentPageNumber
+                    
+                    completion(.success(self.collections))
                 case .failure(let error):
                     completion(.failure(error))
                 }
@@ -108,6 +109,8 @@ final class CollectionService: CollectionServiceProtocol {
                 self.task = nil
             }
         }
+        
+        return true
     }
     
     func sort(by field: CollectionFields) -> Bool {
