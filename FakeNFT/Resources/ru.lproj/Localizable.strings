@@ -64,8 +64,3 @@
 "error.unknown" = "Произошла неизвестная ошибка";
 "error.repeat" = "Повторить";
 "error.title" = "Ошибка";
-"editProfile.avatar.deleteAlert.title" = "Удалить фото профиля?";
-"editProfile.avatar.deleteAlert.message" = "Это действие нельзя отменить";
-"editProfile.avatar.deleteAlert.delete" = "Удалить";
-"editProfile.avatar.error.invalidURL" = "Неверный формат URL";
-"editProfile.avatar.error.updateFailed" = "Не удалось обновить аватар";

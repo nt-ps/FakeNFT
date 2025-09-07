@@ -22,7 +22,7 @@ final class LinePageControl: UIView {
 
     // MARK: - Private properties
 
-    private lazy var stackView: UIStackView = {
+    private let stackView: UIStackView = {
         let stackView = UIStackView()
         stackView.spacing = 8
         stackView.distribution = .fillEqually

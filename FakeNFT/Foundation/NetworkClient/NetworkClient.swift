@@ -63,11 +63,6 @@ struct DefaultNetworkClient: NetworkClient {
         guard let urlRequest = create(request: request) else { return nil }
         
         let task = session.dataTask(with: urlRequest) { data, response, error in
-            print("📡 Response received: \(response?.description ?? "nil")")
-            if let httpResponse = response as? HTTPURLResponse {
-                print("📡 HTTP Status Code: \(httpResponse.statusCode)")
-            }
-            
             guard let response = response as? HTTPURLResponse else {
                 onResponse(.failure(NetworkClientError.urlSessionError))
                 return
@@ -79,18 +74,12 @@ struct DefaultNetworkClient: NetworkClient {
             }
 
             if let data = data {
-                print("📦 Data received: \(data.count) bytes")
-                if let jsonString = String(data: data, encoding: .utf8) {
-                    print("📦 JSON Response: \(jsonString)")
-                }
                 onResponse(.success(data))
                 return
             } else if let error = error {
-                print("❌ Network error: \(error)")
                 onResponse(.failure(NetworkClientError.urlRequestError(error)))
                 return
             } else {
-                print("⚠️ Unexpected condition: no data and no error")
                 assertionFailure("Unexpected condition!")
                 return
             }
@@ -156,23 +145,20 @@ struct DefaultNetworkClient: NetworkClient {
 
         urlRequest.addValue(RequestConstants.token, forHTTPHeaderField: "X-Practicum-Mobile-Token")
 
-        if let dto = request.dto {
-            if request.httpMethod == .put || request.httpMethod == .post {
-                let dictionary = dto.asDictionary()
-                let queryString = dictionary.map { "\($0.key)=\($0.value)" }.joined(separator: "&")
-                urlRequest.httpBody = queryString.data(using: .utf8)
-                urlRequest.setValue("application/x-www-form-urlencoded", forHTTPHeaderField: "Content-Type")
-            } else {
-                var urlComponents = URLComponents(url: endpoint, resolvingAgainstBaseURL: false)
-                let queryItems = dto.asDictionary().map { field in
-                    URLQueryItem(name: field.key, value: field.value)
-                }
-                urlComponents?.queryItems = queryItems
-                if let newURL = urlComponents?.url {
-                    urlRequest.url = newURL
-                }
+        if let dtoDictionary = request.dto?.asDictionary() {
+            var urlComponents = URLComponents()
+            let queryItems = dtoDictionary.map { field in
+                URLQueryItem(
+                    name: field.key,
+                    value: field.value
+                    )
             }
+            urlComponents.queryItems = queryItems
+            urlRequest.httpBody = urlComponents.query?.data(using: .utf8)
+            urlRequest.setValue("application/json", forHTTPHeaderField: "Content-Type")
         }
+
+        urlRequest.setValue("application/x-www-form-urlencoded", forHTTPHeaderField: "Content-Type")
 
         return urlRequest
     }
@@ -180,11 +166,8 @@ struct DefaultNetworkClient: NetworkClient {
     private func parse<T: Decodable>(data: Data, type _: T.Type, onResponse: @escaping (Result<T, Error>) -> Void) {
         do {
             let response = try decoder.decode(T.self, from: data)
-            print("Successfully parsed response as \(T.self)")
             onResponse(.success(response))
         } catch {
-            print("Parsing error: \(error)")
-            print("Failed to parse data as \(T.self)")
             onResponse(.failure(NetworkClientError.parsingError))
         }
     }

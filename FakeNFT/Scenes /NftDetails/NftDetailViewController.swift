@@ -53,7 +53,7 @@ final class NftDetailViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        view.backgroundColor = .AppColors.white
+        view.backgroundColor = .white
         setupLayout()
         presenter.viewDidLoad()
     }
