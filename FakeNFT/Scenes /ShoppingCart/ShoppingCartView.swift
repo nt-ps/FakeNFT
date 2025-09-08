@@ -27,11 +27,25 @@ final class ShoppingCartViewControllerImplementation: UIViewController, Shopping
     private let NFTsTotalPriceLabel = UILabel()
     private let goToPaymentButton = UIButton()
     
+    // MARK: Diffable data source
+    private var diffableDataSource: UITableViewDiffableDataSource<Int, UUID>?
+    
     // MARK: Overrides methods
     override func viewDidLoad() {
+        #warning("решить что буду использовать обычный или диффбл датасорс и имплементировать и удалить старый")
         setupView()
-        NFTTableView.dataSource = self
+        //NFTTableView.dataSource = self
         NFTTableView.delegate = self
+        diffableDataSource = UITableViewDiffableDataSource(tableView: NFTTableView) {
+            tableView, indexPath, identifier in
+            guard let cell = self.NFTTableView.dequeueReusableCell(withIdentifier: "NFTTableViewCell", for: indexPath) as? NFTTableViewCell else { return UITableViewCell() }
+            return cell
+        }
+        var snapshot = NSDiffableDataSourceSnapshot<Int, UUID>()
+        snapshot.appendSections([0])
+        snapshot.appendItems([UUID()])
+        diffableDataSource?.apply(snapshot, animatingDifferences: true) { }
+        NFTTableView.dataSource = diffableDataSource
     }
     
     
@@ -47,17 +61,17 @@ final class ShoppingCartViewControllerImplementation: UIViewController, Shopping
 
 
 // MARK: Table view data source
-extension ShoppingCartViewControllerImplementation: UITableViewDataSource {
-    // почитать про diffableDataSourcе
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        3
-    }
-    
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard let cell = NFTTableView.dequeueReusableCell(withIdentifier: "NFTTableViewCell", for: indexPath) as? NFTTableViewCell else { return UITableViewCell() }
-        return cell
-    }
-}
+//extension ShoppingCartViewControllerImplementation: UITableViewDataSource {
+//    // почитать про diffableDataSourcе
+//    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) //-> Int {
+//        3
+//    }
+//
+//    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> //UITableViewCell {
+//        guard let cell = NFTTableView.dequeueReusableCell(withIdentifier: //"NFTTableViewCell", for: indexPath) as? NFTTableViewCell else { return //UITableViewCell() }
+//        return cell
+//    }
+//}
 
 
 // MARK: Table view delegate
