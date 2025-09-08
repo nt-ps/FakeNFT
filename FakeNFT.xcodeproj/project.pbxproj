@@ -208,10 +208,10 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
+		C664F0C22E661DB6006AE8EB /* ShoppingCart */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = ShoppingCart; sourceTree = "<group>"; };
 		CD95B1ED2E65D8B8008CDB81 /* Statistics */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = Statistics; sourceTree = "<group>"; };
 		CD95B2392E689171008CDB81 /* User */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = User; sourceTree = "<group>"; };
 		CD95B2402E68F83D008CDB81 /* UserDefaultsKeys */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = UserDefaultsKeys; sourceTree = "<group>"; };
-		C664F0C22E661DB6006AE8EB /* ShoppingCart */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = ShoppingCart; sourceTree = "<group>"; };
 /* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -427,7 +427,6 @@
 				674B6D472E6DCBA2004C628E /* Profile */,
 				CD95B1ED2E65D8B8008CDB81 /* Statistics */,
 				C664F0C22E661DB6006AE8EB /* ShoppingCart */,
-				3A87725E2E632AC3004BABB9 /* WebView */,
 				E1A1B9D82AA01C9700C3AFBC /* TabBarController */,
 				0CF2C2D92A783C1600FDC837 /* Common */,
 				0CFCB7472A7808870009A829 /* Catalog */,
@@ -639,10 +638,10 @@
 			dependencies = (
 			);
 			fileSystemSynchronizedGroups = (
+				C664F0C22E661DB6006AE8EB /* ShoppingCart */,
 				CD95B1ED2E65D8B8008CDB81 /* Statistics */,
 				CD95B2392E689171008CDB81 /* User */,
 				CD95B2402E68F83D008CDB81 /* UserDefaultsKeys */,
-				C664F0C22E661DB6006AE8EB /* ShoppingCart */,
 			);
 			name = FakeNFT;
 			packageProductDependencies = (
@@ -1037,7 +1036,7 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = F2KHVUVZ27;
+				DEVELOPMENT_TEAM = 6WZ76T9SPJ;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = FakeNFT/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
@@ -1051,7 +1050,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.practicum.292.FakeNFT;
+				PRODUCT_BUNDLE_IDENTIFIER = com.practicdva;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
