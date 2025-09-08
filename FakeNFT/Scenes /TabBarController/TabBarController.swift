@@ -44,7 +44,6 @@ final class TabBarController: UITabBarController {
             servicesAssembly: servicesAssembly
         )
         catalogueController.tabBarItem = catalogTabBarItem
-        catalogueController.tabBarItem = catalogueTabBarItem
 
         let shoppingCartNavigationController = configureShoppingCart()
         
