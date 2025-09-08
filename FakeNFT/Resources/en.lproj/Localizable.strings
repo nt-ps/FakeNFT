@@ -9,6 +9,7 @@
 "sortAlert.byPrice" = "By price";
 "sortAlert.byRating" = "By rating";
 "sortAlert.close" = "Close";
+"sortAlert.byFirstName" = "By name";
 
 "cart.price" = "Price";
 "cart.toPayment" = "To be paid";
@@ -40,6 +41,11 @@
 "editProfile.saveAlert.title" = "Are you sure you want\nto log out?";
 "editProfile.saveAlert.save" = "Log out";
 "editProfile.saveAlert.cancel" = "Cancel";
+"editProfile.avatar.deleteAlert.title" = "Delete profile photo?";
+"editProfile.avatar.deleteAlert.message" = "This action cannot be undone";
+"editProfile.avatar.deleteAlert.delete" = "Delete";
+"editProfile.avatar.error.invalidURL" = "Invalid URL format";
+"editProfile.avatar.error.updateFailed" = "Failed to update avatar";
 
 "profile.myNFT.title" = "My NFTs";
 "profile.favoritenft.title" = "Favorites of NFT";
