@@ -11,18 +11,28 @@ import UIKit
 
 protocol ShoppingCartModelProtocol: AnyObject {
     func getOrder()
-    var nftsInCart: [NFT] { get set }
+    var NFTsInCart: [NFT] { get set }
 }
 
 
 
 final class ShoppingCartModelImplementation: ShoppingCartModelProtocol {
     weak var shoppingCartPresenter: ShoppingCartPresenterProtocol?
-    var nftsInCart: [NFT] = [] {
+    
+    var NFTsInCart: [NFT] = [] {
         didSet {
-            shoppingCartPresenter?.reloadCartInUI(nfts: nftsInCart)
+            NFTsInCartTotalPrice = 0
+            for nft in NFTsInCart {
+                NFTsInCartTotalPrice += nft.price
+            }
+            NFTsInCartTotalPrice = (NFTsInCartTotalPrice * 100).rounded() / 100
+            totalNFTsAmount = NFTsInCart.count
+            shoppingCartPresenter?.reloadCartInUI(nfts: NFTsInCart, totalNFTsPrice: NFTsInCartTotalPrice, totalNFTsAmount: totalNFTsAmount)
         }
     }
+    
+    private var NFTsInCartTotalPrice: Float = 0
+    private var totalNFTsAmount: Int = 0
     
     private let orderService: OrderServiceProtocol?
     private let NFTByIDService: NFTByIDServiceProtocol?
@@ -44,9 +54,8 @@ final class ShoppingCartModelImplementation: ShoppingCartModelProtocol {
     private func getNFTByID(id: String) {
         NFTByIDService?.getNFTByID(id: id) { [weak self] nft in
             guard let self else { return }
-            nftsInCart.append(nft)
+            NFTsInCart.append(nft)
         }
     }
-    
-    private func calculateCartInfo
 }
+

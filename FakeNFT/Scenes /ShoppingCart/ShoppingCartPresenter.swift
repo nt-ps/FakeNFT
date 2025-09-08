@@ -11,7 +11,7 @@ import Foundation
 
 protocol ShoppingCartPresenterProtocol: AnyObject {
     func getOrder()
-    func reloadCartInUI(nfts: [NFT])
+    func reloadCartInUI(nfts: [NFT], totalNFTsPrice: Float, totalNFTsAmount: Int)
     func getNFTs() -> [NFT]
     func clearNftsInCart()
 }
@@ -28,18 +28,18 @@ final class ShoppingCartPresenterImplementation: ShoppingCartPresenterProtocol {
     }
     
     func getNFTs() -> [NFT] {
-        shoppingCartModel.nftsInCart
+        shoppingCartModel.NFTsInCart
     }
     
     func getOrder() {
         shoppingCartModel.getOrder()
     }
     
-    func reloadCartInUI(nfts: [NFT]) {
-        shoppingCartView?.applySnapshotForTableView(nfts: nfts)
+    func reloadCartInUI(nfts: [NFT], totalNFTsPrice: Float, totalNFTsAmount: Int) {
+        shoppingCartView?.reloadDataInTableView(nfts: nfts, totalNFTsPrice: totalNFTsPrice, totalNFTsAmount: totalNFTsAmount)
     }
     
     func clearNftsInCart() {
-        shoppingCartModel.nftsInCart = []
+        shoppingCartModel.NFTsInCart = []
     }
 }

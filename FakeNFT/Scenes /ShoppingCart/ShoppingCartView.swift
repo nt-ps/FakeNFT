@@ -10,7 +10,7 @@ import UIKit
 
 
 protocol ShoppingCartViewProtocol: AnyObject {
-    func applySnapshotForTableView(nfts: [NFT])
+    func reloadDataInTableView(nfts: [NFT], totalNFTsPrice: Float, totalNFTsAmount: Int)
 }
 
 
@@ -57,7 +57,11 @@ final class ShoppingCartViewControllerImplementation: UIViewController, Shopping
         diffableDataSource?.apply(snapshot)
     }
     
-    func applySnapshotForTableView(nfts: [NFT]) {
+    func reloadDataInTableView(nfts: [NFT], totalNFTsPrice: Float, totalNFTsAmount: Int) {
+        DispatchQueue.main.async {
+            self.NFTsCounterLabel.text = "\(totalNFTsAmount) NFT"
+            self.NFTsTotalPriceLabel.text = "\(totalNFTsPrice) ETH"
+        }
         var snapshot = NSDiffableDataSourceSnapshot<Int, NFT>()
         snapshot.appendSections([0])
         snapshot.appendItems(nfts)
@@ -161,7 +165,6 @@ private extension ShoppingCartViewControllerImplementation {
         } else {
             NFTsCounterLabel.textColor = UIColor(hexString: "#1A1B22")
         }
-        NFTsCounterLabel.text = "N NFT"
     }
     
     private func setUpNFTsTotalPriceLabel() {
@@ -172,7 +175,6 @@ private extension ShoppingCartViewControllerImplementation {
             NFTsTotalPriceLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16)
         ])
         NFTsTotalPriceLabel.textColor = UIColor(hexString: "#1C9F00")
-        NFTsTotalPriceLabel.text = "Total price"
         NFTsTotalPriceLabel.font = .systemFont(ofSize: 17, weight: .bold)
     }
     

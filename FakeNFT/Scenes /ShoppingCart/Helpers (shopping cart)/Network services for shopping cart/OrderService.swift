@@ -37,6 +37,7 @@ final class OrderServiceImplementation: OrderServiceProtocol {
             }
             do {
                 let decodedData = try JSONDecoder().decode(Order.self, from: data)
+                completion(decodedData)
             } catch {
                 print("error in OrderServiceImplementation while decoding data: \(error)")
             }

@@ -47,8 +47,9 @@ final class NFTTableViewCell: UITableViewCell {
             break
         }
         priceValueLabel.text = "\(nft.price) ETH"
-        #warning("choose correct image")
-        NFTImageView.kf.setImage(with: URL(string: nft.images.first ?? "")!)
+        if let url = URL(string: nft.images[0]) {
+            NFTImageView.kf.setImage(with: url)
+        }
     }
     
     // MARK: UI Actions
