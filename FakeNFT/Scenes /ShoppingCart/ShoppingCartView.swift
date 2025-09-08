@@ -10,14 +10,14 @@ import UIKit
 
 
 protocol ShoppingCartViewProtocol: AnyObject {
-    
+    func applySnapshotForTableView(nfts: [NFT])
 }
 
 
 
 final class ShoppingCartViewControllerImplementation: UIViewController, ShoppingCartViewProtocol {
     // MARK: Presenter
-    weak var shoppingCartPresenter: ShoppingCartPresenterProtocol?
+    var shoppingCartPresenter: ShoppingCartPresenterProtocol?
     
     // MARK: UI Elements
     private let filterButton = UIButton()
@@ -27,27 +27,43 @@ final class ShoppingCartViewControllerImplementation: UIViewController, Shopping
     private let NFTsTotalPriceLabel = UILabel()
     private let goToPaymentButton = UIButton()
     
-    // MARK: Diffable data source
-    private var diffableDataSource: UITableViewDiffableDataSource<Int, UUID>?
+    private var diffableDataSource: UITableViewDiffableDataSource<Int, NFT>?
     
     // MARK: Overrides methods
     override func viewDidLoad() {
-        #warning("решить что буду использовать обычный или диффбл датасорс и имплементировать и удалить старый")
         setupView()
-        //NFTTableView.dataSource = self
         NFTTableView.delegate = self
-        diffableDataSource = UITableViewDiffableDataSource(tableView: NFTTableView) {
+        diffableDataSource = UITableViewDiffableDataSource(tableView: NFTTableView) { [weak self]
             tableView, indexPath, identifier in
-            guard let cell = self.NFTTableView.dequeueReusableCell(withIdentifier: "NFTTableViewCell", for: indexPath) as? NFTTableViewCell else { return UITableViewCell() }
+            guard let self,
+                  let cell = self.NFTTableView.dequeueReusableCell(withIdentifier: "NFTTableViewCell", for: indexPath) as? NFTTableViewCell,
+                  let nfts = shoppingCartPresenter?.getNFTs()
+            else { return UITableViewCell() }
+            cell.configure(nft: nfts[indexPath.row])
             return cell
         }
-        var snapshot = NSDiffableDataSourceSnapshot<Int, UUID>()
-        snapshot.appendSections([0])
-        snapshot.appendItems([UUID()])
-        diffableDataSource?.apply(snapshot, animatingDifferences: true) { }
         NFTTableView.dataSource = diffableDataSource
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        ProgressHUDProvider.showProgressHUD()
+        shoppingCartPresenter?.getOrder()
+    }
+    
+    override func viewDidDisappear(_ animated: Bool) {
+        let snapshot = NSDiffableDataSourceSnapshot<Int, NFT>()
+        shoppingCartPresenter?.clearNftsInCart()
+        diffableDataSource?.apply(snapshot)
+    }
+    
+    func applySnapshotForTableView(nfts: [NFT]) {
+        var snapshot = NSDiffableDataSourceSnapshot<Int, NFT>()
+        snapshot.appendSections([0])
+        snapshot.appendItems(nfts)
+        diffableDataSource?.apply(snapshot, animatingDifferences: true)
+        ProgressHUDProvider.dismissProgressHUD()
+    }
     
     // MARK: UI Actions
     @objc private func filterButtonTapped() {
@@ -59,19 +75,6 @@ final class ShoppingCartViewControllerImplementation: UIViewController, Shopping
     }
 }
 
-
-// MARK: Table view data source
-//extension ShoppingCartViewControllerImplementation: UITableViewDataSource {
-//    // почитать про diffableDataSourcе
-//    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) //-> Int {
-//        3
-//    }
-//
-//    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> //UITableViewCell {
-//        guard let cell = NFTTableView.dequeueReusableCell(withIdentifier: //"NFTTableViewCell", for: indexPath) as? NFTTableViewCell else { return //UITableViewCell() }
-//        return cell
-//    }
-//}
 
 
 // MARK: Table view delegate
@@ -122,6 +125,8 @@ private extension ShoppingCartViewControllerImplementation {
         NFTTableView.backgroundColor = .clear
         NFTTableView.separatorStyle = .none
         NFTTableView.register(NFTTableViewCell.self, forCellReuseIdentifier: "NFTTableViewCell")
+        NFTTableView.allowsSelection = false
+        NFTTableView.allowsMultipleSelection = false
     }
     
     private func setUpGoToPaymentButtonBackgroundView() {

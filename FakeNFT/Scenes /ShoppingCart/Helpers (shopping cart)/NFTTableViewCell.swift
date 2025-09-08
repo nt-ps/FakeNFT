@@ -6,6 +6,9 @@
 //
 
 import UIKit
+import Kingfisher
+
+
 
 final class NFTTableViewCell: UITableViewCell {
     // MARK: UI Elements
@@ -23,6 +26,29 @@ final class NFTTableViewCell: UITableViewCell {
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+    
+    func configure(nft: NFT) {
+        NFTNameLabel.text = nft.name
+        switch nft.rating {
+        case 0:
+            ratingImageView.image = UIImage(resource: .Icons.Rating.zero)
+        case 1:
+            ratingImageView.image = UIImage(resource: .Icons.Rating.one)
+        case 2:
+            ratingImageView.image = UIImage(resource: .Icons.Rating.two)
+        case 3:
+            ratingImageView.image = UIImage(resource: .Icons.Rating.three)
+        case 4:
+            ratingImageView.image = UIImage(resource: .Icons.Rating.four)
+        case 5:
+            ratingImageView.image = UIImage(resource: .Icons.Rating.five)
+        default:
+            break
+        }
+        priceValueLabel.text = "\(nft.price) ETH"
+        #warning("choose correct image")
+        NFTImageView.kf.setImage(with: URL(string: nft.images.first ?? "")!)
     }
     
     // MARK: UI Actions
