@@ -65,7 +65,6 @@ struct Collection: Decodable, Hashable {
         
         coverImage = nil // TODO: Удалить после того, как будет протянута сеть.
     }
-    
     // MARK: - Hashable Protocol
     
     static func ==(lhs: Self, rhs: Self) -> Bool { lhs.id == rhs.id }

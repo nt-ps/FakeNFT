@@ -55,6 +55,20 @@ internal enum L10n {
         /// Link to photo
         internal static let title = L10n.tr("Localizable", "editProfile.avatar.changeAlert.title", fallback: "Link to photo")
       }
+      internal enum DeleteAlert {
+        /// Delete
+        internal static let delete = L10n.tr("Localizable", "editProfile.avatar.deleteAlert.delete", fallback: "Delete")
+        /// This action cannot be undone
+        internal static let message = L10n.tr("Localizable", "editProfile.avatar.deleteAlert.message", fallback: "This action cannot be undone")
+        /// Delete profile photo?
+        internal static let title = L10n.tr("Localizable", "editProfile.avatar.deleteAlert.title", fallback: "Delete profile photo?")
+      }
+      internal enum Error {
+        /// Invalid URL format
+        internal static let invalidURL = L10n.tr("Localizable", "editProfile.avatar.error.invalidURL", fallback: "Invalid URL format")
+        /// Failed to update avatar
+        internal static let updateFailed = L10n.tr("Localizable", "editProfile.avatar.error.updateFailed", fallback: "Failed to update avatar")
+      }
     }
     internal enum SaveAlert {
       /// Cancel
@@ -135,6 +149,8 @@ internal enum L10n {
   internal enum SortAlert {
     /// By the number of NFTs
     internal static let byAmount = L10n.tr("Localizable", "sortAlert.byAmount", fallback: "By the number of NFTs")
+    /// By name
+    internal static let byFirstName = L10n.tr("Localizable", "sortAlert.byFirstName", fallback: "By name")
     /// By name
     internal static let byName = L10n.tr("Localizable", "sortAlert.byName", fallback: "By name")
     /// By price

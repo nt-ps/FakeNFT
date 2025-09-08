@@ -1,5 +1,9 @@
 {
+<<<<<<< HEAD
+  "originHash" : "6577d1efd10193e37882c2375d72d60147984d595634f9f934df8bdab2235299",
+=======
   "originHash" : "b61039fa21dc7259e11e3ca3d002b1d06d1c43bbe20e99cd1c6da9e6e168dbf7",
+>>>>>>> develop
   "pins" : [
     {
       "identity" : "kingfisher",
