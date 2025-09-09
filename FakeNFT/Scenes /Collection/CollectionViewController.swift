@@ -80,6 +80,22 @@ final class CollectionViewController: UICollectionViewController, CollectionView
         dataSource.apply(snapshot, animatingDifferences: true)
     }
     
+    // MARK: - Overriden Methods
+
+    override func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        let contentYOffset = scrollView.contentOffset.y
+        if contentYOffset <= 0 {
+            guard
+                let header = collectionView.supplementaryView(
+                    forElementKind: UICollectionView.elementKindSectionHeader,
+                    at: IndexPath(row: 0, section: 0)
+                ) as? CollectionCollectionHeader
+            else { return }
+
+            header.stretch(to: -contentYOffset)
+        }
+    }
+    
     // MARK: - Private Mathods
     
     private static func createLayout(withHeader: Bool) -> UICollectionViewCompositionalLayout {

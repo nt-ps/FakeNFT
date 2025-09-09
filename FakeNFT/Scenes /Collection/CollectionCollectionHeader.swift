@@ -98,6 +98,9 @@ final class CollectionCollectionHeader: UICollectionReusableView, ReuseIdentifyi
     private let coverCornerRadius: CGFloat = 12
     
     private let authorButtonHeight: CGFloat = 28
+    
+    private var coverHeightConstraint: NSLayoutConstraint?
+    private var coverTopConstraint: NSLayoutConstraint?
 
     // MARK: - Initializers
     
@@ -129,16 +132,34 @@ final class CollectionCollectionHeader: UICollectionReusableView, ReuseIdentifyi
     
     // MARK: - UI Updates
     
+    func stretch(to delta: CGFloat) {
+        if let coverHeightConstraint {
+            NSLayoutConstraint.deactivate([coverHeightConstraint])
+        }
+
+        if let coverTopConstraint {
+            NSLayoutConstraint.deactivate([coverTopConstraint])
+        }
+        
+        coverTopConstraint = coverImageView.topAnchor.constraint(
+            equalTo: topAnchor,
+            constant: -delta
+        )
+        coverTopConstraint?.isActive = true
+        
+        coverHeightConstraint = coverImageView.heightAnchor.constraint(
+            equalTo: coverImageView.widthAnchor,
+            multiplier: coverAspectRatio,
+            constant: delta
+        )
+        coverHeightConstraint?.isActive = true
+    }
+    
     private func setConstraints() {
         NSLayoutConstraint.activate([
             coverImageView.leadingAnchor.constraint(equalTo: leadingAnchor),
-            coverImageView.topAnchor.constraint(equalTo: topAnchor),
             coverImageView.trailingAnchor.constraint(equalTo: trailingAnchor),
-            coverImageView.heightAnchor.constraint(
-                equalTo: coverImageView.widthAnchor,
-                multiplier: coverAspectRatio
-            ),
-
+            
             authorButton.heightAnchor.constraint(equalToConstant: authorButtonHeight),
             
             infoStackView.leadingAnchor.constraint(
@@ -155,6 +176,8 @@ final class CollectionCollectionHeader: UICollectionReusableView, ReuseIdentifyi
             ),
             infoStackView.bottomAnchor.constraint(lessThanOrEqualTo: bottomAnchor)
         ])
+        
+        stretch(to: 0)
     }
 }
 
