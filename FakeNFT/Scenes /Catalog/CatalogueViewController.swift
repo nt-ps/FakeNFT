@@ -14,8 +14,6 @@ protocol CatalogueViewControllerProtocol: AnyObject, LoadingView, ErrorView {
 
 final class CatalogueViewController: UITableViewController, CatalogueViewControllerProtocol {
     
-    // TODO: При добавлении сети добавить ProgressHUD.
-    
     // MARK: - Views
     
     private lazy var sortButton: UIBarButtonItem = .init(
@@ -150,7 +148,7 @@ final class CatalogueViewController: UITableViewController, CatalogueViewControl
         present(sortAlert, animated: true)
     }
     
-    // MARK: - Overriden Methods
+    // MARK: - Overridden Methods
     
     override func scrollViewDidScroll(_ scrollView: UIScrollView) {
         let height = scrollView.frame.size.height

@@ -101,7 +101,7 @@ final class CollectionCollectionCell: UICollectionViewCell, ReuseIdentifying {
         print("\(String(describing: CatalogueTableCell.self)).init(coder:) has not been implemented")
     }
     
-    // MARK: - Overrided Methods
+    // MARK: - Overridden Methods
     
     override func preferredLayoutAttributesFitting(
         _ layoutAttributes: UICollectionViewLayoutAttributes

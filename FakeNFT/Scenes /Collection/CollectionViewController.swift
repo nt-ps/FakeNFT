@@ -47,10 +47,10 @@ final class CollectionViewController: UICollectionViewController, CollectionView
         super.viewDidLoad()
         setNavigationBar()
         configureCollectionView()
-        updateCollectionViewAnimated() // TODO: Удалить!
+        updateCollectionViewAnimated() // TODO: Удалить после протягивания сети.
     }
     
-    // TODO: Удалить!
+    // TODO: Переписать при протягивании сети.
     func updateCollectionViewAnimated() {
         var snapshot = CollectionDataSourceSnapshot()
         snapshot.appendSections([CollectionCollectionSection.main])
@@ -58,7 +58,7 @@ final class CollectionViewController: UICollectionViewController, CollectionView
         dataSource.apply(snapshot, animatingDifferences: true)
     }
     
-    // MARK: - Overriden Methods
+    // MARK: - Overridden Methods
 
     override func scrollViewDidScroll(_ scrollView: UIScrollView) {
         let contentYOffset = scrollView.contentOffset.y
@@ -113,7 +113,7 @@ final class CollectionViewController: UICollectionViewController, CollectionView
         collectionView.dataSource = dataSource
     }
     
-    // MARK: - Private Mathods
+    // MARK: - Private Methods
     
     private static func createLayout(withHeader: Bool) -> UICollectionViewCompositionalLayout {
         let itemSize = NSCollectionLayoutSize(

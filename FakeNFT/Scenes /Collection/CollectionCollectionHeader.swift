@@ -119,7 +119,7 @@ final class CollectionCollectionHeader: UICollectionReusableView, ReuseIdentifyi
         print("\(String(describing: CollectionCollectionHeader.self)).init(coder:) has not been implemented")
     }
     
-    // MARK: - Overrided Methods
+    // MARK: - Overridden Methods
     
     override func preferredLayoutAttributesFitting(
         _ layoutAttributes: UICollectionViewLayoutAttributes

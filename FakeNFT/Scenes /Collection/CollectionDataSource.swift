@@ -25,12 +25,12 @@ final class CollectionDataSource: UICollectionViewDiffableDataSource<CollectionC
             collectionView: collectionView
         ) { (collectionView, indexPath, item) -> UICollectionViewCell? in
             let cell: CollectionCollectionCell = collectionView.dequeueReusableCell(indexPath: indexPath)
-            // configuration cell
+            // TODO: Добавить настройку ячейки при протягивании сети.
             return cell
         }
     }
     
-    // MARK: - Overrided Methods
+    // MARK: - Overridden Methods
     
     override func collectionView(
         _ collectionView: UICollectionView,
@@ -43,7 +43,7 @@ final class CollectionDataSource: UICollectionViewDiffableDataSource<CollectionC
                 indexPath: indexPath,
                 kind: kind
             )
-            // configuration header
+            // TODO: Добавить настройку хэдера при протягивании сети.
             return header
         }
         

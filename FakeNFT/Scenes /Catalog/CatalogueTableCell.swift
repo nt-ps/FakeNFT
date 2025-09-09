@@ -118,7 +118,7 @@ final class CatalogueTableCell: UITableViewCell, ReuseIdentifying {
         print("\(String(describing: CatalogueTableCell.self)).init(coder:) has not been implemented")
     }
     
-    // MARK: - Overrided methods
+    // MARK: - Overridden methods
     
     override func prepareForReuse() {
         super.prepareForReuse()
