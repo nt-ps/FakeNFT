@@ -211,6 +211,7 @@
 		CD95B1ED2E65D8B8008CDB81 /* Statistics */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = Statistics; sourceTree = "<group>"; };
 		CD95B2392E689171008CDB81 /* User */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = User; sourceTree = "<group>"; };
 		CD95B2402E68F83D008CDB81 /* UserDefaultsKeys */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = UserDefaultsKeys; sourceTree = "<group>"; };
+		CD95B2AB2E6F1DEC008CDB81 /* UsersProfile */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = UsersProfile; sourceTree = "<group>"; };
 /* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -422,6 +423,7 @@
 		3F6806C729CBBC5B00B4F915 /* Scenes  */ = {
 			isa = PBXGroup;
 			children = (
+				CD95B2AB2E6F1DEC008CDB81 /* UsersProfile */,
 				3A58412A2E6DD06200D295B2 /* WebView */,
 				674B6D472E6DCBA2004C628E /* Profile */,
 				CD95B1ED2E65D8B8008CDB81 /* Statistics */,
@@ -639,6 +641,7 @@
 				CD95B1ED2E65D8B8008CDB81 /* Statistics */,
 				CD95B2392E689171008CDB81 /* User */,
 				CD95B2402E68F83D008CDB81 /* UserDefaultsKeys */,
+				CD95B2AB2E6F1DEC008CDB81 /* UsersProfile */,
 			);
 			name = FakeNFT;
 			packageProductDependencies = (
