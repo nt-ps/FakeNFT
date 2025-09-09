@@ -26,6 +26,7 @@ final class CatalogueNavigationController: UINavigationController {
         navigationBar.tintColor = .AppColors.black
         
         let cataloguePresenter = CataloguePresenter(
+            localStorage: UserDefaultsStorage.shared,
             servicesAssembler: servicesAssembly
         )
         let catalogueViewController = CatalogueViewController(presenter: cataloguePresenter)

@@ -18,13 +18,21 @@ final class CataloguePresenter: CataloguePresenterProtocol {
     
     let collectionViewAssembler: CollectionViewAssemblyProtocol
     
+    private var localStorage: LocalStorageProtocol
     private let collectionService: CollectionServiceProtocol
     
-    init(servicesAssembler: ServicesAssembly) {
+    init(
+        localStorage: LocalStorageProtocol,
+        servicesAssembler: ServicesAssembly
+    ) {
+        self.localStorage = localStorage
+        
         self.collectionViewAssembler = CollectionViewAssembly(
             servicesAssembler: servicesAssembler
         )
         self.collectionService = servicesAssembler.collectionService
+
+        _ = self.sort(by: localStorage.collectionSortField)
     }
     
     func fetchNextPage() {        
@@ -53,6 +61,11 @@ final class CataloguePresenter: CataloguePresenterProtocol {
     }
     
     func sort(by field: CollectionFields) -> Bool {
-        collectionService.sort(by: field)
+        if collectionService.sort(by: field) {
+            localStorage.collectionSortField = field
+            return true
+        }
+        
+        return false
     }
 }
