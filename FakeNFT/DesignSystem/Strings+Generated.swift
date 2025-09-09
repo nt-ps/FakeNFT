@@ -30,6 +30,13 @@ internal enum L10n {
   internal enum Catalog {
     /// Open Nft
     internal static let openNft = L10n.tr("Localizable", "catalog.openNft", fallback: "Open Nft")
+   internal enum FailureAlert {
+     /// Repeat
+     internal static let `repeat` = L10n.tr("Localizable", "catalog.failureAlert.repeat", fallback: "Repeat")
+     /// Data could not be
+     /// retrieved
+     internal static let title = L10n.tr("Localizable", "catalog.failureAlert.title", fallback: "Data could not be\nretrieved")
+   }
   }
   internal enum EditProfile {
     /// Description

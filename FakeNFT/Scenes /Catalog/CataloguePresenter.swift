@@ -3,7 +3,7 @@ import Foundation
 // MARK: - Protocol
 
 protocol CataloguePresenterProtocol {
-    var view: (CatalogueViewControllerProtocol & LoadingView)? { get set }
+    var view: CatalogueViewControllerProtocol? { get set }
     var collectionViewAssembler: CollectionViewAssemblyProtocol { get }
     
     func fetchNextPage()
@@ -14,7 +14,7 @@ protocol CataloguePresenterProtocol {
 
 final class CataloguePresenter: CataloguePresenterProtocol {
     
-    weak var view: (CatalogueViewControllerProtocol & LoadingView)?
+    weak var view: CatalogueViewControllerProtocol?
     
     let collectionViewAssembler: CollectionViewAssemblyProtocol
     
@@ -31,11 +31,17 @@ final class CataloguePresenter: CataloguePresenterProtocol {
         let inProcessing = collectionService.fetchNextPage() { [weak self] result in
             switch result {
             case .success(let collections):
-                guard let self else { return }
-                self.view?.updateTableViewAnimated(from: collections)
-            case .failure:
-                print("[\(#function)] Failed to load collection page.")
-                // TODO: При протягивании сети добавить вывод алерта.
+                self?.view?.updateTableViewAnimated(from: collections)
+            case .failure(let error):
+                print("[\(#function)] Failed to load collection page: \(error.localizedDescription).")
+                
+                let errorModel = ErrorModel(
+                    title: L10n.Catalog.FailureAlert.title,
+                    message: nil,
+                    actionText: L10n.Catalog.FailureAlert.repeat
+                ) { [weak self] in self?.fetchNextPage() }
+                
+                self?.view?.showError(errorModel)
             }
             
             self?.view?.hideLoading()

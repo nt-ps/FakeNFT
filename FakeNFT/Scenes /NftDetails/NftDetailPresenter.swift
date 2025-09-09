@@ -76,8 +76,9 @@ final class NftDetailPresenterImpl: NftDetailPresenter {
             message = L10n.Error.unknown
         }
 
+        let title = L10n.Error.title
         let actionText = L10n.Error.repeat
-        return ErrorModel(message: message, actionText: actionText) { [weak self] in
+        return ErrorModel(title: title, message: message, actionText: actionText) { [weak self] in
             self?.state = .loading
         }
     }

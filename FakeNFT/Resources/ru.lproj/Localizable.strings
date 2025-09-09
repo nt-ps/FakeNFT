@@ -59,6 +59,9 @@
 "statistics.failureAlert.cancel" = "Отмена";
 
 "catalog.openNft" = "Открыть Nft";
+"catalog.failureAlert.title" = "Не удалось получить\nданные";
+"catalog.failureAlert.repeat" = "Повторить";
+
 "error.network" = "Произошла ошибка сети";
 "error.unknown" = "Произошла неизвестная ошибка";
 "error.repeat" = "Повторить";

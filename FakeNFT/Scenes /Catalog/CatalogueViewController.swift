@@ -4,7 +4,7 @@ typealias CatalogueDataSourceSnapshot = NSDiffableDataSourceSnapshot<CatalogueTa
 
 // MARK: - Protocol
 
-protocol CatalogueViewControllerProtocol: AnyObject {
+protocol CatalogueViewControllerProtocol: AnyObject, LoadingView, ErrorView {
     var presenter: CataloguePresenterProtocol { get }
     
     func updateTableViewAnimated(from newCollections: [Collection])
@@ -12,7 +12,7 @@ protocol CatalogueViewControllerProtocol: AnyObject {
 
 // MARK: - Implementation
 
-final class CatalogueViewController: UITableViewController, CatalogueViewControllerProtocol, LoadingView {
+final class CatalogueViewController: UITableViewController, CatalogueViewControllerProtocol {
     
     // TODO: При добавлении сети добавить ProgressHUD.
     
