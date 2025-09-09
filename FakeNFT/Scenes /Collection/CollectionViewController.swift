@@ -18,21 +18,22 @@ final class CollectionViewController: UICollectionViewController, CollectionView
     
     // MARK: - Private Properties
 
-    private lazy var dataSource: CollectionDataSource = .init(collectionView)
+    private lazy var dataSource: CollectionDataSource = .init(collectionView, presenter: presenter)
     
     // MARK: - UI Properties
     
     private static var cellPerGroup: CGFloat = 3
     private static var cellSpacing: CGFloat = 8
     private static var groupXSpacing: CGFloat = 16
-    private static var sectionTopSpacing: CGFloat = 24
-    private static var sectionBottomSpacing: CGFloat = 20
+    private static var sectionYSpacing: CGFloat = 20
     
     // MARK: - Initializers
 
     init(presenter: CollectionPresenterProtocol) {
         self.presenter = presenter
-        let layout = CollectionViewController.createLayout(withHeader: true)
+        let layout = CollectionViewController.createLayout(
+            withHeader: presenter.collection != nil
+        )
         super.init(collectionViewLayout: layout)
     }
 
@@ -44,31 +45,8 @@ final class CollectionViewController: UICollectionViewController, CollectionView
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        let scrollAppearance = UINavigationBarAppearance()
-        scrollAppearance.configureWithTransparentBackground()
-        
-        let standardAppearance = UINavigationBarAppearance()
-        standardAppearance.configureWithTransparentBackground()
-        standardAppearance.backgroundColor = .AppColors.white
-        
-        navigationController?.navigationBar.standardAppearance = standardAppearance
-        navigationController?.navigationBar.compactAppearance = standardAppearance
-        navigationController?.navigationBar.scrollEdgeAppearance = scrollAppearance
-        
-        collectionView.backgroundColor = .AppColors.white
-        
-        collectionView.register(CollectionCollectionCell.self)
-        collectionView.register(
-            CollectionCollectionHeader.self,
-            forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader
-        )
-        
-        collectionView.delegate = self
-        collectionView.dataSource = dataSource
-        
-        collectionView.contentInsetAdjustmentBehavior = .never
-    
+        setNavigationBar()
+        configureCollectionView()
         updateCollectionViewAnimated() // TODO: Удалить!
     }
     
@@ -94,6 +72,45 @@ final class CollectionViewController: UICollectionViewController, CollectionView
 
             header.stretch(to: -contentYOffset)
         }
+    }
+    
+    // MARK: - UI Updates
+    
+    private func setNavigationBar() {
+        let standardAppearance = UINavigationBarAppearance()
+        standardAppearance.configureWithTransparentBackground()
+        standardAppearance.backgroundColor = .AppColors.white
+        
+        navigationController?.navigationBar.standardAppearance = standardAppearance
+        navigationController?.navigationBar.compactAppearance = standardAppearance
+        
+        if let title = presenter.title {
+            navigationItem.title = title
+            standardAppearance.titleTextAttributes = [
+                NSAttributedString.Key.font: UIFont.bodyBold
+            ]
+            navigationController?.navigationBar.scrollEdgeAppearance = standardAppearance
+        } else {
+            let scrollAppearance = UINavigationBarAppearance()
+            scrollAppearance.configureWithTransparentBackground()
+
+            navigationController?.navigationBar.scrollEdgeAppearance = scrollAppearance
+            
+            collectionView.contentInsetAdjustmentBehavior = .never
+        }
+    }
+    
+    private func configureCollectionView() {
+        collectionView.backgroundColor = .AppColors.white
+        
+        collectionView.register(CollectionCollectionCell.self)
+        collectionView.register(
+            CollectionCollectionHeader.self,
+            forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader
+        )
+        
+        collectionView.delegate = self
+        collectionView.dataSource = dataSource
     }
     
     // MARK: - Private Mathods
@@ -124,9 +141,9 @@ final class CollectionViewController: UICollectionViewController, CollectionView
         let section = NSCollectionLayoutSection(group: group)
         section.interGroupSpacing = cellSpacing
         section.contentInsets = .init(
-            top: sectionTopSpacing,
+            top: sectionYSpacing,
             leading: 0,
-            bottom: sectionBottomSpacing,
+            bottom: sectionYSpacing,
             trailing: 0
         )
         

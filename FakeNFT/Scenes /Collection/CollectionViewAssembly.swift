@@ -2,6 +2,7 @@ import UIKit
 
 protocol CollectionViewAssemblyProtocol {
     func build(with collection: Collection) -> UIViewController
+    func build(with nftIds: [String], title: String) -> UIViewController
 }
 
 final class CollectionViewAssembly: CollectionViewAssemblyProtocol {
@@ -29,9 +30,10 @@ final class CollectionViewAssembly: CollectionViewAssemblyProtocol {
     }
     
     // Экран Users collection.
-    func build(with nftIds: [UUID]) -> UIViewController {
+    func build(with nftIds: [String], title: String) -> UIViewController {
         var presenter: CollectionPresenterProtocol = CollectionPresenter(
             for: nftIds,
+            title: title,
             nftService: servicesAssembler.nftService
         )
         let viewController = build(with: &presenter)

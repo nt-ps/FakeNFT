@@ -10,9 +10,17 @@ enum CollectionCollectionSection: Int, CaseIterable {
 
 final class CollectionDataSource: UICollectionViewDiffableDataSource<CollectionCollectionSection, Nft> {
     
+    // MARK: - Internal Properties
+    
+    private let presenter: CollectionPresenterProtocol?
+    
     // MARK: - Initializers
     
-    init(_ collectionView: UICollectionView) {
+    init(
+        _ collectionView: UICollectionView,
+        presenter: CollectionPresenterProtocol
+    ) {
+        self.presenter = presenter
         super.init(
             collectionView: collectionView
         ) { (collectionView, indexPath, item) -> UICollectionViewCell? in
@@ -35,6 +43,7 @@ final class CollectionDataSource: UICollectionViewDiffableDataSource<CollectionC
                 indexPath: indexPath,
                 kind: kind
             )
+            // configuration header
             return header
         }
         

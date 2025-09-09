@@ -89,7 +89,9 @@ final class CollectionCollectionHeader: UICollectionReusableView, ReuseIdentifyi
     
     // MARK: - UI Properties
     
-    private let infoStackSpacing: CGFloat = 16
+    private let infoStackXSpacing: CGFloat = 16
+    private let infoStackTopSpacing: CGFloat = 16
+    private let infoStackBottomSpacing: CGFloat = 4
     
     private let titleStackSpacing: CGFloat = 8
     private let authorStackSpacing: CGFloat = 4
@@ -164,17 +166,20 @@ final class CollectionCollectionHeader: UICollectionReusableView, ReuseIdentifyi
             
             infoStackView.leadingAnchor.constraint(
                 equalTo: leadingAnchor,
-                constant: infoStackSpacing
+                constant: infoStackXSpacing
             ),
             infoStackView.topAnchor.constraint(
                 equalTo: coverImageView.bottomAnchor,
-                constant: infoStackSpacing
+                constant: infoStackTopSpacing
             ),
             infoStackView.trailingAnchor.constraint(
                 equalTo: trailingAnchor,
-                constant: -infoStackSpacing
+                constant: -infoStackXSpacing
             ),
-            infoStackView.bottomAnchor.constraint(lessThanOrEqualTo: bottomAnchor)
+            infoStackView.bottomAnchor.constraint(
+                lessThanOrEqualTo: bottomAnchor,
+                constant: -infoStackBottomSpacing
+            )
         ])
         
         stretch(to: 0)
