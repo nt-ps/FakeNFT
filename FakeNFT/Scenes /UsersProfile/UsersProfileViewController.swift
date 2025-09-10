@@ -132,7 +132,7 @@ final class UsersProfileViewController: UIViewController, UsersProfileViewContro
         view.addSubview(userWebSiteButton)
         view.addSubview(tableView)
         
-        tableView.register(UITableViewCell.self, forCellReuseIdentifier: "NFTCollectionWWWCell")
+        tableView.register(UITableViewCell.self, forCellReuseIdentifier: "NFTUserCollectionCell")
         tableView.dataSource = self
         tableView.delegate = self
         
@@ -190,7 +190,7 @@ extension UsersProfileViewController: UITableViewDelegate, UITableViewDataSource
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "NFTCollectionWWWCell", for: indexPath)
+        let cell = tableView.dequeueReusableCell(withIdentifier: "NFTUserCollectionCell", for: indexPath)
         
         var content = cell.defaultContentConfiguration()
         content.text = "Коллекция NFT (\(user?.nftCount ?? 0))"
