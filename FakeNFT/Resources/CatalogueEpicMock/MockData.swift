@@ -21,5 +21,30 @@ struct MockData {
             name: "Tater", coverImage: UIImage(resource: .NftMock.taterCover),
             rating: 4, price: 1, id: "Tater"
         ),
+        
+        Nft(
+            name: "Tater_1", coverImage: UIImage(resource: .NftMock.taterCover),
+            rating: 4, price: 1, id: "Tater_1"
+        ),
+        
+        Nft(
+            name: "Tater_2", coverImage: UIImage(resource: .NftMock.taterCover),
+            rating: 4, price: 1, id: "Tater_2"
+        ),
+        
+        Nft(
+            name: "Tater_3", coverImage: UIImage(resource: .NftMock.taterCover),
+            rating: 4, price: 1, id: "Tater_3"
+        ),
+        
+        Nft(
+            name: "Tater_4", coverImage: UIImage(resource: .NftMock.taterCover),
+            rating: 4, price: 1, id: "Tater_4"
+        ),
+        
+        Nft(
+            name: "Tater_5", coverImage: UIImage(resource: .NftMock.taterCover),
+            rating: 4, price: 1, id: "Tater_5"
+        )
     ]
 }

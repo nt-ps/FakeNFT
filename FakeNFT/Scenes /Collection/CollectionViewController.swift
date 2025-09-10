@@ -12,6 +12,8 @@ protocol CollectionViewControllerProtocol: AnyObject {
 
 final class CollectionViewController: UICollectionViewController, CollectionViewControllerProtocol {
     
+    // TODO: Добавить прогресс (показывается при нажатии лайка и кнопки корзины).
+    
     // MARK: - Internal Properties
     
     let presenter: CollectionPresenterProtocol
@@ -81,12 +83,10 @@ final class CollectionViewController: UICollectionViewController, CollectionView
         standardAppearance.configureWithTransparentBackground()
         standardAppearance.backgroundColor = .AppColors.white
         
-        navigationController?.navigationBar.standardAppearance = standardAppearance
-        navigationController?.navigationBar.compactAppearance = standardAppearance
-        
         if let title = presenter.title {
             navigationItem.title = title
             standardAppearance.titleTextAttributes = [
+                NSAttributedString.Key.foregroundColor: UIColor.AppColors.black,
                 NSAttributedString.Key.font: UIFont.bodyBold
             ]
             navigationController?.navigationBar.scrollEdgeAppearance = standardAppearance
@@ -98,6 +98,9 @@ final class CollectionViewController: UICollectionViewController, CollectionView
             
             collectionView.contentInsetAdjustmentBehavior = .never
         }
+        
+        navigationController?.navigationBar.standardAppearance = standardAppearance
+        navigationController?.navigationBar.compactAppearance = standardAppearance
     }
     
     private func configureCollectionView() {
