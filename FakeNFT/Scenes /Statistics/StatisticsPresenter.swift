@@ -74,7 +74,7 @@ final class StatisticsPresenter: StatisticsPresenterProtocol {
         guard !isLoading else { return }
         isLoading = true
         
-        servicesAssembly.userService.loadUsers(page: currentPage) { [weak self] result in
+        servicesAssembly.userService.loadUsers(page: currentPage, size: 10, sortBy: UserService.serverSortBy(for: .rating)) { [weak self] result in
             guard let self else { return }
             
             switch result {

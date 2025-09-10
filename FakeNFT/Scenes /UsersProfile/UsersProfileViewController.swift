@@ -171,6 +171,10 @@ final class UsersProfileViewController: UIViewController, UsersProfileViewContro
         ])
     }
     
+    private func updateButtonBorder() {
+        userWebSiteButton.layer.borderColor = UIColor.AppColors.black.cgColor
+    }
+    
     @objc func websiteButtonTapped() {
         presenter.didTapUserWebsite { [weak self] viewController in
             self?.navigationController?.pushViewController(viewController, animated: true)
@@ -178,10 +182,6 @@ final class UsersProfileViewController: UIViewController, UsersProfileViewContro
     }
     
     @objc func collectionButtonDidTapped() {}
-    
-    private func updateButtonBorder() {
-        userWebSiteButton.layer.borderColor = UIColor.AppColors.black.cgColor
-    }
 }
 
 extension UsersProfileViewController: UITableViewDelegate, UITableViewDataSource {
