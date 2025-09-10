@@ -16,6 +16,7 @@ protocol ShoppingCartPresenterProtocol: AnyObject {
     func getNFTs() -> [NFT]
     func clearNftsInCart()
     func deleteNFTFromCart()
+    func showPlaceholderIf(needed: Bool)
 }
 
 
@@ -50,6 +51,13 @@ final class ShoppingCartPresenterImplementation: ShoppingCartPresenterProtocol {
     
     func deleteNFTFromCart() {
         shoppingCartModel.NFTsInCart.removeAll(where: { $0.name == NFTsToDeleteName })
+        if shoppingCartModel.NFTsInCart.isEmpty {
+            shoppingCartView?.showPlaceholderIf(needed: true)
+        }
         shoppingCartModel.postNewOrderWithoutDeletedNFT()
+    }
+    
+    func showPlaceholderIf(needed: Bool) {
+        shoppingCartView?.showPlaceholderIf(needed: needed)
     }
 }

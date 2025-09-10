@@ -38,25 +38,30 @@ final class ShoppingCartModelImplementation: ShoppingCartModelProtocol {
     
     private let orderService: OrderServiceProtocol?
     private let NFTByIDService: NFTByIDServiceProtocol?
-    private let postNewShoppingCartService: PutNewShoppingCartServiceProtocol?
+    private let postNewShoppingCartService: PutNewOrderServiceProtocol?
     
     init() {
         self.orderService = OrderServiceImplementation()
         self.NFTByIDService = NFTByIDServiceImplementation()
-        self.postNewShoppingCartService = PutNewShoppingCartServiceImplementation()
+        self.postNewShoppingCartService = PutNewOrderServiceImplementation()
     }
     
     func getOrder() {
         orderService?.fetchOrder() { [weak self] order in
             guard let self else { return }
+            guard order.nfts.count != 0 else {
+                shoppingCartPresenter?.showPlaceholderIf(needed: true)
+                return
+            }
             for nft in order.nfts {
                 getNFTByID(id: nft)
             }
+            shoppingCartPresenter?.showPlaceholderIf(needed: false)
         }
     }
     
     func postNewOrderWithoutDeletedNFT() {
-        postNewShoppingCartService?.postNewShoppingCart(with: NFTsInCart)
+        postNewShoppingCartService?.postNewOrder(with: NFTsInCart)
     }
     
     private func getNFTByID(id: String) {
