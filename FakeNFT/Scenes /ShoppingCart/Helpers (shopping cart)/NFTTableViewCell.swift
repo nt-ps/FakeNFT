@@ -10,7 +10,15 @@ import Kingfisher
 
 
 
+protocol NFTTableViewCellDelegate: AnyObject {
+    func deleteFromCartButtonTapped(for cell: NFTTableViewCell, image: UIImage)
+}
+
+
+
 final class NFTTableViewCell: UITableViewCell {
+    weak var delegate: NFTTableViewCellDelegate?
+    
     // MARK: UI Elements
     private let NFTNameLabel = UILabel()
     private let ratingImageView = UIImageView()
@@ -54,7 +62,7 @@ final class NFTTableViewCell: UITableViewCell {
     
     // MARK: UI Actions
     @objc private func deleteFromCartButtonTapped() {
-        
+        delegate?.deleteFromCartButtonTapped(for: self, image: NFTImageView.image ?? UIImage())
     }
 }
 

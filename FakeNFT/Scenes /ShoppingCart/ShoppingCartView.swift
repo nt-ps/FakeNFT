@@ -15,7 +15,7 @@ protocol ShoppingCartViewProtocol: AnyObject {
 
 
 
-final class ShoppingCartViewControllerImplementation: UIViewController, ShoppingCartViewProtocol {
+final class ShoppingCartViewControllerImplementation: UIViewController, ShoppingCartViewProtocol, NFTTableViewCellDelegate {
     // MARK: Presenter
     var shoppingCartPresenter: ShoppingCartPresenterProtocol?
     
@@ -26,6 +26,11 @@ final class ShoppingCartViewControllerImplementation: UIViewController, Shopping
     private let NFTsCounterLabel = UILabel()
     private let NFTsTotalPriceLabel = UILabel()
     private let goToPaymentButton = UIButton()
+    private let blurView = UIVisualEffectView(effect: UIBlurEffect(style: .systemUltraThinMaterial))
+    private let NFTToDeleteImageView = UIImageView()
+    private let labelWhenDeletingNFT = UILabel()
+    private let deleteNFTFromCartButton = UIButton()
+    private let goBackFromDeletingNFTButton = UIButton()
     
     private var diffableDataSource: UITableViewDiffableDataSource<Int, NFT>?
     
@@ -40,6 +45,7 @@ final class ShoppingCartViewControllerImplementation: UIViewController, Shopping
                   let nfts = shoppingCartPresenter?.getNFTs()
             else { return UITableViewCell() }
             cell.configure(nft: nfts[indexPath.row])
+            cell.delegate = self
             return cell
         }
         NFTTableView.dataSource = diffableDataSource
@@ -69,13 +75,49 @@ final class ShoppingCartViewControllerImplementation: UIViewController, Shopping
         ProgressHUDProvider.dismissProgressHUD()
     }
     
+    // MARK: NFTTableViewCellDelegate method
+    func deleteFromCartButtonTapped(for cell: NFTTableViewCell, image: UIImage) {
+        blurView.isHidden = false
+        NFTToDeleteImageView.isHidden = false
+        NFTToDeleteImageView.image = image
+        labelWhenDeletingNFT.isHidden = false
+        deleteNFTFromCartButton.isHidden = false
+        goBackFromDeletingNFTButton.isHidden = false
+        UIView.animate(withDuration: 0.3) {
+            self.blurView.alpha = 1
+            self.NFTToDeleteImageView.alpha = 1
+            self.labelWhenDeletingNFT.alpha = 1
+            self.deleteNFTFromCartButton.alpha = 1
+            self.goBackFromDeletingNFTButton.alpha = 1
+        }
+    }
+    
     // MARK: UI Actions
     @objc private func filterButtonTapped() {
-        
+        let vc = UIViewController()
+        vc.view.backgroundColor = .clear
+        present(vc, animated: true)
     }
     
     @objc private func goToPaymentButtonTapped() {
         navigationController?.pushViewController(UIViewController(), animated: true)
+    }
+    
+    @objc private func goBackFromDeletingNFTButtonTapped() {
+        UIView.animate(withDuration: 0.3) {
+            self.blurView.alpha = 0
+            self.NFTToDeleteImageView.alpha = 0
+            self.labelWhenDeletingNFT.alpha = 0
+            self.deleteNFTFromCartButton.alpha = 0
+            self.goBackFromDeletingNFTButton.alpha = 0
+        }
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
+            self.blurView.isHidden = true
+            self.NFTToDeleteImageView.isHidden = true
+            self.labelWhenDeletingNFT.isHidden = true
+            self.deleteNFTFromCartButton.isHidden = true
+            self.goBackFromDeletingNFTButton.isHidden = true
+        }
     }
 }
 
@@ -96,6 +138,11 @@ private extension ShoppingCartViewControllerImplementation {
         setUpNFTsCounterLabel()
         setUpGoToPaymentButton()
         setUpNFTsTotalPriceLabel()
+        setUpBlurView()
+        setUpNFTToDeleteImageView()
+        setUpLabelWhenDeletingNFT()
+        setUpDeleteNFTFromCartButton()
+        setUpGoBackFromDeletingNFTButton()
         if traitCollection.userInterfaceStyle == .dark {
             view.backgroundColor = UIColor(hexString: "#1A1B22")
         } else {
@@ -200,6 +247,103 @@ private extension ShoppingCartViewControllerImplementation {
         }
         goToPaymentButton.addTarget(self, action: #selector(goToPaymentButtonTapped), for: .touchUpInside)
     }
+    
+    private func setUpBlurView() {
+        blurView.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(blurView)
+        NSLayoutConstraint.activate([
+            blurView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            blurView.centerYAnchor.constraint(equalTo: view.centerYAnchor),
+            blurView.heightAnchor.constraint(equalTo: view.heightAnchor),
+            blurView.widthAnchor.constraint(equalTo: view.widthAnchor)
+        ])
+        blurView.isHidden = true
+        blurView.alpha = 0
+    }
+    
+    private func setUpNFTToDeleteImageView() {
+        NFTToDeleteImageView.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(NFTToDeleteImageView)
+        NSLayoutConstraint.activate([
+            NFTToDeleteImageView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            NFTToDeleteImageView.topAnchor.constraint(equalTo: view.topAnchor, constant: 244),
+            NFTToDeleteImageView.widthAnchor.constraint(equalToConstant: 108),
+            NFTToDeleteImageView.heightAnchor.constraint(equalToConstant: 108)
+        ])
+        NFTToDeleteImageView.layer.masksToBounds = true
+        NFTToDeleteImageView.layer.cornerRadius = 12
+        NFTToDeleteImageView.isHidden = true
+        NFTToDeleteImageView.alpha = 0
+    }
+    
+    private func setUpLabelWhenDeletingNFT() {
+        labelWhenDeletingNFT.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(labelWhenDeletingNFT)
+        NSLayoutConstraint.activate([
+            labelWhenDeletingNFT.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            labelWhenDeletingNFT.topAnchor.constraint(equalTo: NFTToDeleteImageView.bottomAnchor, constant: 12),
+            labelWhenDeletingNFT.widthAnchor.constraint(equalTo: view.widthAnchor)
+        ])
+        labelWhenDeletingNFT.font = .systemFont(ofSize: 13, weight: .regular)
+        labelWhenDeletingNFT.text = L10n.Cart.DeleteAlert.message
+        labelWhenDeletingNFT.numberOfLines = 2
+        labelWhenDeletingNFT.textAlignment = .center
+        if traitCollection.userInterfaceStyle == .dark {
+            labelWhenDeletingNFT.textColor = .white
+        } else {
+            labelWhenDeletingNFT.textColor = UIColor(hexString: "#1A1B22")
+        }
+        labelWhenDeletingNFT.isHidden = true
+        labelWhenDeletingNFT.alpha = 0
+    }
+    
+    private func setUpDeleteNFTFromCartButton() {
+        deleteNFTFromCartButton.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(deleteNFTFromCartButton)
+        NSLayoutConstraint.activate([
+            deleteNFTFromCartButton.topAnchor.constraint(equalTo: labelWhenDeletingNFT.bottomAnchor, constant: 20),
+            deleteNFTFromCartButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 56),
+            deleteNFTFromCartButton.widthAnchor.constraint(equalToConstant: 127),
+            deleteNFTFromCartButton.heightAnchor.constraint(equalToConstant: 44)
+        ])
+        deleteNFTFromCartButton.setTitle(L10n.Cart.DeleteAlert.delete, for: .normal)
+        deleteNFTFromCartButton.titleLabel?.font = .systemFont(ofSize: 17, weight: .regular)
+        deleteNFTFromCartButton.setTitleColor(UIColor(hexString: "#F56B6C"), for: .normal)
+        deleteNFTFromCartButton.layer.masksToBounds = true
+        deleteNFTFromCartButton.layer.cornerRadius = 12
+        if traitCollection.userInterfaceStyle == .dark {
+            deleteNFTFromCartButton.backgroundColor = .white
+        } else {
+            deleteNFTFromCartButton.backgroundColor = UIColor(hexString: "#1A1B22")
+        }
+        deleteNFTFromCartButton.isHidden = true
+        deleteNFTFromCartButton.alpha = 0
+    }
+    
+    private func setUpGoBackFromDeletingNFTButton() {
+        goBackFromDeletingNFTButton.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(goBackFromDeletingNFTButton)
+        NSLayoutConstraint.activate([
+            goBackFromDeletingNFTButton.topAnchor.constraint(equalTo: labelWhenDeletingNFT.bottomAnchor, constant: 20),
+            goBackFromDeletingNFTButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -56),
+            goBackFromDeletingNFTButton.widthAnchor.constraint(equalToConstant: 127),
+            goBackFromDeletingNFTButton.heightAnchor.constraint(equalToConstant: 44)
+        ])
+        goBackFromDeletingNFTButton.setTitle(L10n.Cart.DeleteAlert.cancel, for: .normal)
+        goBackFromDeletingNFTButton.titleLabel?.font = .systemFont(ofSize: 17, weight: .regular)
+        goBackFromDeletingNFTButton.layer.masksToBounds = true
+        goBackFromDeletingNFTButton.layer.cornerRadius = 12
+        if traitCollection.userInterfaceStyle == .dark {
+            goBackFromDeletingNFTButton.backgroundColor = .white
+            goBackFromDeletingNFTButton.setTitleColor(UIColor(hexString: "#1A1B22"), for: .normal)
+        } else {
+            goBackFromDeletingNFTButton.backgroundColor = UIColor(hexString: "#1A1B22")
+            goBackFromDeletingNFTButton.setTitleColor(.white, for: .normal)
+        }
+        goBackFromDeletingNFTButton.isHidden = true
+        goBackFromDeletingNFTButton.alpha = 0
+        goBackFromDeletingNFTButton.addTarget(self, action: #selector(goBackFromDeletingNFTButtonTapped), for: .touchUpInside)
+    }
 }
 
 
@@ -213,14 +357,22 @@ extension ShoppingCartViewControllerImplementation {
             goToPaymentButtonBackgroundView.backgroundColor = UIColor(hexString: "#2C2C2E")
             NFTsCounterLabel.textColor = .white
             goToPaymentButton.backgroundColor = .white
-            goToPaymentButton.titleLabel?.textColor = UIColor(hexString: "#1A1B22")
+            goToPaymentButton.setTitleColor(UIColor(hexString: "#1A1B22"), for: .normal)
+            labelWhenDeletingNFT.textColor = .white
+            deleteNFTFromCartButton.backgroundColor = .white
+            goBackFromDeletingNFTButton.backgroundColor = .white
+            goBackFromDeletingNFTButton.setTitleColor(UIColor(hexString: "#1A1B22"), for: .normal)
         } else {
             view.backgroundColor = .white
             filterButton.tintColor = UIColor(hexString: "#1A1B22")
             goToPaymentButtonBackgroundView.backgroundColor = UIColor(hexString: "#F7F7F8")
             NFTsCounterLabel.textColor = UIColor(hexString: "#1A1B22")
             goToPaymentButton.backgroundColor = UIColor(hexString: "#1A1B22")
-            goToPaymentButton.titleLabel?.textColor = .white
+            goToPaymentButton.setTitleColor(.white, for: .normal)
+            labelWhenDeletingNFT.textColor = UIColor(hexString: "#1A1B22")
+            deleteNFTFromCartButton.backgroundColor = UIColor(hexString: "#1A1B22")
+            goBackFromDeletingNFTButton.backgroundColor = UIColor(hexString: "#1A1B22")
+            goBackFromDeletingNFTButton.setTitleColor(.white, for: .normal)
         }
     }
 }
