@@ -11,7 +11,7 @@ import Kingfisher
 
 
 protocol NFTTableViewCellDelegate: AnyObject {
-    func deleteFromCartButtonTapped(for cell: NFTTableViewCell, image: UIImage)
+    func deleteFromCartButtonTapped(NFTsToDeleteName: String, image: UIImage)
 }
 
 
@@ -62,7 +62,7 @@ final class NFTTableViewCell: UITableViewCell {
     
     // MARK: UI Actions
     @objc private func deleteFromCartButtonTapped() {
-        delegate?.deleteFromCartButtonTapped(for: self, image: NFTImageView.image ?? UIImage())
+        delegate?.deleteFromCartButtonTapped(NFTsToDeleteName: NFTNameLabel.text ?? "", image: NFTImageView.image ?? UIImage())
     }
 }
 

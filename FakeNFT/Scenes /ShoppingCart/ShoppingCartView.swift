@@ -76,7 +76,7 @@ final class ShoppingCartViewControllerImplementation: UIViewController, Shopping
     }
     
     // MARK: NFTTableViewCellDelegate method
-    func deleteFromCartButtonTapped(for cell: NFTTableViewCell, image: UIImage) {
+    func deleteFromCartButtonTapped(NFTsToDeleteName: String, image: UIImage) {
         blurView.isHidden = false
         NFTToDeleteImageView.isHidden = false
         NFTToDeleteImageView.image = image
@@ -90,6 +90,7 @@ final class ShoppingCartViewControllerImplementation: UIViewController, Shopping
             self.deleteNFTFromCartButton.alpha = 1
             self.goBackFromDeletingNFTButton.alpha = 1
         }
+        shoppingCartPresenter?.NFTsToDeleteName = NFTsToDeleteName
     }
     
     // MARK: UI Actions
@@ -118,6 +119,10 @@ final class ShoppingCartViewControllerImplementation: UIViewController, Shopping
             self.deleteNFTFromCartButton.isHidden = true
             self.goBackFromDeletingNFTButton.isHidden = true
         }
+    }
+    
+    @objc private func deleteNFTFromCartButtonTapped() {
+        shoppingCartPresenter?.deleteNFTFromCart()
     }
 }
 
@@ -318,6 +323,7 @@ private extension ShoppingCartViewControllerImplementation {
         }
         deleteNFTFromCartButton.isHidden = true
         deleteNFTFromCartButton.alpha = 0
+        deleteNFTFromCartButton.addTarget(self, action: #selector(deleteNFTFromCartButtonTapped), for: .touchUpInside)
     }
     
     private func setUpGoBackFromDeletingNFTButton() {

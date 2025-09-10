@@ -10,17 +10,22 @@ import Foundation
 
 
 protocol ShoppingCartPresenterProtocol: AnyObject {
+    var NFTsToDeleteName: String { get set }
     func getOrder()
     func reloadCartInUI(nfts: [NFT], totalNFTsPrice: Float, totalNFTsAmount: Int)
     func getNFTs() -> [NFT]
     func clearNftsInCart()
+    func deleteNFTFromCart()
 }
 
 
 
 final class ShoppingCartPresenterImplementation: ShoppingCartPresenterProtocol {
+    // MARK: View and Model
     private weak var shoppingCartView: ShoppingCartViewProtocol?
     private let shoppingCartModel: ShoppingCartModelProtocol
+    
+    var NFTsToDeleteName: String = ""
     
     init(shoppingCartView: ShoppingCartViewProtocol, shoppingCartModel: ShoppingCartModelProtocol) {
         self.shoppingCartView = shoppingCartView
@@ -41,5 +46,10 @@ final class ShoppingCartPresenterImplementation: ShoppingCartPresenterProtocol {
     
     func clearNftsInCart() {
         shoppingCartModel.NFTsInCart = []
+    }
+    
+    func deleteNFTFromCart() {
+        shoppingCartModel.NFTsInCart.removeAll(where: { $0.name == NFTsToDeleteName })
+        shoppingCartModel.postNewOrderWithoutDeletedNFT()
     }
 }
