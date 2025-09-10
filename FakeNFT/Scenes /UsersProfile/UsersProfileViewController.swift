@@ -28,7 +28,7 @@ final class UsersProfileViewController: UIViewController, UsersProfileViewContro
     
     private lazy var nameLabel: UILabel = {
         let label = UILabel()
-        label.font = .systemFont(ofSize: 22, weight: .bold)
+        label.font = .headline3
         label.textColor = .AppColors.black
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
@@ -36,7 +36,7 @@ final class UsersProfileViewController: UIViewController, UsersProfileViewContro
     
     private lazy var descriptionLabel: UILabel = {
         let label = UILabel()
-        label.font = .systemFont(ofSize: 13, weight: .regular)
+        label.font = .caption2
         label.textColor = .AppColors.black
         label.numberOfLines = 0
         label.translatesAutoresizingMaskIntoConstraints = false
@@ -47,7 +47,7 @@ final class UsersProfileViewController: UIViewController, UsersProfileViewContro
         let button = UIButton(type: .system)
         button.setTitle("Перейти на сайт пользователя", for: .normal)
         button.setTitleColor(.AppColors.black, for: .normal)
-        button.titleLabel?.font = .systemFont(ofSize: 17, weight: .regular)
+        button.titleLabel?.font = .bodyRegular
         button.addTarget(self, action: #selector(websiteButtonTapped), for: .touchUpInside)
         button.layer.cornerRadius = 16
         button.layer.borderWidth = 1
@@ -194,7 +194,7 @@ extension UsersProfileViewController: UITableViewDelegate, UITableViewDataSource
         
         var content = cell.defaultContentConfiguration()
         content.text = "Коллекция NFT (\(user?.nftCount ?? 0))"
-        content.textProperties.font = .systemFont(ofSize: 17, weight: .bold)
+        content.textProperties.font = .bodyBold
         content.textProperties.color = .AppColors.black
         
         cell.accessoryView = accessoryButton
