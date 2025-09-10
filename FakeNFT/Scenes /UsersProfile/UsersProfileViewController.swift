@@ -1,8 +1,14 @@
 import UIKit
+import Kingfisher
 
 
-final class UsersProfileViewController: UIViewController {
+protocol UsersProfileViewControllerProtocol: AnyObject {
+    func configure(with user: User)
+}
+
+final class UsersProfileViewController: UIViewController, UsersProfileViewControllerProtocol {
     private var presenter: UserProfilePresenterProtocol
+    private var user: User?
     
     private lazy var profileContainer: UIView = {
         let view = UIView()
@@ -15,6 +21,7 @@ final class UsersProfileViewController: UIViewController {
         let imageView = UIImageView()
         imageView.contentMode = .scaleAspectFill
         imageView.clipsToBounds = true
+        imageView.layer.cornerRadius = 35
         imageView.translatesAutoresizingMaskIntoConstraints = false
         return imageView
     }()
@@ -36,8 +43,11 @@ final class UsersProfileViewController: UIViewController {
     
     private lazy var userWebSiteButton: UIButton = {
         let button = UIButton(type: .system)
+        button.setTitle("Перейти на сайт пользователя", for: .normal)
         button.setTitleColor(.blue, for: .normal)
         button.titleLabel?.font = .systemFont(ofSize: 17, weight: .regular)
+        button.addTarget(self, action: #selector(websiteButtonTapped), for: .touchUpInside)
+        button.translatesAutoresizingMaskIntoConstraints = false
         return button
     }()
     
@@ -62,19 +72,38 @@ final class UsersProfileViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        navigationController?.setNavigationBarHidden(false, animated: true)
         setupUI()
-        presenter.view?.viewDidLoad()
+        presenter.viewDidLoad()
     }
     
     func configure(with user: User) {
+        self.user = user
         nameLabel.text = user.name
         descriptionLabel.text = user.description ?? ""
+        
+        if let avatarURL = user.avatarURL {
+            let placeholder = UIImage(resource: .Icons.profileTab)
+            profileImageView.kf.setImage(
+                with: avatarURL,
+                placeholder: placeholder,
+                options: [.transition(.fade(0.2))]
+            )
+        } else {
+            profileImageView.image = UIImage(resource: .Icons.profileTab)
+        }
+        
+        tableView.reloadData()
     }
     
     private func setupUI() {
         view.addSubview(profileContainer)
         view.addSubview(userWebSiteButton)
         view.addSubview(tableView)
+        
+        tableView.register(UITableViewCell.self, forCellReuseIdentifier: "NFTCollectionWWWCell")
+        tableView.dataSource = self
+        tableView.delegate = self
         
         profileContainer.addSubview(profileImageView)
         profileContainer.addSubview(nameLabel)
@@ -93,8 +122,9 @@ final class UsersProfileViewController: UIViewController {
             
             nameLabel.leadingAnchor.constraint(equalTo: profileImageView.trailingAnchor, constant: 16),
             nameLabel.trailingAnchor.constraint(equalTo: profileContainer.trailingAnchor, constant: -16),
+            nameLabel.centerYAnchor.constraint(equalTo: profileImageView.centerYAnchor),
             
-            descriptionLabel.topAnchor.constraint(equalTo: profileImageView.bottomAnchor, constant: -20),
+            descriptionLabel.topAnchor.constraint(equalTo: profileImageView.bottomAnchor, constant: 20),
             descriptionLabel.leadingAnchor.constraint(equalTo: profileImageView.leadingAnchor),
             descriptionLabel.trailingAnchor.constraint(equalTo: nameLabel.trailingAnchor),
             
@@ -108,7 +138,39 @@ final class UsersProfileViewController: UIViewController {
             tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor)
         ])
-        
-        @objc func websiteButtonTapped() {}
     }
+    
+    @objc func websiteButtonTapped() {
+        presenter.didTapUserWebsite { [weak self] viewController in
+            self?.navigationController?.pushViewController(viewController, animated: true)
+        }
+    }
+}
+
+extension UsersProfileViewController: UITableViewDelegate, UITableViewDataSource {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        1
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: "NFTCollectionWWWCell", for: indexPath)
+        
+        var content = cell.defaultContentConfiguration()
+        content.text = "Коллекция NFT (\(user?.nftCount ?? 0))"
+        content.textProperties.font = .systemFont(ofSize: 17, weight: .bold)
+        content.textProperties.color = .black
+        
+        cell.contentConfiguration = content
+        cell.backgroundColor = .lightGray
+        cell.layer.masksToBounds = true
+        cell.selectionStyle = .none
+        
+        return cell
+    }
+    
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        60
+    }
+    
+    
 }

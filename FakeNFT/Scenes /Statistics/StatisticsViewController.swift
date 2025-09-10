@@ -136,9 +136,10 @@ extension StatisticsViewController: UITableViewDataSource,
         88
     }
     
-    func tableView(_ tableView: UITableView,
-                   didSelectRowAt indexPath: IndexPath) {
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
+        
+        presenter.didSelectUser(publishedUsers[indexPath.row])
     }
     
     func tableView(_ tableView: UITableView,
