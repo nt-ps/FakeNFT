@@ -18,8 +18,8 @@ protocol PutNewShoppingCartServiceProtocol {
 final class PutNewShoppingCartServiceImplementation: PutNewShoppingCartServiceProtocol {
     func postNewShoppingCart(with NFTs: [NFT]) {
         let stringWithCommaSeparatedNFTsIds = NFTs.map { $0.id }.joined(separator: ", ")
-        guard let url = URL(string: "https://d5dn3j2ouj72b0ejucbl.apigw.yandexcloud.net//api/v1/orders/1?nfts=\(stringWithCommaSeparatedNFTsIds)")
-        else {
+        let neededStringForURL = NFTs.count > 1 ? "https://d5dn3j2ouj72b0ejucbl.apigw.yandexcloud.net//api/v1/orders/1?nfts=\(stringWithCommaSeparatedNFTsIds)" : "https://d5dn3j2ouj72b0ejucbl.apigw.yandexcloud.net//api/v1/orders/1"
+        guard let url = URL(string: neededStringForURL) else {
             print("could't create url from string in OrderServiceImplementation")
             return
         }
