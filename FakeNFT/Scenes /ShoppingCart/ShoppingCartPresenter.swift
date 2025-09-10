@@ -17,6 +17,7 @@ protocol ShoppingCartPresenterProtocol: AnyObject {
     func clearNftsInCart()
     func deleteNFTFromCart()
     func showPlaceholderIf(needed: Bool)
+    func sortOrderBy(_ parameter: String)
 }
 
 
@@ -59,5 +60,9 @@ final class ShoppingCartPresenterImplementation: ShoppingCartPresenterProtocol {
     
     func showPlaceholderIf(needed: Bool) {
         shoppingCartView?.showPlaceholderIf(needed: needed)
+    }
+    
+    func sortOrderBy(_ parameter: String) {
+        shoppingCartModel.sortOrderBy(parameter)
     }
 }

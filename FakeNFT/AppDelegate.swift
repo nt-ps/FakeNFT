@@ -6,6 +6,12 @@ final class AppDelegate: UIResponder, UIApplicationDelegate {
         _: UIApplication,
         didFinishLaunchingWithOptions _: [UIApplication.LaunchOptionsKey: Any]?
     ) -> Bool {
+        guard UserDefaults.standard.bool(forKey: "isItFirstLaunch") == false
+        else {
+            UserDefaults.standard.set(L10n.SortAlert.byName, forKey: "chosenSortMethod")
+            UserDefaults.standard.set(false, forKey: "isItFirstLaunch")
+            return true
+        }
         return true
     }
 

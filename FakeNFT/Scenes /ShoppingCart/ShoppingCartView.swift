@@ -86,6 +86,7 @@ final class ShoppingCartViewControllerImplementation: UIViewController, Shopping
             self.NFTsTotalPriceLabel.isHidden = needed
             self.goToPaymentButtonBackgroundView.isHidden = needed
             self.goToPaymentButton.isHidden = needed
+            self.filterButton.isHidden = needed
         }
     }
     
@@ -116,9 +117,24 @@ final class ShoppingCartViewControllerImplementation: UIViewController, Shopping
     
     // MARK: UI Actions
     @objc private func filterButtonTapped() {
-        let vc = UIViewController()
-        vc.view.backgroundColor = .clear
-        present(vc, animated: true)
+        let alert = UIAlertController(title: L10n.SortAlert.title, message: nil, preferredStyle: .actionSheet)
+        alert.addAction(UIAlertAction(title: L10n.SortAlert.byPrice, style: .default) { [weak self] _ in
+            let snapshot = NSDiffableDataSourceSnapshot<Int, NFT>()
+            self?.diffableDataSource?.apply(snapshot)
+            self?.shoppingCartPresenter?.sortOrderBy(L10n.SortAlert.byPrice)
+        })
+        alert.addAction(UIAlertAction(title: L10n.SortAlert.byRating, style: .default,) { [weak self] _ in
+            let snapshot = NSDiffableDataSourceSnapshot<Int, NFT>()
+            self?.diffableDataSource?.apply(snapshot)
+            self?.shoppingCartPresenter?.sortOrderBy(L10n.SortAlert.byRating)
+        })
+        alert.addAction(UIAlertAction(title: L10n.SortAlert.byName, style: .default,) { [weak self] _ in
+            let snapshot = NSDiffableDataSourceSnapshot<Int, NFT>()
+            self?.diffableDataSource?.apply(snapshot)
+            self?.shoppingCartPresenter?.sortOrderBy(L10n.SortAlert.byName)
+        })
+        alert.addAction(UIAlertAction(title: L10n.SortAlert.close, style: .cancel))
+        present(alert, animated: true)
     }
     
     @objc private func goToPaymentButtonTapped() {
@@ -175,8 +191,11 @@ private extension ShoppingCartViewControllerImplementation {
         filterButton.setImage(.Icons.sort, for: .normal)
         if traitCollection.userInterfaceStyle == .dark {
             filterButton.tintColor = .white
+        } else {
+            filterButton.tintColor = UIColor(hexString: "#1A1B22")
         }
         filterButton.addTarget(self, action: #selector(filterButtonTapped), for: .touchUpInside)
+        filterButton.isHidden = true
     }
     
     private func setUpNFTTableView() {

@@ -5,14 +5,16 @@
 //  Created by oneche$$$ on 01.09.2025.
 //
 
-import UIKit
+import Foundation
 
 
 
 protocol ShoppingCartModelProtocol: AnyObject {
     var NFTsInCart: [NFT] { get set }
+    var chosenSortMethod: String { get set }
     func getOrder()
     func postNewOrderWithoutDeletedNFT()
+    func sortOrderBy(_ parameter: String)
 }
 
 
@@ -30,6 +32,13 @@ final class ShoppingCartModelImplementation: ShoppingCartModelProtocol {
             NFTsInCartTotalPrice = (NFTsInCartTotalPrice * 100).rounded() / 100
             totalNFTsAmount = NFTsInCart.count
             shoppingCartPresenter?.reloadCartInUI(nfts: NFTsInCart, totalNFTsPrice: NFTsInCartTotalPrice, totalNFTsAmount: totalNFTsAmount)
+        }
+    }
+    var chosenSortMethod: String {
+        get {
+            UserDefaults.standard.string(forKey: "chosenSortMethod") ?? ""
+        } set {
+            UserDefaults.standard.set(newValue, forKey: "chosenSortMethod")
         }
     }
 
@@ -64,10 +73,25 @@ final class ShoppingCartModelImplementation: ShoppingCartModelProtocol {
         postNewShoppingCartService?.postNewOrder(with: NFTsInCart)
     }
     
+    func sortOrderBy(_ parameter: String) {
+        switch parameter {
+        case L10n.SortAlert.byPrice:
+            chosenSortMethod = L10n.SortAlert.byPrice
+            NFTsInCart = NFTsInCart.sorted { $0.price < $1.price }
+        case L10n.SortAlert.byRating:
+            chosenSortMethod = L10n.SortAlert.byRating
+            NFTsInCart = NFTsInCart.sorted { $0.rating > $1.rating }
+        default:
+            chosenSortMethod = L10n.SortAlert.byName
+            NFTsInCart = NFTsInCart.sorted { $0.name < $1.name }
+        }
+    }
+    
     private func getNFTByID(id: String) {
         NFTByIDService?.getNFTByID(id: id) { [weak self] nft in
             guard let self else { return }
             NFTsInCart.append(nft)
+            sortOrderBy(chosenSortMethod)
         }
     }
 }
