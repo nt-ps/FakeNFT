@@ -29,6 +29,7 @@ final class UsersProfileViewController: UIViewController, UsersProfileViewContro
     private lazy var nameLabel: UILabel = {
         let label = UILabel()
         label.font = .systemFont(ofSize: 22, weight: .bold)
+        label.textColor = .AppColors.black
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
@@ -36,6 +37,7 @@ final class UsersProfileViewController: UIViewController, UsersProfileViewContro
     private lazy var descriptionLabel: UILabel = {
         let label = UILabel()
         label.font = .systemFont(ofSize: 13, weight: .regular)
+        label.textColor = .AppColors.black
         label.numberOfLines = 0
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
@@ -44,9 +46,15 @@ final class UsersProfileViewController: UIViewController, UsersProfileViewContro
     private lazy var userWebSiteButton: UIButton = {
         let button = UIButton(type: .system)
         button.setTitle("Перейти на сайт пользователя", for: .normal)
-        button.setTitleColor(.blue, for: .normal)
+        button.setTitleColor(.AppColors.black, for: .normal)
         button.titleLabel?.font = .systemFont(ofSize: 17, weight: .regular)
         button.addTarget(self, action: #selector(websiteButtonTapped), for: .touchUpInside)
+        button.layer.cornerRadius = 16
+        button.layer.borderWidth = 1
+        button.layer.borderColor = UIColor.AppColors.black.cgColor
+        button.registerForTraitChanges([UITraitUserInterfaceStyle.self]) { [weak self] (button: UIButton, _) in
+            self?.updateButtonBorder()
+        }
         button.translatesAutoresizingMaskIntoConstraints = false
         return button
     }()
@@ -58,6 +66,18 @@ final class UsersProfileViewController: UIViewController, UsersProfileViewContro
         tableView.showsVerticalScrollIndicator = false
         tableView.translatesAutoresizingMaskIntoConstraints = false
         return tableView
+    }()
+    
+    private lazy var accessoryButton: UIButton = {
+        let button = UIButton(type: .system)
+        let icon = UIImage(systemName: "chevron.right")
+        button.setImage(icon, for: .normal)
+        button.tintColor = .AppColors.black
+        button.sizeToFit()
+        button.addTarget(self, action: #selector(collectionButtonDidTapped), for: .touchUpInside)
+        button.translatesAutoresizingMaskIntoConstraints = false
+        
+        return button
     }()
     
     init(presenter: UsersProfilePresenter) {
@@ -75,6 +95,16 @@ final class UsersProfileViewController: UIViewController, UsersProfileViewContro
         navigationController?.setNavigationBarHidden(false, animated: true)
         setupUI()
         presenter.viewDidLoad()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        tabBarController?.tabBar.isHidden = true
+    }
+
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        tabBarController?.tabBar.isHidden = false
     }
     
     func configure(with user: User) {
@@ -97,6 +127,7 @@ final class UsersProfileViewController: UIViewController, UsersProfileViewContro
     }
     
     private func setupUI() {
+        view.backgroundColor = .AppColors.white
         view.addSubview(profileContainer)
         view.addSubview(userWebSiteButton)
         view.addSubview(tableView)
@@ -145,6 +176,12 @@ final class UsersProfileViewController: UIViewController, UsersProfileViewContro
             self?.navigationController?.pushViewController(viewController, animated: true)
         }
     }
+    
+    @objc func collectionButtonDidTapped() {}
+    
+    private func updateButtonBorder() {
+        userWebSiteButton.layer.borderColor = UIColor.AppColors.black.cgColor
+    }
 }
 
 extension UsersProfileViewController: UITableViewDelegate, UITableViewDataSource {
@@ -158,10 +195,11 @@ extension UsersProfileViewController: UITableViewDelegate, UITableViewDataSource
         var content = cell.defaultContentConfiguration()
         content.text = "Коллекция NFT (\(user?.nftCount ?? 0))"
         content.textProperties.font = .systemFont(ofSize: 17, weight: .bold)
-        content.textProperties.color = .black
+        content.textProperties.color = .AppColors.black
         
+        cell.accessoryView = accessoryButton
         cell.contentConfiguration = content
-        cell.backgroundColor = .lightGray
+        cell.backgroundColor = .clear
         cell.layer.masksToBounds = true
         cell.selectionStyle = .none
         
@@ -171,6 +209,4 @@ extension UsersProfileViewController: UITableViewDelegate, UITableViewDataSource
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         60
     }
-    
-    
 }
