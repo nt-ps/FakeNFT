@@ -8,13 +8,9 @@
 import UIKit
 import Kingfisher
 
-
-
 protocol NFTTableViewCellDelegate: AnyObject {
     func deleteFromCartButtonTapped(NFTsToDeleteName: String, image: UIImage)
 }
-
-
 
 final class NFTTableViewCell: UITableViewCell {
     weak var delegate: NFTTableViewCellDelegate?
@@ -65,7 +61,6 @@ final class NFTTableViewCell: UITableViewCell {
         delegate?.deleteFromCartButtonTapped(NFTsToDeleteName: NFTNameLabel.text ?? "", image: NFTImageView.image ?? UIImage())
     }
 }
-
 
 // MARK: setup cell view
 private extension NFTTableViewCell {
@@ -160,7 +155,6 @@ private extension NFTTableViewCell {
         deleteFromCartButton.addTarget(self, action: #selector(deleteFromCartButtonTapped), for: .touchUpInside)
     }
 }
-
 
 // MARK: Dark theme implementation
 extension NFTTableViewCell {

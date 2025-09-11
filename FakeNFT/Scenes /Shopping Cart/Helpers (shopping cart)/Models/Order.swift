@@ -7,9 +7,7 @@
 
 import Foundation
 
-
-
-struct Order: Codable {
+struct Order: Decodable {
     let nfts: [String]
     let id: String
 }

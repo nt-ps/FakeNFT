@@ -7,8 +7,6 @@
 
 import Foundation
 
-
-
 protocol ShoppingCartPresenterProtocol: AnyObject {
     var NFTsToDeleteName: String { get set }
     func getOrder()
@@ -19,8 +17,6 @@ protocol ShoppingCartPresenterProtocol: AnyObject {
     func showPlaceholderIf(needed: Bool)
     func sortOrderBy(_ parameter: String)
 }
-
-
 
 final class ShoppingCartPresenterImplementation: ShoppingCartPresenterProtocol {
     // MARK: View and Model

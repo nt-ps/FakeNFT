@@ -86,8 +86,12 @@ final class ShoppingCartModelImplementation: ShoppingCartModelProtocol {
     private func getNFTByID(id: String) {
         NFTByIDService?.getNFTByID(id: id) { [weak self] nft in
             guard let self else { return }
-            self.NFTsInCart.append(nft)
+<<<<<<< HEAD:FakeNFT/Scenes /Shopping Cart/Shopping Cart/ShoppingCartModel.swift
+            NFTsInCart.append(nft)
             sortOrderBy(chosenSortMethod)
+=======
+            self.NFTsInCart.append(nft)
+>>>>>>> shopping_cart_epic_master:FakeNFT/Scenes /ShoppingCart/ShoppingCartModel.swift
         }
     }
 }

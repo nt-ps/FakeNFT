@@ -7,13 +7,9 @@
 
 import Foundation
 
-
-
 protocol OrderServiceProtocol {
     func fetchOrder(completion: @escaping ((Order) -> Void))
 }
-
-
 
 final class OrderServiceImplementation: OrderServiceProtocol {
     func fetchOrder(completion: @escaping ((Order) -> Void)) {
