@@ -69,3 +69,5 @@
 "error.unknown" = "An unknown error has occurred";
 "error.repeat" = "Repeat";
 "error.title" = "Error";
+
+"alert.ok" = "OK";

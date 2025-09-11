@@ -15,7 +15,7 @@ final class ProfileStorage {
     
     private var cachedProfile: ProfileInfoModel?
     private var lastCacheTime: Date?
-    private let cacheLifetime: TimeInterval = 300 // 5 минут
+    private let cacheLifetime: TimeInterval = 300
 
     var profile: ProfileInfoModel? {
         get {
@@ -48,8 +48,24 @@ final class ProfileStorage {
         }
     }
     
+    var sortType: SortType {
+        get {
+            guard
+                let sortTypeString = userDefaults.string(forKey: Keys.sortType.rawValue),
+                let sortType = SortType(rawValue: sortTypeString)
+            else {
+                return .byRating
+            }
+            return sortType
+        }
+        set {
+            userDefaults.setValue(newValue.rawValue, forKey: Keys.sortType.rawValue)
+        }
+    }
+    
     private enum Keys: String {
         case profile
+        case sortType
     }
 
     private let userDefaults = UserDefaults.standard

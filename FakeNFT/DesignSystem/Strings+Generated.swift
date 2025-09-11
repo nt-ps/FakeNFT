@@ -10,6 +10,10 @@ import Foundation
 // swiftlint:disable explicit_type_interface function_parameter_count identifier_name line_length
 // swiftlint:disable nesting type_body_length type_name vertical_whitespace_opening_braces
 internal enum L10n {
+  internal enum Alert {
+    /// OK
+    internal static let ok = L10n.tr("Localizable", "alert.ok", fallback: "OK")
+  }
   internal enum Cart {
     /// The cart is empty
     internal static let empty = L10n.tr("Localizable", "cart.empty", fallback: "The cart is empty")

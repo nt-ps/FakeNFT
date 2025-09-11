@@ -69,3 +69,5 @@
 "editProfile.avatar.deleteAlert.delete" = "Удалить";
 "editProfile.avatar.error.invalidURL" = "Неверный формат URL";
 "editProfile.avatar.error.updateFailed" = "Не удалось обновить аватар";
+
+"alert.ok" = "OK";

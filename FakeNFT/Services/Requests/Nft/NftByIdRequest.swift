@@ -2,9 +2,11 @@ import Foundation
 
 struct NftRequest: NetworkRequest {
     let id: String
+    
     var endpoint: URL? {
-        URL(string: "\(RequestConstants.baseURL)/api/v1/nft/\(id)")
+        RequestConstants.Endpoint.nftById(id: id).url
     }
+    
     var query: Query?
     var dto: Dto?
 }

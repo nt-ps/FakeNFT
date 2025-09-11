@@ -8,7 +8,6 @@
 import Foundation
 
 struct GetProfileRequest: NetworkRequest {
-    
     var endpoint: URL? {
         RequestConstants.Endpoint.profile.url
     }

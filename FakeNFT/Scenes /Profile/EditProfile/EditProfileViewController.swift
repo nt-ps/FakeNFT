@@ -21,11 +21,11 @@ protocol EditProfileViewProtocol: AnyObject {
 
 final class EditProfileViewController: UIViewController {
     
-    // MARK: - Properties
+    // MARK: Properties
     private let editProfileView = EditProfileView()
     private let presenter: EditProfilePresenterProtocol
     
-    // MARK: - Initializers
+    // MARK: Initializers
     init(presenter: EditProfilePresenterProtocol) {
         self.presenter = presenter
         super.init(nibName: nil, bundle: nil)
@@ -35,7 +35,7 @@ final class EditProfileViewController: UIViewController {
         fatalError("init(coder:) has not been implemented")
     }
     
-    // MARK: - Lifecycle
+    // MARK: Methods
     override func loadView() {
         view = editProfileView
     }
@@ -51,13 +51,10 @@ final class EditProfileViewController: UIViewController {
         super.viewDidLayoutSubviews()
     }
     
-    // MARK: - Setup
+    // MARK: Setup
     private func setupView() {
-        let backButton = UIButton(type: .system)
+        let backButton = NavigationBackButton()
         backButton.addTarget(self, action: #selector(cancelTapped), for: .touchUpInside)
-        backButton.setImage(.Icons.backward, for: .normal)
-        backButton.tintColor = .AppColors.black
-        backButton.translatesAutoresizingMaskIntoConstraints = false
         navigationItem.leftBarButtonItem = UIBarButtonItem(customView: backButton)
     }
     
@@ -75,7 +72,7 @@ final class EditProfileViewController: UIViewController {
         }
     }
     
-    // MARK: - Actions
+    // MARK: Actions
     @objc private func cancelTapped() {
         presenter.didTapCancel()
     }
@@ -97,23 +94,18 @@ extension EditProfileViewController: EditProfileViewProtocol {
     }
     
     func showSuccess() {
-        let alert = UIAlertController(
-            title: "Успешно",
-            message: "Профиль обновлен",
-            preferredStyle: .alert
-        )
-        alert.addAction(UIAlertAction(title: "OK", style: .default))
-        present(alert, animated: true)
+        let alertModel = AlertModel(title: "Профиль обновлен",
+                                    buttons: [
+                                        AlertButton(text: L10n.Alert.ok) { [weak self] in
+                                            self?.dismiss()
+                                        }
+                                    ])
+        AlertPresenter.present(in: self, model: alertModel)
     }
     
     func showError(message: String) {
-        let alert = UIAlertController(
-            title: "Ошибка",
-            message: message,
-            preferredStyle: .alert
-        )
-        alert.addAction(UIAlertAction(title: "OK", style: .default))
-        present(alert, animated: true)
+        let alertModel = AlertModel.error(message: message)
+        AlertPresenter.present(in: self, model: alertModel)
     }
     
     func dismiss() {
@@ -121,73 +113,40 @@ extension EditProfileViewController: EditProfileViewProtocol {
     }
     
     func showAvatarOptions() {
-        let alert = UIAlertController(
+        let alertModel = AlertModel(
             title: L10n.EditProfile.Avatar.Alert.title,
             message: nil,
+            buttons: [
+                AlertButton(text: L10n.EditProfile.Avatar.Alert.change) { [weak self] in
+                    self?.presenter.didTapChangeAvatar()
+                },
+                AlertButton(text: L10n.EditProfile.Avatar.Alert.delete, style: .destructive) { [weak self] in
+                    self?.presenter.didTapDeleteAvatar()
+                },
+                AlertButton(text: L10n.EditProfile.Avatar.Alert.cancel, style: .cancel)
+            ],
             preferredStyle: .actionSheet
         )
-        
-        alert.addAction(UIAlertAction(title: L10n.EditProfile.Avatar.Alert.change, style: .default) { [weak self] _ in
-            self?.presenter.didTapChangeAvatar()
-        })
-        
-        alert.addAction(UIAlertAction(title: L10n.EditProfile.Avatar.Alert.delete, style: .destructive) { [weak self] _ in
-            self?.presenter.didTapDeleteAvatar()
-        })
-        
-        alert.addAction(UIAlertAction(title: L10n.EditProfile.Avatar.Alert.cancel, style: .cancel))
-        
-        present(alert, animated: true)
+        AlertPresenter.present(in: self, model: alertModel)
     }
     
     func showAvatarChangeAlert() {
-        let alert = UIAlertController(
+        AlertPresenter.presentTextFieldAlert(
+            in: self,
             title: L10n.EditProfile.Avatar.ChangeAlert.title,
-            message: nil,
-            preferredStyle: .alert
-        )
-        
-        alert.addTextField { textField in
-            textField.placeholder = "https://example.com/image.jpg"
-            textField.text = self.presenter.profile.avatar
-            textField.keyboardType = .URL
-            textField.autocapitalizationType = .none
-            textField.autocorrectionType = .no
-        }
-        
-        let saveAction = UIAlertAction(title: L10n.EditProfile.Avatar.ChangeAlert.save, style: .default) { [weak self] _ in
-            guard let textField = alert.textFields?.first,
-                  let urlString = textField.text,
-                  !urlString.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty else {
-                return
+            placeholder: "https://example.com/image.jpg",
+            currentText: presenter.profile.avatar,
+            keyboardType: .URL,
+            saveAction: { [weak self] urlString in
+                self?.presenter.didTapSaveAvatarURL(urlString)
             }
-            self?.presenter.didTapSaveAvatarURL(urlString.trimmingCharacters(in: .whitespacesAndNewlines))
-        }
-        
-        let cancelAction = UIAlertAction(title: L10n.EditProfile.Avatar.Alert.cancel, style: .cancel)
-        
-        alert.addAction(saveAction)
-        alert.addAction(cancelAction)
-        
-        present(alert, animated: true)
+        )
     }
     
     func showAvatarDeleteConfirmation() {
-        let alert = UIAlertController(
-            title: L10n.EditProfile.Avatar.DeleteAlert.title,
-            message: L10n.EditProfile.Avatar.DeleteAlert.message,
-            preferredStyle: .alert
-        )
-        
-        let deleteAction = UIAlertAction(title: L10n.EditProfile.Avatar.DeleteAlert.delete, style: .destructive) { [weak self] _ in
-            self?.presenter.didTapSaveAvatarURL("") // Пустая строка означает удаление аватара
+        let alertModel = AlertModel.avatarDeleteConfirmation { [weak self] in
+            self?.presenter.didTapSaveAvatarURL("")
         }
-        
-        let cancelAction = UIAlertAction(title: L10n.EditProfile.Avatar.Alert.cancel, style: .cancel)
-        
-        alert.addAction(deleteAction)
-        alert.addAction(cancelAction)
-        
-        present(alert, animated: true)
+        AlertPresenter.present(in: self, model: alertModel)
     }
 }

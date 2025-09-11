@@ -8,11 +8,6 @@ protocol StatisticsPresenterProtocol {
     func loadMoreUsers()
 }
 
-enum SortType: String {
-    case rating
-    case name
-}
-
 final class StatisticsPresenter: StatisticsPresenterProtocol {
     private let servicesAssembly: ServicesAssembly
     weak var view: StatisticsViewController?
@@ -34,7 +29,7 @@ final class StatisticsPresenter: StatisticsPresenterProtocol {
            let savedSortType = SortType(rawValue: savedSortTypeRawValue) {
             currentSortType = savedSortType
         } else {
-            currentSortType = .rating
+            currentSortType = .byRating
         }
     }
     
@@ -43,13 +38,13 @@ final class StatisticsPresenter: StatisticsPresenterProtocol {
     }
     
     func sortByName() {
-        currentSortType = .name
+        currentSortType = .byName
         users.sort { $0.name < $1.name }
         view?.usersDidUpdated(users)
     }
     
     func sortByRating() {
-        currentSortType = .rating
+        currentSortType = .byRating
         users.sort { $0.rating > $1.rating }
         view?.usersDidUpdated(users)
     }
@@ -75,10 +70,11 @@ final class StatisticsPresenter: StatisticsPresenterProtocol {
                 print("Успешная загрузка \(users.count) пользователей")
                 self.users.isEmpty ? self.users = users : self.users.append(contentsOf: users)
                 switch self.currentSortType {
-                case .rating:
+                case .byRating:
                     self.sortByRating()
-                case .name:
+                case .byName:
                     self.sortByName()
+                default : break
                 }
             case .failure(let error):
                 if self.currentPage > 0 {

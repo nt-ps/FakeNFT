@@ -5,7 +5,7 @@ struct UsersRequest: NetworkRequest {
     var query: Query?
     
     var endpoint: URL? {
-        URL(string: "\(RequestConstants.baseURL)/api/v1/users")
+        RequestConstants.Endpoint.users.url
     }
     
     var httpMethod: HttpMethod = .get

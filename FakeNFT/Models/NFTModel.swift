@@ -8,16 +8,16 @@
 import Foundation
 
 struct NFTModel: Decodable {
-    let image: String
     let name: String
-    let authorName: String
+    let image: String
     let rating: Int
+    let author: String
     let price: Float
     
     static func == (lhs: Self, rhs: Self) -> Bool {
-        lhs.image == rhs.image &&
         lhs.name == rhs.name &&
-        lhs.authorName == rhs.authorName &&
+        lhs.image == rhs.image &&
+        lhs.author == rhs.author &&
         lhs.rating == rhs.rating &&
         lhs.price == rhs.price
     }
