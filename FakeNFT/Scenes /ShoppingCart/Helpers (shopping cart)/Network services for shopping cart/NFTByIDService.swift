@@ -7,13 +7,9 @@
 
 import Foundation
 
-
-
 protocol NFTByIDServiceProtocol {
     func getNFTByID(id: String, completion: @escaping ((NFT) -> Void))
 }
-
-
 
 final class NFTByIDServiceImplementation: NFTByIDServiceProtocol {
     func getNFTByID(id: String, completion: @escaping ((NFT) -> Void)) {

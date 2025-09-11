@@ -7,16 +7,12 @@
 
 import Foundation
 
-
-
 protocol ShoppingCartPresenterProtocol: AnyObject {
     func getOrder()
     func reloadCartInUI(nfts: [NFT], totalNFTsPrice: Float, totalNFTsAmount: Int)
     func getNFTs() -> [NFT]
     func clearNftsInCart()
 }
-
-
 
 final class ShoppingCartPresenterImplementation: ShoppingCartPresenterProtocol {
     private weak var shoppingCartView: ShoppingCartViewProtocol?

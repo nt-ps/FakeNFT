@@ -7,9 +7,7 @@
 
 import Foundation
 
-
-
-struct NFT: Codable, Hashable {
+struct NFT: Decodable, Hashable {
     let createdAt: String
     let name: String
     let images: [String]

@@ -7,13 +7,9 @@
 
 import UIKit
 
-
-
 protocol ShoppingCartViewProtocol: AnyObject {
     func reloadDataInTableView(nfts: [NFT], totalNFTsPrice: Float, totalNFTsAmount: Int)
 }
-
-
 
 final class ShoppingCartViewControllerImplementation: UIViewController, ShoppingCartViewProtocol, NFTTableViewCellDelegate {
     // MARK: Presenter
@@ -121,13 +117,10 @@ final class ShoppingCartViewControllerImplementation: UIViewController, Shopping
     }
 }
 
-
-
 // MARK: Table view delegate
 extension ShoppingCartViewControllerImplementation: UITableViewDelegate {
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat { 140 }
 }
-
 
 // MARK: view setup
 private extension ShoppingCartViewControllerImplementation {
@@ -345,7 +338,6 @@ private extension ShoppingCartViewControllerImplementation {
         goBackFromDeletingNFTButton.addTarget(self, action: #selector(goBackFromDeletingNFTButtonTapped), for: .touchUpInside)
     }
 }
-
 
 // MARK: Dark theme implementation
 extension ShoppingCartViewControllerImplementation {

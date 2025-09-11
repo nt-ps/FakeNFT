@@ -7,14 +7,10 @@
 
 import UIKit
 
-
-
 protocol ShoppingCartModelProtocol: AnyObject {
     func getOrder()
     var NFTsInCart: [NFT] { get set }
 }
-
-
 
 final class ShoppingCartModelImplementation: ShoppingCartModelProtocol {
     weak var shoppingCartPresenter: ShoppingCartPresenterProtocol?
@@ -54,7 +50,7 @@ final class ShoppingCartModelImplementation: ShoppingCartModelProtocol {
     private func getNFTByID(id: String) {
         NFTByIDService?.getNFTByID(id: id) { [weak self] nft in
             guard let self else { return }
-            NFTsInCart.append(nft)
+            self.NFTsInCart.append(nft)
         }
     }
 }
