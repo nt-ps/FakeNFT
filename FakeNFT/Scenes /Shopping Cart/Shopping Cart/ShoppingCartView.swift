@@ -134,7 +134,9 @@ final class ShoppingCartViewControllerImplementation: UIViewController, Shopping
     }
     
     @objc private func goToPaymentButtonTapped() {
-        navigationController?.pushViewController(UIViewController(), animated: true)
+        let vc = PaymentViewController()
+        vc.hidesBottomBarWhenPushed = true
+        navigationController?.pushViewController(vc, animated: true)
     }
     
     @objc private func goBackFromDeletingNFTButtonTapped() {
@@ -167,6 +169,7 @@ private extension ShoppingCartViewControllerImplementation {
         setUpDeleteNFTFromCartButton()
         setUpGoBackFromDeletingNFTButton()
         setUpEmptyCartLabel()
+        navigationItem.backButtonDisplayMode = .minimal
         if traitCollection.userInterfaceStyle == .dark {
             view.backgroundColor = UIColor(hexString: "#1A1B22")
         } else {

@@ -7,13 +7,9 @@
 
 import Foundation
 
-
-
 protocol PaymentModelProtocol: AnyObject {
     
 }
-
-
 
 final class PaymentModel: PaymentModelProtocol {
     

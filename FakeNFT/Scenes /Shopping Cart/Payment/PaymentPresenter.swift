@@ -7,14 +7,11 @@
 
 import Foundation
 
-
 protocol PaymentPresenterProtocol: AnyObject {
     
 }
 
-
-
 final class PaymentPresenter: PaymentPresenterProtocol {
     private weak var paymentView: PaymentViewProtocol?
-    private let paymentModel: PaymentModelProtocol?
+    private let paymentModel: PaymentModelProtocol? = nil
 }
