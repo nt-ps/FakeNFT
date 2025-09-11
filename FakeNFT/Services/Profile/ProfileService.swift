@@ -11,7 +11,7 @@ import Foundation
 protocol ProfileServiceProtocol {
     func fetchProfile(completion: @escaping (Result<ProfileInfoModel, Error>) -> Void)
     func editProfile(_ editProfileModel: EditProfileModel, completion: @escaping (Result<ProfileInfoModel, Error>) -> Void)
-    func getNFTs(completion: @escaping (Result<[NFTModel], Error>) -> Void)
+    func getNFTs(completion: @escaping (Result<[Nft], Error>) -> Void)
 }
 
 // MARK: - Implementation
@@ -63,7 +63,7 @@ final class ProfileService: ProfileServiceProtocol {
         }
     }
     
-    func getNFTs(completion: @escaping (Result<[NFTModel], Error>) -> Void) {
+    func getNFTs(completion: @escaping (Result<[Nft], Error>) -> Void) {
         fetchProfile { result in
             switch result {
             case .success(let profile):
@@ -84,9 +84,9 @@ final class ProfileService: ProfileServiceProtocol {
     
     // MARK: Private
     
-    private func loadNFTs(ids: [String], completion: @escaping (Result<[NFTModel], Error>) -> Void) {
+    private func loadNFTs(ids: [String], completion: @escaping (Result<[Nft], Error>) -> Void) {
         let group = DispatchGroup()
-        var nftModels: [NFTModel] = []
+        var nftModels: [Nft] = []
         var lastError: Error?
         
         for id in ids {
@@ -98,14 +98,7 @@ final class ProfileService: ProfileServiceProtocol {
                 
                 switch result {
                 case .success(let nft):
-                    let nftModel = NFTModel(
-                        name: nft.name,
-                        image: nft.images.first?.absoluteString ?? "",
-                        rating: nft.rating,
-                        author: nft.author,
-                        price: nft.price
-                    )
-                    nftModels.append(nftModel)
+                    nftModels.append(nft)
                     
                 case .failure(let error):
                     lastError = error

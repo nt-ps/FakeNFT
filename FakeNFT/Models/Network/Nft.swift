@@ -11,7 +11,7 @@ struct Nft: Decodable {
     
     let createdAt: Date
     let name: String
-    let images: [URL]
+    let images: [String]
     let rating: Int
     let description: String
     let price: Float
@@ -25,18 +25,20 @@ struct Nft: Decodable {
     // TODO: Удалить после того, как будет протянута сеть.
     init(
         name: String,
+        images: [String] = [],
         coverImage: UIImage?,
         rating: Int,
         price: Float,
-        id: String
+        id: String,
+        author: String = ""
     ) {
         self.createdAt = Date()
         self.name = name
-        self.images = []
+        self.images = images
         self.rating = rating
         self.description = ""
         self.price = price
-        self.author = ""
+        self.author = author
         self.id = id
         self.coverImage = coverImage
     }
@@ -58,7 +60,7 @@ struct Nft: Decodable {
         createdAt = date
         
         name = try container.decode(String.self, forKey: .name)
-        images = try container.decode([URL].self, forKey: .images)
+        images = try container.decode([String].self, forKey: .images)
         rating = try container.decode(Int.self, forKey: .rating)
         description = try container.decode(String.self, forKey: .description)
         price = try container.decode(Float.self, forKey: .price)

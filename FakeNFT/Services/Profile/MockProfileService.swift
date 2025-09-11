@@ -32,50 +32,48 @@ final class MockProfileService: ProfileServiceProtocol {
         fetchProfile(completion: completion)
     }
     
-    func getNFTs(completion: @escaping (Result<[NFTModel], Error>) -> Void) {
+    func getNFTs(completion: @escaping (Result<[Nft], Error>) -> Void) {
         DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) {
             let mockNFTs = [
                 Nft(
                     name: "Archie",
-                    coverImage: UIImage(resource: .NftMock.archieCover),
+                    images: ["local://NftMock/ArchieCover"],
+                    coverImage: nil,
                     rating: 2,
                     price: 1.5,
-                    id: "Archie"
+                    id: "archie",
+                    author: "John Doe"
                 ),
                 Nft(
                     name: "Art",
-                    coverImage: UIImage(resource: .NftMock.artCover),
+                    images: ["local://NftMock/ArtCover"],
+                    coverImage: nil,
                     rating: 3,
                     price: 2.0,
-                    id: "Art"
+                    id: "art",
+                    author: "John Doe"
                 ),
                 Nft(
                     name: "Nacho",
-                    coverImage: UIImage(resource: .NftMock.nachoCover),
+                    images: ["local://NftMock/NachoCover"],
+                    coverImage: nil,
                     rating: 2,
                     price: 1.8,
-                    id: "Nacho"
+                    id: "nacho",
+                    author: "John Doe"
                 ),
                 Nft(
                     name: "Tater",
-                    coverImage: UIImage(resource: .NftMock.taterCover),
+                    images: ["local://NftMock/TaterCover"],
+                    coverImage: nil,
                     rating: 4,
                     price: 3.2,
-                    id: "Tater"
+                    id: "tater",
+                    author: "John Doe"
                 )
             ]
             
-            let nftModels = mockNFTs.map { nft in
-                NFTModel(
-                    name: nft.name,
-                    image: "local://NftMock/\(nft.name)Cover",
-                    rating: nft.rating,
-                    author: "John Doe",
-                    price: nft.price
-                )
-            }
-            
-            completion(.success(nftModels))
+            completion(.success(mockNFTs))
         }
     }
 }

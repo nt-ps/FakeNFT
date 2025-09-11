@@ -10,7 +10,7 @@ import UIKit
 protocol MyNFTViewProtocol: AnyObject {
     func showLoading()
     func hideLoading()
-    func showNFTs(_ nfts: [NFTModel])
+    func showNFTs(_ nfts: [Nft])
     func showError(_ message: String)
     func showEmptyState()
     func updateSortButtonState(isEnabled: Bool)
@@ -111,7 +111,7 @@ extension MyNFTViewController: MyNFTViewProtocol {
         myNFTView.tableView.reloadData()
     }
     
-    func showNFTs(_ nfts: [NFTModel]) {
+    func showNFTs(_ nfts: [Nft]) {
         myNFTView.changeState(.standart)
         myNFTView.tableView.reloadData()
     }

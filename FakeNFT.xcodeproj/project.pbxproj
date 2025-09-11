@@ -87,7 +87,6 @@
 		674B6D9D2E71B949004C628E /* SetLikeRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 674B6D9C2E71B943004C628E /* SetLikeRequest.swift */; };
 		674B6D9F2E71BC75004C628E /* LikeModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 674B6D9E2E71BC6A004C628E /* LikeModel.swift */; };
 		674B6DA12E72CCE3004C628E /* UIBlockingProgressHUD.swift in Sources */ = {isa = PBXBuildFile; fileRef = 674B6DA02E72CCE3004C628E /* UIBlockingProgressHUD.swift */; };
-		674B6E262E72FD8C004C628E /* NFTModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 674B6E252E72FD83004C628E /* NFTModel.swift */; };
 		67A4EA4C2E63573300E4F331 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 67A4EA4B2E63573300E4F331 /* Localizable.strings */; };
 		67E659FF2E63696B00A8E052 /* Strings+Generated.swift in Sources */ = {isa = PBXBuildFile; fileRef = 67E659FE2E63696700A8E052 /* Strings+Generated.swift */; };
 		CD95B2092E67217A008CDB81 /* ServicesAssemly.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD95B2072E67217A008CDB81 /* ServicesAssemly.swift */; };
@@ -212,7 +211,6 @@
 		674B6D9C2E71B943004C628E /* SetLikeRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetLikeRequest.swift; sourceTree = "<group>"; };
 		674B6D9E2E71BC6A004C628E /* LikeModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LikeModel.swift; sourceTree = "<group>"; };
 		674B6DA02E72CCE3004C628E /* UIBlockingProgressHUD.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIBlockingProgressHUD.swift; sourceTree = "<group>"; };
-		674B6E252E72FD83004C628E /* NFTModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NFTModel.swift; sourceTree = "<group>"; };
 		67A4EA4A2E63573300E4F331 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
 		67A4EA4D2E63573700E4F331 /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = ru.lproj/Localizable.strings; sourceTree = "<group>"; };
 		67E659FE2E63696700A8E052 /* Strings+Generated.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Strings+Generated.swift"; sourceTree = "<group>"; };
@@ -487,7 +485,6 @@
 			children = (
 				3A5841252E6DD03B00D295B2 /* ProfileCellType.swift */,
 				674B6D9E2E71BC6A004C628E /* LikeModel.swift */,
-				674B6E252E72FD83004C628E /* NFTModel.swift */,
 				3A5841212E6DD01400D295B2 /* FavouriteNFTModel.swift */,
 				674B6D7B2E6F049D004C628E /* SortType.swift */,
 				674B6D792E6E1732004C628E /* AlertModel.swift */,
@@ -872,7 +869,6 @@
 				3AAB093A2E6C7CC00079920F /* CataloguePresenter.swift in Sources */,
 				3AAB093B2E6C7CC00079920F /* CatalogueDataSource.swift in Sources */,
 				3AAB093C2E6C7CC00079920F /* TestCatalogController.swift in Sources */,
-				674B6E262E72FD8C004C628E /* NFTModel.swift in Sources */,
 				674B6D852E6F560E004C628E /* NFTImageView.swift in Sources */,
 				3FC8C38B29D242E90081F015 /* ProductDetailsTableViewCell.swift in Sources */,
 				674B6D782E6E1700004C628E /* AlertPresenter.swift in Sources */,

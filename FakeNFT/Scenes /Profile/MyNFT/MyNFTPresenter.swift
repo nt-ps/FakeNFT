@@ -22,8 +22,8 @@ final class MyNFTPresenter: MyNFTPresenterProtocol {
     private let profileService: ProfileServiceProtocol
     private let profileStorage: ProfileStorage = .shared
     
-    private var nftList: [NFTModel] = []
-    private var loadedNFTs: [NFTModel] = []
+    private var nftList: [Nft] = []
+    private var loadedNFTs: [Nft] = []
     private var isLoading: Bool = true
     
     // MARK: Initializers
@@ -114,7 +114,7 @@ final class MyNFTPresenter: MyNFTPresenterProtocol {
         return nftList.count
     }
     
-    func getNFT(at index: Int) -> NFTModel? {
+    func getNFT(at index: Int) -> Nft? {
         guard index < nftList.count else { return nil }
         return nftList[index]
     }

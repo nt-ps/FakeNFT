@@ -31,7 +31,7 @@ final class EmptyMockProfileService: ProfileServiceProtocol {
         fetchProfile(completion: completion)
     }
     
-    func getNFTs(completion: @escaping (Result<[NFTModel], Error>) -> Void) {
+    func getNFTs(completion: @escaping (Result<[Nft], Error>) -> Void) {
         // Имитируем задержку сети
         DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) {
             completion(.success([]))

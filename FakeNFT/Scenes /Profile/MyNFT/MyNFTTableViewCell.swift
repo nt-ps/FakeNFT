@@ -94,14 +94,15 @@ final class MyNFTTableViewCell: UITableViewCell, ReuseIdentifying {
     }
 
     // MARK: Methods
-    func configCell(model: NFTModel) {
+    func configCell(model: Nft) {
         nameLabel.text = model.name
         authorLabel.text = L10n.MyNFT.from + " " + model.author
         priceLabel.text = CurrencyFormatter.shared.string(for: model.price)
         priceTextLabel.text = L10n.MyNFT.price
         ratingView.setRating(rating: model.rating)
         
-        nftImageView.setNFTImage(urlString: model.image)
+        let imageString = model.images.first ?? ""
+        nftImageView.setNFTImage(urlString: imageString)
         nftImageView.setNFTId(model.name)
         nftImageView.setLiked(false)
     }

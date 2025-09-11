@@ -62,9 +62,8 @@ class BaseImageView: UIImageView {
             return
         }
         
-        // Handle local images from assets
         if urlString.hasPrefix("local://") {
-            let imageName = String(urlString.dropFirst(8)) // Remove "local://" prefix
+            let imageName = String(urlString.dropFirst(8))
             loadLocalImage(named: imageName)
             return
         }

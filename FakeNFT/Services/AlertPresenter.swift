@@ -49,7 +49,7 @@ final class AlertPresenter {
         }
 
 
-        viewController.present(alert, animated: true, completion: nil)
+        viewController.present(alert, animated: true)
     }
     
     static func presentTextFieldAlert(
