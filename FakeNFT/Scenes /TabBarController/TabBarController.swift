@@ -57,16 +57,16 @@ final class TabBarController: UITabBarController {
         )
         testCatalogController.tabBarItem = testCatalogTabBarItem
 
-        viewControllers = [
-            catalogueController,
-            testCatalogController // TODO: Удалить!
-        ]
+ //       viewControllers = [
+ //           catalogueController,
+ //           testCatalogController // TODO: Удалить!
+ //       ]
 
         view.backgroundColor = .systemBackground
     }
     
     private func configureShoppingCart() -> UIViewController {
-        let shoppingCartModel = ShoppingCartModelImplementation(servicesAssembly: servicesAssembly)
+        let shoppingCartModel = ShoppingCartModelImplementation()
         let shoppingCartViewController = ShoppingCartViewControllerImplementation()
         let shoppingCartPresenter = ShoppingCartPresenterImplementation(shoppingCartView: shoppingCartViewController, shoppingCartModel: shoppingCartModel)
         shoppingCartViewController.shoppingCartPresenter = shoppingCartPresenter
