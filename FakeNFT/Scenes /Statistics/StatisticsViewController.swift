@@ -77,7 +77,7 @@ final class StatisticsViewController: UIViewController {
         tableView.dataSource = self
         tableView.delegate = self
         
-        tableView.register(StatCell.self, forCellReuseIdentifier: "StatCell")
+        tableView.register(StatCell.self)
     }
     
     private func showSortAlert() {
@@ -118,12 +118,7 @@ extension StatisticsViewController: UITableViewDataSource,
     
     func tableView(_ tableView: UITableView,
                    cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard let cell = tableView.dequeueReusableCell(
-            withIdentifier: "StatCell",
-            for: indexPath
-        ) as? StatCell else {
-            return UITableViewCell()
-        }
+        let cell: StatCell = tableView.dequeueReusableCell()
         
         let user = publishedUsers[indexPath.row]
         cell.configure(with: user, position: indexPath.row + 1)
@@ -139,6 +134,7 @@ extension StatisticsViewController: UITableViewDataSource,
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
         
+        guard indexPath.row < publishedUsers.count else { return }
         presenter.didSelectUser(publishedUsers[indexPath.row])
     }
     

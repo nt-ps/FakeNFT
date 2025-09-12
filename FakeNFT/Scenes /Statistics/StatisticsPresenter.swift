@@ -67,6 +67,7 @@ final class StatisticsPresenter: StatisticsPresenterProtocol {
     func didSelectUser(_ user: User) {
         let presenter = UsersProfilePresenter(user: user)
         let profileViewController = UsersProfileViewController(presenter: presenter)
+        profileViewController.hidesBottomBarWhenPushed = true
         view?.navigationController?.pushViewController(profileViewController, animated: true)
     }
     

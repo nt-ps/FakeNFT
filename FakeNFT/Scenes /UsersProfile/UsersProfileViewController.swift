@@ -68,18 +68,19 @@ final class UsersProfileViewController: UIViewController, UsersProfileViewContro
         return tableView
     }()
     
-    private lazy var accessoryButton: UIButton = {
-        let button = UIButton(type: .system)
-        let icon = UIImage(systemName: "chevron.right")
-        button.setImage(icon, for: .normal)
-        button.tintColor = .AppColors.black
-        button.sizeToFit()
-        button.addTarget(self, action: #selector(collectionButtonDidTapped), for: .touchUpInside)
-        button.translatesAutoresizingMaskIntoConstraints = false
-        
-        return button
-    }()
-    
+//    private lazy var accessoryButton: UIButton = {
+//        let button = UIButton(type: .system)
+//        let icon = UIImage(systemName: "chevron.right")
+//        button.setImage(icon, for: .normal)
+//        button.tintColor = .AppColors.black
+//        button.sizeToFit()
+//        button.addTarget(self, action: #selector(collectionButtonDidTapped), for: .touchUpInside)
+//        button.translatesAutoresizingMaskIntoConstraints = false
+//        
+//
+//        return button
+//    }()
+
     init(presenter: UsersProfilePresenter) {
         self.presenter = presenter
         super.init(nibName: nil, bundle: nil)
@@ -95,16 +96,6 @@ final class UsersProfileViewController: UIViewController, UsersProfileViewContro
         navigationController?.setNavigationBarHidden(false, animated: true)
         setupUI()
         presenter.viewDidLoad()
-    }
-    
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        tabBarController?.tabBar.isHidden = true
-    }
-
-    override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(animated)
-        tabBarController?.tabBar.isHidden = false
     }
     
     func configure(with user: User) {
@@ -132,7 +123,7 @@ final class UsersProfileViewController: UIViewController, UsersProfileViewContro
         view.addSubview(userWebSiteButton)
         view.addSubview(tableView)
         
-        tableView.register(UITableViewCell.self, forCellReuseIdentifier: "NFTUserCollectionCell")
+        tableView.register(UserProfileNFTCollectionCell.self)
         tableView.dataSource = self
         tableView.delegate = self
         
@@ -175,13 +166,13 @@ final class UsersProfileViewController: UIViewController, UsersProfileViewContro
         userWebSiteButton.layer.borderColor = UIColor.AppColors.black.cgColor
     }
     
-    @objc func websiteButtonTapped() {
+    @objc private func websiteButtonTapped() {
         presenter.didTapUserWebsite { [weak self] viewController in
             self?.navigationController?.pushViewController(viewController, animated: true)
         }
     }
     
-    @objc func collectionButtonDidTapped() {}
+    @objc private func collectionButtonDidTapped() {}
 }
 
 extension UsersProfileViewController: UITableViewDelegate, UITableViewDataSource {
@@ -190,18 +181,8 @@ extension UsersProfileViewController: UITableViewDelegate, UITableViewDataSource
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "NFTUserCollectionCell", for: indexPath)
-        
-        var content = cell.defaultContentConfiguration()
-        content.text = "Коллекция NFT (\(user?.nftCount ?? 0))"
-        content.textProperties.font = .bodyBold
-        content.textProperties.color = .AppColors.black
-        
-        cell.accessoryView = accessoryButton
-        cell.contentConfiguration = content
-        cell.backgroundColor = .clear
-        cell.layer.masksToBounds = true
-        cell.selectionStyle = .none
+        let cell: UserProfileNFTCollectionCell = tableView.dequeueReusableCell()
+        cell.configure(with: user?.nftCount ?? 0)
         
         return cell
     }
