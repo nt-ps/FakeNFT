@@ -3,10 +3,11 @@ import Foundation
 // MARK: - Protocol
 
 protocol CollectionPresenterProtocol {
+    var view: CollectionViewControllerProtocol? { get set }
     var collection: Collection? { get }
     var title: String? { get }
     
-    var view: CollectionViewControllerProtocol? { get set }
+    func loadNfts()
 }
 
 // MARK: - Implementation
@@ -51,5 +52,34 @@ final class CollectionPresenter: CollectionPresenterProtocol {
     
     // MARK: - Internal Methods
     
-    func viewDidLoad() {}
+    func loadNfts() {
+        guard let nftIds else { return }
+        
+        // Сервер в массиве NFT коллекции возвращает несколько
+        // одинаковых ID. На практике такого не должно быть, из-за
+        // этого страдает вся логика. Поэтому добавил эту строчку,
+        // в которой вычищаются дубликаты.
+        let uniqueNftIds = Array(Set(nftIds))
+        
+        view?.showLoading()
+        
+        nftService.loadNfts(ids: uniqueNftIds) { [weak self] result in
+            switch result {
+            case .success(let nfts):
+                self?.view?.updateCollectionViewAnimated(from: nfts)
+            case .failure(let error):
+                print("[\(#function)] Failed to load NFT of collection: \(error.localizedDescription).")
+                
+                let errorModel = ErrorModel(
+                    title: L10n.Error.data,
+                    message: nil,
+                    actionText: L10n.Catalog.FailureAlert.repeat
+                ) { [weak self] in self?.loadNfts() }
+                
+                self?.view?.showError(errorModel)
+            }
+            
+            self?.view?.hideLoading()
+        }
+    }
 }

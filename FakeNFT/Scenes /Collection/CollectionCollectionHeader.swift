@@ -1,14 +1,23 @@
 import UIKit
 
+// MARK: - Delegate
+
+protocol CollectionCollectionHeaderDelegate: AnyObject {
+    func show(viewController: UIViewController)
+    func show(error model: ErrorModel)
+}
+
+// MARK:
+
 final class CollectionCollectionHeader: UICollectionReusableView, ReuseIdentifying {
     
     // MARK: - Views
     
     private lazy var coverImageView: UIImageView = {
         let coverImageView = UIImageView()
-        coverImageView.image = UIImage(resource: .CatalogueMock.peachCover) // TODO: Удалить!
         coverImageView.contentMode = .scaleAspectFill
         coverImageView.clipsToBounds = true
+        coverImageView.backgroundColor = .AppColors.lightGray
         coverImageView.layer.masksToBounds = true
         coverImageView.layer.cornerRadius = coverCornerRadius
         coverImageView.layer.maskedCorners = [.layerMinXMaxYCorner, .layerMaxXMaxYCorner]
@@ -38,7 +47,6 @@ final class CollectionCollectionHeader: UICollectionReusableView, ReuseIdentifyi
     
     private lazy var nameLabel: UILabel = {
         let nameLabel = UILabel()
-        nameLabel.text = "Peach" // TODO: Удалить
         nameLabel.font = UIFont.headline3
         nameLabel.textColor = .AppColors.black
         nameLabel.textAlignment = .natural
@@ -67,12 +75,17 @@ final class CollectionCollectionHeader: UICollectionReusableView, ReuseIdentifyi
     
     private lazy var authorButton: UIButton = {
         let authorButton = UIButton(type: .custom)
-        authorButton.setTitle("John Doe", for: .normal) // TODO: Удалить!
+        // authorButton.setTitle("John Doe", for: .normal) // TODO: Удалить!
         authorButton.titleLabel?.lineBreakMode = .byTruncatingTail
         authorButton.contentHorizontalAlignment = .leading
         authorButton.titleLabel?.font = .caption1
         authorButton.setTitleColor(.AppColors.Universal.blue, for: .normal)
         authorButton.translatesAutoresizingMaskIntoConstraints = false
+        authorButton.addTarget(
+            self,
+            action: #selector(didTapAuthorButton),
+            for: .touchUpInside
+        )
         return authorButton
     } ()
     
@@ -103,6 +116,39 @@ final class CollectionCollectionHeader: UICollectionReusableView, ReuseIdentifyi
     
     private var coverHeightConstraint: NSLayoutConstraint?
     private var coverTopConstraint: NSLayoutConstraint?
+    
+    // MARK: - Internal Properties
+    
+    weak var delegate: CollectionCollectionHeaderDelegate?
+    
+    var cover: URL? {
+        didSet (oldValue) {
+            guard let cover, cover != oldValue else { return }
+    
+            coverImageView.kf.cancelDownloadTask()
+            coverImageView.kf.setImage(with: cover)
+        }
+    }
+    
+    var name: String? {
+        didSet {
+            nameLabel.text = name
+        }
+    }
+    
+    var authorName: String? {
+        didSet {
+            authorButton.setTitle(authorName, for: .normal)
+        }
+    }
+    
+    var authorWebsite: String?
+    
+    var descriptionText: String? {
+        didSet {
+            descriptionView.text = descriptionText
+        }
+    }
 
     // MARK: - Initializers
     
@@ -130,6 +176,34 @@ final class CollectionCollectionHeader: UICollectionReusableView, ReuseIdentifyi
             verticalFittingPriority: .fittingSizeLevel
         )
         return layoutAttributes
+    }
+    
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        coverImageView.kf.cancelDownloadTask()
+    }
+    
+    // MARK: - Button Actions
+    
+    @objc
+    private func didTapAuthorButton() {
+        guard
+            let authorWebsite,
+            let url = URL(string: authorWebsite)
+        else {
+            let errorModel = ErrorModel(
+                title: L10n.Error.unknown,
+                message: nil,
+                actionText: nil,
+                action: nil
+            )
+            delegate?.show(error: errorModel)
+            return
+        }
+        
+        let assembly = WebViewAssembly()
+        let viewController = assembly.build(with: URLRequest(url: url))
+        delegate?.show(viewController: viewController)
     }
     
     // MARK: - UI Updates
@@ -185,4 +259,3 @@ final class CollectionCollectionHeader: UICollectionReusableView, ReuseIdentifyi
         stretch(to: 0)
     }
 }
-

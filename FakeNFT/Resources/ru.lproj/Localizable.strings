@@ -65,8 +65,10 @@
 
 "error.network" = "Произошла ошибка сети";
 "error.unknown" = "Произошла неизвестная ошибка";
+"error.data" = "Не удалось получить\nданные";
 "error.repeat" = "Повторить";
 "error.title" = "Ошибка";
+"error.cancel" = "Отмена";
 
 "collection.authorCaption" = "Автор коллекции:";
 

@@ -96,6 +96,10 @@ internal enum L10n {
     internal static let title = L10n.tr("Localizable", "error.title", fallback: "Error")
     /// An unknown error has occurred
     internal static let unknown = L10n.tr("Localizable", "error.unknown", fallback: "An unknown error has occurred")
+    /// Data could not be retrieved
+    internal static let data = L10n.tr("Localizable", "error.data", fallback: "Data could not be retrieved")
+    /// Cancel
+    internal static let cancel = L10n.tr("Localizable", "error.cancel", fallback: "Cancel")
   }
   internal enum Favoritenft {
     /// Favorites of NFT

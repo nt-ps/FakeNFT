@@ -1,11 +1,14 @@
 import UIKit
+import ProgressHUD
 
 typealias CollectionDataSourceSnapshot = NSDiffableDataSourceSnapshot<CollectionCollectionSection, Nft>
 
 // MARK: - Protocol
 
-protocol CollectionViewControllerProtocol: AnyObject {
+protocol CollectionViewControllerProtocol: AnyObject, LoadingView, ErrorView {
     var presenter: CollectionPresenterProtocol { get }
+    
+    func updateCollectionViewAnimated(from newNfts: [Nft])
 }
 
 // MARK: - Implementation
@@ -14,13 +17,27 @@ final class CollectionViewController: UICollectionViewController, CollectionView
     
     // TODO: Добавить прогресс (показывается при нажатии лайка и кнопки корзины).
     
+    // MARK: - Views
+    
+    lazy var activityIndicator: UIActivityIndicatorView = {
+        var activityIndicator = UIActivityIndicatorView(style: .large)
+        activityIndicator.color = .AppColors.black
+        activityIndicator.hidesWhenStopped = true
+        activityIndicator.translatesAutoresizingMaskIntoConstraints = false
+        return activityIndicator
+    } ()
+    
     // MARK: - Internal Properties
     
     let presenter: CollectionPresenterProtocol
     
     // MARK: - Private Properties
 
-    private lazy var dataSource: CollectionDataSource = .init(collectionView, presenter: presenter)
+    private lazy var dataSource: CollectionDataSource = .init(
+        collectionView,
+        presenter: presenter,
+        headerDelegate: self
+    )
     
     // MARK: - UI Properties
     
@@ -47,17 +64,14 @@ final class CollectionViewController: UICollectionViewController, CollectionView
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        view.addSubview(activityIndicator)
+        activityIndicator.constraintCenters(to: view.safeAreaLayoutGuide)
+        
         setNavigationBar()
         configureCollectionView()
-        updateCollectionViewAnimated() // TODO: Удалить после протягивания сети.
-    }
-    
-    // TODO: Переписать при протягивании сети.
-    func updateCollectionViewAnimated() {
-        var snapshot = CollectionDataSourceSnapshot()
-        snapshot.appendSections([CollectionCollectionSection.main])
-        snapshot.appendItems(MockData.nfts, toSection: .main)
-        dataSource.apply(snapshot, animatingDifferences: true)
+        
+        presenter.loadNfts()
     }
     
     // MARK: - Overridden Methods
@@ -74,6 +88,15 @@ final class CollectionViewController: UICollectionViewController, CollectionView
 
             header.stretch(to: -contentYOffset)
         }
+    }
+    
+    // MARK: - Collection View Controller Protocol
+    
+    func updateCollectionViewAnimated(from newNfts: [Nft]) {
+        var snapshot = CollectionDataSourceSnapshot()
+        snapshot.appendSections([CollectionCollectionSection.main])
+        snapshot.appendItems(newNfts, toSection: .main)
+        dataSource.apply(snapshot, animatingDifferences: true)
     }
     
     // MARK: - UI Updates
@@ -167,5 +190,16 @@ final class CollectionViewController: UICollectionViewController, CollectionView
         let layout = UICollectionViewCompositionalLayout(section: section)
         
         return layout
+    }
+}
+
+extension CollectionViewController: CollectionCollectionHeaderDelegate {
+    func show(viewController: UIViewController) {
+        viewController.hidesBottomBarWhenPushed = true
+        navigationController?.pushViewController(viewController, animated: true)
+    }
+    
+    func show(error model: ErrorModel) {
+        showError(model)
     }
 }

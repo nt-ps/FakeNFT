@@ -132,19 +132,7 @@ final class CatalogueViewController: UITableViewController, CatalogueViewControl
     // MARK: - Button Actions
     
     @objc
-    private func didTapSortButton() {
-        // TODO: Фрагмент кода для открытия WebView.
-        //       В будущем перенести на экран коллекции.
-        /*
-        guard let url = URL(string: "https://ya.ru/") else { return }
-        
-        let assembly = WebViewAssembly()
-        let viewController = assembly.build(with: URLRequest(url: url))
-        viewController.hidesBottomBarWhenPushed = true
-        
-        navigationController?.pushViewController(viewController, animated: true)
-         */
-        
+    private func didTapSortButton() {        
         present(sortAlert, animated: true)
     }
     
