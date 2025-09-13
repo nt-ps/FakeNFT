@@ -1,6 +1,6 @@
 import UIKit
 
-// MARK: - Table Section Model
+// MARK: - Table View Section Model
 
 enum CatalogueTableSection: Int, CaseIterable {
     case main
@@ -14,12 +14,8 @@ final class CatalogueDataSource: UITableViewDiffableDataSource<CatalogueTableSec
     
     init(_ tableView: UITableView) {
         super.init(tableView: tableView) { (tableView, indexPath, item) -> UITableViewCell? in
-            guard
-                let cell = tableView.reuse(CatalogueTableCell.self, indexPath: indexPath)
-            else { return nil }
-            
+            let cell: CatalogueTableCell = tableView.dequeueReusableCell(indexPath: indexPath)
             CatalogueDataSource.configCell(cell, from: item)
-            
             return cell
         }
     }
@@ -27,7 +23,7 @@ final class CatalogueDataSource: UITableViewDiffableDataSource<CatalogueTableSec
     // MARK: - Cell Methods
     
     private static func configCell(_ cell: CatalogueTableCell, from collection: Collection) {
-        cell.cover = collection.coverImage
+        cell.cover = collection.cover
         cell.name = collection.name
         cell.counterValue = collection.nfts.count
     }

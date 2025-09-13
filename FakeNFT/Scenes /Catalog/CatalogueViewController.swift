@@ -4,7 +4,7 @@ typealias CatalogueDataSourceSnapshot = NSDiffableDataSourceSnapshot<CatalogueTa
 
 // MARK: - Protocol
 
-protocol CatalogueViewControllerProtocol: AnyObject {
+protocol CatalogueViewControllerProtocol: AnyObject, LoadingView, ErrorView {
     var presenter: CataloguePresenterProtocol { get }
     
     func updateTableViewAnimated(from newCollections: [Collection])
@@ -13,8 +13,6 @@ protocol CatalogueViewControllerProtocol: AnyObject {
 // MARK: - Implementation
 
 final class CatalogueViewController: UITableViewController, CatalogueViewControllerProtocol {
-    
-    // TODO: При добавлении сети добавить ProgressHUD.
     
     // MARK: - Views
     
@@ -41,6 +39,12 @@ final class CatalogueViewController: UITableViewController, CatalogueViewControl
             self?.sortAndUpdateTable(by: .name)
         }
         
+        /* При запросе с sortBy=nfts сортировка происходит не
+         по размеру массива, а так, будто массив айдишников складывается в
+         строку и происходит сортировка по имени.
+         Реализовывать сортировку в коде считаю неправильным, поскольку
+         для этого нужно отказаться от постраничной загрузки. Оставил
+         так, как есть. */
         let sortByAmountAction = UIAlertAction(
             title: L10n.SortAlert.byAmount,
             style: .default
@@ -57,6 +61,14 @@ final class CatalogueViewController: UITableViewController, CatalogueViewControl
         return alert
     } ()
     
+    lazy var activityIndicator: UIActivityIndicatorView = {
+        var activityIndicator = UIActivityIndicatorView(style: .large)
+        activityIndicator.color = .AppColors.black
+        activityIndicator.hidesWhenStopped = true
+        activityIndicator.translatesAutoresizingMaskIntoConstraints = false
+        return activityIndicator
+    } ()
+    
     // MARK: - UI Properties
     
     private let tableYSpacing: CGFloat = 10
@@ -69,6 +81,7 @@ final class CatalogueViewController: UITableViewController, CatalogueViewControl
     // MARK: - Private Properties
 
     private lazy var dataSource = CatalogueDataSource(tableView)
+    private var collections: [Collection] = []
     
     // MARK: - Initializers
 
@@ -98,10 +111,10 @@ final class CatalogueViewController: UITableViewController, CatalogueViewControl
         navigationItem.backButtonDisplayMode = .minimal
         navigationItem.rightBarButtonItem = sortButton
         
-        tableView.register(
-            CatalogueTableCell.self,
-            forCellReuseIdentifier: CatalogueTableCell.defaultReuseIdentifier
-        )
+        view.addSubview(activityIndicator)
+        activityIndicator.constraintCenters(to: view.safeAreaLayoutGuide)
+        
+        tableView.register(CatalogueTableCell.self)
         
         tableView.delegate = self
         tableView.dataSource = dataSource
@@ -135,35 +148,42 @@ final class CatalogueViewController: UITableViewController, CatalogueViewControl
         present(sortAlert, animated: true)
     }
     
+    // MARK: - Overridden Methods
+    
+    override func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        let height = scrollView.frame.size.height
+        let contentYOffset = scrollView.contentOffset.y
+        let distanceFromBottom = scrollView.contentSize.height - contentYOffset
+
+        if distanceFromBottom < height {
+            presenter.fetchNextPage()
+        }
+    }
+
     // MARK: - Catalogue View Controller Protocol
     
     func updateTableViewAnimated(from newCollections: [Collection]) {
+        collections = newCollections
+        
         var snapshot = CatalogueDataSourceSnapshot()
         snapshot.appendSections([CatalogueTableSection.main])
-        snapshot.appendItems(newCollections, toSection: .main)
+        snapshot.appendItems(collections, toSection: .main)
         dataSource.apply(snapshot, animatingDifferences: true)
     }
     
-    // MARK: - Table Delegate Methods
+    // MARK: - Table View Delegate Methods
     
     override func tableView(
         _ tableView: UITableView,
         didSelectRowAt indexPath: IndexPath
     ) {
-        // TODO: Использовать при выборе ячейки.
-    }
-    
-    override func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
-        if
-            indexPath.section == tableView.numberOfSections - 1,
-            indexPath.row == tableView.numberOfRows(inSection: indexPath.section) - 1
-        {
-            presenter.fetchNextPage()
-        }
+        let collection = collections[indexPath.row]
+        let viewController = presenter.collectionViewAssembler.build(with: collection)
+        navigationController?.pushViewController(viewController, animated: true)
     }
     
     // MARK: - UI Updates
-    
+
     private func sortAndUpdateTable(by field: CollectionFields) {
         if presenter.sort(by: field) {
             presenter.fetchNextPage()
@@ -174,17 +194,5 @@ final class CatalogueViewController: UITableViewController, CatalogueViewControl
     private func scrollToTop() {
         let topRow = IndexPath(row: 0, section: 0)
         tableView.scrollToRow(at: topRow, at: .top, animated: true)
-    }
-    
-    // MARK: - Private Methods
-    
-    func reuse<T: UITableViewCell & ReuseIdentifying>(
-        _ type: T.Type,
-        indexPath: IndexPath
-    ) -> T? {
-        tableView.dequeueReusableCell(
-            withIdentifier: T.defaultReuseIdentifier,
-            for: indexPath
-        ) as? T
     }
 }

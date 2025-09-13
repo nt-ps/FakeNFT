@@ -1,4 +1,5 @@
 import UIKit
+import Kingfisher
 
 final class CatalogueTableCell: UITableViewCell, ReuseIdentifying {
     
@@ -20,6 +21,7 @@ final class CatalogueTableCell: UITableViewCell, ReuseIdentifying {
         coverView.clipsToBounds = true
         coverView.layer.masksToBounds = true
         coverView.layer.cornerRadius = coverCornerRadius
+        coverView.backgroundColor = .AppColors.lightGray
         coverView.translatesAutoresizingMaskIntoConstraints = false
         coverView.addSubview(coverImageView)
         return coverView
@@ -29,6 +31,7 @@ final class CatalogueTableCell: UITableViewCell, ReuseIdentifying {
         let coverImageView = UIImageView()
         coverImageView.contentMode = .scaleAspectFill
         coverImageView.translatesAutoresizingMaskIntoConstraints = false
+        coverImageView.kf.indicatorType = .none
         return coverImageView
     } ()
     
@@ -64,7 +67,6 @@ final class CatalogueTableCell: UITableViewCell, ReuseIdentifying {
     
     private let coverCornerRadius: CGFloat = 12
     private let coverHeight: CGFloat = 140
-    private var coverHeightRatio: CGFloat = 1
     private var coverHeightConstraint: NSLayoutConstraint?
     
     private let xSpacing: CGFloat = 16
@@ -72,17 +74,20 @@ final class CatalogueTableCell: UITableViewCell, ReuseIdentifying {
     
     // MARK: - Internal Properties
     
-    // TODO: Добавить imageURL с установкой изображения через Kingfisher
-    //       при протягивании сети.
+    var cover: URL? {
+        didSet (oldValue) {
+            guard let cover, cover != oldValue else { return }
     
-    var cover: UIImage? {
-        didSet {
-            guard let cover else { return }
-            coverImageView.image = cover
-            coverHeightRatio = CGFloat(cover.size.height) / cover.size.width
-            updateCoverConstraints()
+            coverImageView.kf.cancelDownloadTask()
+            coverImageView.kf.setImage(
+                with: cover,
+                completionHandler: { [weak self] result in
+                    guard let image = try? result.get() else { return }
+                    self?.updateCoverConstraints(by: image.image.size)
+                }
+            )
         }
-    } // TODO: Удалить после протягивания сети.
+    }
     
     var name: String? {
         didSet {
@@ -111,6 +116,13 @@ final class CatalogueTableCell: UITableViewCell, ReuseIdentifying {
     required init?(coder: NSCoder) {
         super.init(coder: coder)
         print("\(String(describing: CatalogueTableCell.self)).init(coder:) has not been implemented")
+    }
+    
+    // MARK: - Overridden methods
+    
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        coverImageView.kf.cancelDownloadTask()
     }
     
     // MARK: - UI Updates
@@ -143,15 +155,13 @@ final class CatalogueTableCell: UITableViewCell, ReuseIdentifying {
             coverImageView.topAnchor.constraint(equalTo: coverView.topAnchor),
             coverImageView.trailingAnchor.constraint(equalTo: coverView.trailingAnchor)
         ])
-        
-        updateCoverConstraints()
     }
     
-    private func updateCoverConstraints() {
+    private func updateCoverConstraints(by size: CGSize) {
         if let coverHeightConstraint {
             NSLayoutConstraint.deactivate([coverHeightConstraint])
         }
-        
+        let coverHeightRatio = size.height / size.width
         coverHeightConstraint = coverImageView.heightAnchor.constraint(
             equalTo: coverImageView.widthAnchor,
             multiplier: coverHeightRatio

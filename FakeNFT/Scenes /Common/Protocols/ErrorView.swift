@@ -1,7 +1,8 @@
 import UIKit
 
 struct ErrorModel {
-    let message: String
+    let title: String?
+    let message: String?
     let actionText: String
     let action: () -> Void
 }
@@ -13,9 +14,11 @@ protocol ErrorView {
 extension ErrorView where Self: UIViewController {
 
     func showError(_ model: ErrorModel) {
-        let title = L10n.Error.title
+        // Заметка: В модель добавлено поле title,
+        // поскольку окна с ошибками отличаются заголовками.
+        // let title = L10n.Error.title
         let alert = UIAlertController(
-            title: title,
+            title: model.title,
             message: model.message,
             preferredStyle: .alert
         )
