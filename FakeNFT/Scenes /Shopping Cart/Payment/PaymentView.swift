@@ -62,6 +62,14 @@ final class PaymentViewController: UIViewController, PaymentViewProtocol {
         currenciesCollectionViewFlowLayout.minimumLineSpacing = 7
         currenciesCollectionViewFlowLayout.minimumInteritemSpacing = 7
     }
+    
+    // MARK: UI Actions
+    @objc private func userAgreementButtonTapped() {
+        guard let url = URL(string: "https://yandex.ru/legal/practicum_termsofuse") else { return }
+        let request = URLRequest(url: url)
+        let webViewController = WebViewAssembly().build(with: request)
+        navigationController?.pushViewController(webViewController, animated: true)
+    }
 }
 
 // MARK: setupView
@@ -202,6 +210,7 @@ private extension PaymentViewController {
         } else {
             userAgreementButton.setTitle("User agreement", for: .normal)
         }
+        userAgreementButton.addTarget(self, action: #selector(userAgreementButtonTapped), for: .touchUpInside)
     }
 }
 
