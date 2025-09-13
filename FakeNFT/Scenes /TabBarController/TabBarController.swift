@@ -6,20 +6,13 @@ final class TabBarController: UITabBarController {
     private let catalogTabBarItem = UITabBarItem(
         title: L10n.Tab.catalog,
         image: UIImage(resource: .Icons.catalogTab),
-        tag: 0
-    )
-    
-    // TODO: Удалить после добавления всех вкладок.
-    private let testCatalogTabBarItem = UITabBarItem(
-        title: L10n.Tab.catalog,
-        image: UIImage(systemName: "square.stack.3d.up.fill"),
         tag: 1
     )
     
     private let statisticsTabBarItem = UITabBarItem(
         title: L10n.Tab.statistics,
         image: UIImage(resource: .Icons.statisticTab),
-        tag: 3
+        tag: 4
     )
     
     private var profileNavigationController: UINavigationController {
@@ -28,7 +21,7 @@ final class TabBarController: UITabBarController {
         navigationController.tabBarItem = UITabBarItem(
             title: L10n.Tab.profile,
             image: .Icons.profileTab,
-            selectedImage: nil
+            tag: 0
         )
         
         return navigationController
@@ -36,19 +29,22 @@ final class TabBarController: UITabBarController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        tabBar.unselectedItemTintColor = .AppColors.black
+        
+        let appearance = UITabBarAppearance()
+        appearance.configureWithTransparentBackground()
+        appearance.backgroundColor = .AppColors.white
+        appearance.stackedLayoutAppearance.normal.iconColor = .AppColors.black
+        appearance.stackedLayoutAppearance.normal.titleTextAttributes = [
+            .foregroundColor: UIColor.AppColors.black
+        ]
+        tabBar.standardAppearance = appearance
+        tabBar.scrollEdgeAppearance = appearance
+        tabBar.tintColor = .AppColors.Universal.blue
         
         let catalogueController = CatalogueNavigationController(
             servicesAssembly: servicesAssembly
         )
-        
         catalogueController.tabBarItem = catalogTabBarItem
-        
-        // TODO: Удалить после добавления всех вкладок.
-        let testCatalogController = TestCatalogViewController(
-            servicesAssembly: servicesAssembly
-        )
-        testCatalogController.tabBarItem = testCatalogTabBarItem
         
         let statisticsPresenter = StatisticsPresenter(servicesAssembly: servicesAssembly)
         let statisticsController = StatisticsViewController(presenter: statisticsPresenter)
@@ -57,7 +53,9 @@ final class TabBarController: UITabBarController {
         
         statisticsNavigationController.tabBarItem = statisticsTabBarItem
         
-        viewControllers = [catalogueController, testCatalogController, statisticsNavigationController, profileNavigationController]
+        viewControllers = [profileNavigationController, catalogueController, statisticsNavigationController]
+        
+        selectedViewController = catalogueController
         
         view.backgroundColor = .systemBackground
     }
