@@ -5,7 +5,7 @@ enum NftFields: String, CodingKey {
     case createdAt, name, images, rating, description, price, author, id
 }
 
-struct Nft: Decodable {
+struct Nft: Decodable, Hashable {
     
     // MARK: - Internal Properties
     
@@ -66,5 +66,13 @@ struct Nft: Decodable {
         id = try container.decode(String.self, forKey: .id)
         
         coverImage = nil // TODO: Удалить после того, как будет протянута сеть.
+    }
+    
+    // MARK: - Hashable Protocol
+    
+    static func ==(lhs: Self, rhs: Self) -> Bool { lhs.id == rhs.id }
+    
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(id)
     }
 }

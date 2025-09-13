@@ -1,14 +1,14 @@
 import Foundation
 
-struct NftsRequest: NetworkRequest {
+struct CollectionsRequest: NetworkRequest {
     var endpoint: URL? {
-        URL(string: "\(RequestConstants.baseURL)/api/v1/nft")
+        URL(string: "\(RequestConstants.baseURL)/api/v1/collections")
     }
     var httpMethod: HttpMethod
     var query: Query?
     var dto: Dto?
     
-    init(query: NftsApiQuery? = nil) {
+    init(query: CollectionsApiQuery? = nil) {
         self.httpMethod = .get
         self.query = query
     }
