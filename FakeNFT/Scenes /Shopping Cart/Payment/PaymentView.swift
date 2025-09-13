@@ -8,10 +8,11 @@
 import UIKit
 
 protocol PaymentViewProtocol: AnyObject {
-    
+    func reloadCurrenciesCollectionView(currencies: [Currency])
 }
 
 final class PaymentViewController: UIViewController, PaymentViewProtocol {
+    // MARK: Presenter
     var paymentPresenter: PaymentPresenterProtocol?
     
     // MARK: UI Elements
@@ -23,10 +24,43 @@ final class PaymentViewController: UIViewController, PaymentViewProtocol {
     private let userAgreementButton = UIButton()
     
     private let currenciesCollectionViewFlowLayout = UICollectionViewFlowLayout()
+    private lazy var currenciesCollectionViewDiffableDataSource = UICollectionViewDiffableDataSource<Int, Currency>(collectionView: currenciesCollectionView) { [weak self] collectionView, indexPath, itemIdentifier in
+        guard let self,
+              let cell = self.currenciesCollectionView.dequeueReusableCell(withReuseIdentifier: "currenciesCollectionViewCell", for: indexPath) as? CurrenciesCollectionViewCell
+        else { return UICollectionViewCell() }
+        guard let currencies = paymentPresenter?.getCurrencies() else { return UICollectionViewCell() }
+        cell.configureCell(currency: currencies[indexPath.item])
+        return cell
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         setupView()
+        setUpCurrenciesCollectionViewFlowLayout()
+        paymentPresenter?.loadCurrenciesFromServer()
+        ProgressHUDProvider.showProgressHUD()
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        let snapshot = NSDiffableDataSourceSnapshot<Int, Currency>()
+        currenciesCollectionViewDiffableDataSource.apply(snapshot, animatingDifferences: true)
+    }
+    
+    func reloadCurrenciesCollectionView(currencies: [Currency]) {
+        DispatchQueue.main.async {
+            var snapshot = NSDiffableDataSourceSnapshot<Int, Currency>()
+            snapshot.appendSections([0])
+            snapshot.appendItems(currencies)
+            self.currenciesCollectionViewDiffableDataSource.apply(snapshot, animatingDifferences: true)
+        }
+        ProgressHUDProvider.dismissProgressHUD()
+    }
+    
+    private func setUpCurrenciesCollectionViewFlowLayout() {
+        currenciesCollectionViewFlowLayout.itemSize = CGSize(width: 168, height: 46)
+        currenciesCollectionViewFlowLayout.minimumLineSpacing = 7
+        currenciesCollectionViewFlowLayout.minimumInteritemSpacing = 7
     }
 }
 
@@ -81,7 +115,9 @@ private extension PaymentViewController {
             currenciesCollectionView.widthAnchor.constraint(equalToConstant: 343),
             currenciesCollectionView.heightAnchor.constraint(equalToConstant: 205)
         ])
-        currenciesCollectionView.backgroundColor = .red
+        currenciesCollectionView.isScrollEnabled = false
+        currenciesCollectionView.backgroundColor = .clear
+        currenciesCollectionView.register(CurrenciesCollectionViewCell.self, forCellWithReuseIdentifier: "currenciesCollectionViewCell")
     }
     
     private func setUpBottomBackgroundView() {

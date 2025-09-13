@@ -14,6 +14,22 @@ final class CurrenciesCollectionViewCell: UICollectionViewCell {
     private let currencyImageView = UIImageView()
     private let currencyNameLabel = UILabel()
     private let currencyAbbreviationLabel = UILabel()
+    
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+        setupView()
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    func configureCell(currency: Currency) {
+        guard let url = URL(string: currency.image) else { return }
+        currencyImageView.kf.setImage(with: url)
+        currencyNameLabel.text = currency.title
+        currencyAbbreviationLabel.text = currency.name
+    }
 }
 
 // MARK: setup view

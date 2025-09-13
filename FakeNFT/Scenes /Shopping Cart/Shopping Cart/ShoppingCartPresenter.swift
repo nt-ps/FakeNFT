@@ -16,6 +16,7 @@ protocol ShoppingCartPresenterProtocol: AnyObject {
     func deleteNFTFromCart()
     func showPlaceholderIf(needed: Bool)
     func sortOrderBy(_ parameter: String)
+    func preparePaymentView() -> PaymentViewController
 }
 
 final class ShoppingCartPresenterImplementation: ShoppingCartPresenterProtocol {
@@ -60,5 +61,15 @@ final class ShoppingCartPresenterImplementation: ShoppingCartPresenterProtocol {
     
     func sortOrderBy(_ parameter: String) {
         shoppingCartModel.sortOrderBy(parameter)
+    }
+    
+    func preparePaymentView() -> PaymentViewController {
+        let paymentModel = PaymentModel()
+        let paymentView = PaymentViewController()
+        let paymentPresenter = PaymentPresenter(paymentView: paymentView, paymentModel: paymentModel)
+        paymentModel.paymentPresenter = paymentPresenter
+        paymentView.paymentPresenter = paymentPresenter
+        paymentView.hidesBottomBarWhenPushed = true
+        return paymentView
     }
 }

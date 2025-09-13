@@ -134,9 +134,8 @@ final class ShoppingCartViewControllerImplementation: UIViewController, Shopping
     }
     
     @objc private func goToPaymentButtonTapped() {
-        let vc = PaymentViewController()
-        vc.hidesBottomBarWhenPushed = true
-        navigationController?.pushViewController(vc, animated: true)
+        guard let paymentView = shoppingCartPresenter?.preparePaymentView() else { return }
+        navigationController?.pushViewController(paymentView, animated: true)
     }
     
     @objc private func goBackFromDeletingNFTButtonTapped() {
