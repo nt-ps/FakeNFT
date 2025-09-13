@@ -4,10 +4,13 @@ import Foundation
 
 protocol CollectionPresenterProtocol {
     var view: CollectionViewControllerProtocol? { get set }
+    var nftDetailAssembler: NftDetailAssembly { get }
     var collection: Collection? { get }
     var title: String? { get }
     
     func loadNfts()
+    func switchLike(for nftIndex: Int)
+    func switchStateInCart(for nftIndex: Int)
 }
 
 // MARK: - Implementation
@@ -17,6 +20,8 @@ final class CollectionPresenter: CollectionPresenterProtocol {
     // MARK: - Internal Properties
     
     weak var view: CollectionViewControllerProtocol?
+    
+    let nftDetailAssembler: NftDetailAssembly
     
     // MARK: - Private Properties
     
@@ -37,6 +42,7 @@ final class CollectionPresenter: CollectionPresenterProtocol {
         self.title = nil
         self.nftIds = collection.nfts
         self.nftService = nftService
+        self.nftDetailAssembler = NftDetailAssembly(nftService: nftService)
     }
     
     init(
@@ -48,6 +54,7 @@ final class CollectionPresenter: CollectionPresenterProtocol {
         self.title = title
         self.nftIds = nftIds
         self.nftService = nftService
+        self.nftDetailAssembler = NftDetailAssembly(nftService: nftService)
     }
     
     // MARK: - Internal Methods
@@ -81,5 +88,19 @@ final class CollectionPresenter: CollectionPresenterProtocol {
             
             self?.view?.hideLoading()
         }
+    }
+    
+    func switchLike(for nftIndex: Int) {
+        // TODO: Вызывать сервис профиля для установки лайка.
+        // Помнить про показ лоадера и ошибки.
+
+        view?.setLike(true, for: nftIndex)
+    }
+    
+    func switchStateInCart(for nftIndex: Int) {
+        // TODO: Вызывать сервис заказа для добавления в корзину или удаления.
+        // Помнить про показ лоадера и ошибки.
+        
+        view?.setStateInCart(true, for: nftIndex)
     }
 }

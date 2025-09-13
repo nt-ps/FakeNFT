@@ -9,6 +9,8 @@ protocol CollectionViewControllerProtocol: AnyObject, LoadingView, ErrorView {
     var presenter: CollectionPresenterProtocol { get }
     
     func updateCollectionViewAnimated(from newNfts: [Nft])
+    func setLike(_ value: Bool, for cellIndex: Int)
+    func setStateInCart(_ value: Bool, for cellIndex: Int)
 }
 
 // MARK: - Implementation
@@ -36,8 +38,10 @@ final class CollectionViewController: UICollectionViewController, CollectionView
     private lazy var dataSource: CollectionDataSource = .init(
         collectionView,
         presenter: presenter,
-        headerDelegate: self
+        headerDelegate: self,
+        cellDelegate: self
     )
+    private var nfts: [Nft] = []
     
     // MARK: - UI Properties
     
@@ -93,10 +97,44 @@ final class CollectionViewController: UICollectionViewController, CollectionView
     // MARK: - Collection View Controller Protocol
     
     func updateCollectionViewAnimated(from newNfts: [Nft]) {
+        nfts = newNfts
+        
         var snapshot = CollectionDataSourceSnapshot()
         snapshot.appendSections([CollectionCollectionSection.main])
         snapshot.appendItems(newNfts, toSection: .main)
         dataSource.apply(snapshot, animatingDifferences: true)
+    }
+    
+    func setLike(_ value: Bool, for cellIndex: Int) {
+        guard
+            let cell = collectionView.cellForItem(
+                at: IndexPath(row: cellIndex, section: 0)
+            ) as? CollectionCollectionCell
+        else { return }
+        
+        cell.isLiked = value
+    }
+    
+    func setStateInCart(_ value: Bool, for cellIndex: Int) {
+        guard
+            let cell = collectionView.cellForItem(
+                at: IndexPath(row: cellIndex, section: 0)
+            ) as? CollectionCollectionCell
+        else { return }
+        
+        cell.inCart = value
+    }
+    
+    // MARK: - Collection View Delegate Methods
+    
+    override func collectionView(
+        _ collectionView: UICollectionView,
+        didSelectItemAt indexPath: IndexPath
+    ) {
+        let nft = nfts[indexPath.row]
+        let nftDetail = NftDetailInput(id: nft.id)
+        let nftViewController = presenter.nftDetailAssembler.build(with: nftDetail)
+        present(nftViewController, animated: true)
     }
     
     // MARK: - UI Updates
@@ -201,5 +239,17 @@ extension CollectionViewController: CollectionCollectionHeaderDelegate {
     
     func show(error model: ErrorModel) {
         showError(model)
+    }
+}
+
+extension CollectionViewController: CollectionCollectionCellDelegate {
+    func switchLike(for cell: CollectionCollectionCell) {
+        guard let indexPath = collectionView.indexPath(for: cell) else { return }
+        presenter.switchLike(for: indexPath.row)
+    }
+    
+    func switchStateInCart(for cell: CollectionCollectionCell) {
+        guard let indexPath = collectionView.indexPath(for: cell) else { return }
+        presenter.switchStateInCart(for: indexPath.row)
     }
 }

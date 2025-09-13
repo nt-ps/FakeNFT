@@ -1,4 +1,5 @@
 import UIKit
+import Kingfisher
 
 // MARK: - Delegate
 
@@ -7,7 +8,7 @@ protocol CollectionCollectionHeaderDelegate: AnyObject {
     func show(error model: ErrorModel)
 }
 
-// MARK:
+// MARK: - Header
 
 final class CollectionCollectionHeader: UICollectionReusableView, ReuseIdentifying {
     
@@ -124,7 +125,6 @@ final class CollectionCollectionHeader: UICollectionReusableView, ReuseIdentifyi
     var cover: URL? {
         didSet (oldValue) {
             guard let cover, cover != oldValue else { return }
-    
             coverImageView.kf.cancelDownloadTask()
             coverImageView.kf.setImage(with: cover)
         }
