@@ -23,11 +23,7 @@ final class PaymentViewController: UIViewController, PaymentViewProtocol {
         paymentLabel.textAlignment = .center
         paymentLabel.font = .systemFont(ofSize: 17, weight: .bold)
         paymentLabel.text = L10n.Payment.title
-        if traitCollection.userInterfaceStyle == .dark {
-            paymentLabel.textColor = .white
-        } else {
-            paymentLabel.textColor = UIColor(hexString: "#1A1B22")
-        }
+        paymentLabel.textColor = .AppColors.black
         return paymentLabel
     }()
     private lazy var currenciesCollectionView: UICollectionView = {
@@ -41,11 +37,7 @@ final class PaymentViewController: UIViewController, PaymentViewProtocol {
     private lazy var bottomBackgroundView: UIView = {
         let bottomBackgroundView = UIView()
         bottomBackgroundView.translatesAutoresizingMaskIntoConstraints = false
-        if traitCollection.userInterfaceStyle == .dark {
-            bottomBackgroundView.backgroundColor = UIColor(hexString: "#2C2C2E")
-        } else {
-            bottomBackgroundView.backgroundColor = UIColor(hexString: "#F7F7F8")
-        }
+        bottomBackgroundView.backgroundColor = .AppColors.lightGray
         bottomBackgroundView.layer.masksToBounds = true
         bottomBackgroundView.layer.cornerRadius = 12
         bottomBackgroundView.layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner]
@@ -58,13 +50,8 @@ final class PaymentViewController: UIViewController, PaymentViewProtocol {
         payButton.layer.cornerRadius = 16
         payButton.setTitle(L10n.Payment.pay, for: .normal)
         payButton.titleLabel?.font = .systemFont(ofSize: 17, weight: .bold)
-        if traitCollection.userInterfaceStyle == .dark {
-            payButton.setTitleColor(UIColor(hexString: "#1A1B22"), for: .normal)
-            payButton.backgroundColor = .white
-        } else {
-            payButton.setTitleColor(.white, for: .normal)
-            payButton.backgroundColor = UIColor(hexString: "#1A1B22")
-        }
+        payButton.backgroundColor = .AppColors.black
+        payButton.setTitleColor(.AppColors.white, for: .normal)
         return payButton
     }()
     private lazy var userAgreementLabel: UILabel = {
@@ -78,11 +65,7 @@ final class PaymentViewController: UIViewController, PaymentViewProtocol {
         } else {
             userAgreementLabel.text = "By making a purchase, you agree to the terms of the"
         }
-        if traitCollection.userInterfaceStyle == .dark {
-            userAgreementLabel.textColor = .white
-        } else {
-            userAgreementLabel.textColor = UIColor(hexString: "#1A1B22")
-        }
+        userAgreementLabel.textColor = .AppColors.black
         return userAgreementLabel
     }()
     private lazy var userAgreementButton: UIButton = {
@@ -151,6 +134,9 @@ final class PaymentViewController: UIViewController, PaymentViewProtocol {
 // MARK: setupView
 private extension PaymentViewController {
     private func setupView() {
+        view.backgroundColor = .AppColors.white
+        navigationItem.backBarButtonItem?.tintColor = .AppColors.black
+        
         view.addSubview(paymentLabel)
         view.addSubview(currenciesCollectionView)
         view.addSubview(bottomBackgroundView)
@@ -199,36 +185,5 @@ private extension PaymentViewController {
             userAgreementButton.widthAnchor.constraint(equalToConstant: 202),
             userAgreementButton.heightAnchor.constraint(equalToConstant: 26)
         ])
-        
-        if traitCollection.userInterfaceStyle == .dark {
-            view.backgroundColor = UIColor(hexString: "#1A1B22")
-            navigationController?.navigationBar.tintColor = .white
-        } else {
-            view.backgroundColor = .white
-            navigationItem.backBarButtonItem?.tintColor = UIColor(hexString: "#1A1B22")
-        }
-    }
-}
-
-// MARK: Dark theme implementation
-extension PaymentViewController {
-    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
-        if traitCollection.userInterfaceStyle == .dark {
-            view.backgroundColor = UIColor(hexString: "#1A1B22")
-            navigationController?.navigationBar.tintColor = .white
-            paymentLabel.textColor = .white
-            bottomBackgroundView.backgroundColor = UIColor(hexString: "#2C2C2E")
-            payButton.setTitleColor(UIColor(hexString: "#1A1B22"), for: .normal)
-            payButton.backgroundColor = .white
-            userAgreementLabel.textColor = .white
-        } else {
-            view.backgroundColor = .white
-            navigationItem.backBarButtonItem?.tintColor = UIColor(hexString: "#1A1B22")
-            paymentLabel.textColor = UIColor(hexString: "#1A1B22")
-            bottomBackgroundView.backgroundColor = UIColor(hexString: "#F7F7F8")
-            payButton.setTitleColor(.white, for: .normal)
-            payButton.backgroundColor = UIColor(hexString: "#1A1B22")
-            userAgreementLabel.textColor = UIColor(hexString: "#1A1B22")
-        }
     }
 }
