@@ -21,11 +21,7 @@ final class ShoppingCartViewControllerImplementation: UIViewController, Shopping
         let filterButton = UIButton()
         filterButton.translatesAutoresizingMaskIntoConstraints = false
         filterButton.setImage(.Icons.sort, for: .normal)
-        if traitCollection.userInterfaceStyle == .dark {
-            filterButton.tintColor = .white
-        } else {
-            filterButton.tintColor = UIColor(hexString: "#1A1B22")
-        }
+        filterButton.tintColor = .AppColors.black
         filterButton.addTarget(self, action: #selector(filterButtonTapped), for: .touchUpInside)
         filterButton.isHidden = true
         return filterButton
@@ -43,11 +39,7 @@ final class ShoppingCartViewControllerImplementation: UIViewController, Shopping
     private lazy var goToPaymentButtonBackgroundView: UIView = {
         let goToPaymentButtonBackgroundView = UIView()
         goToPaymentButtonBackgroundView.translatesAutoresizingMaskIntoConstraints = false
-        if traitCollection.userInterfaceStyle == .dark {
-            goToPaymentButtonBackgroundView.backgroundColor = UIColor(hexString: "#2C2C2E")
-        } else {
-            goToPaymentButtonBackgroundView.backgroundColor = UIColor(hexString: "#F7F7F8")
-        }
+        goToPaymentButtonBackgroundView.backgroundColor = .AppColors.lightGray
         goToPaymentButtonBackgroundView.layer.maskedCorners = [.layerMaxXMinYCorner, .layerMinXMinYCorner]
         goToPaymentButtonBackgroundView.layer.masksToBounds = true
         goToPaymentButtonBackgroundView.layer.cornerRadius = 12
@@ -58,11 +50,7 @@ final class ShoppingCartViewControllerImplementation: UIViewController, Shopping
         let NFTsCounterLabel = UILabel()
         NFTsCounterLabel.translatesAutoresizingMaskIntoConstraints = false
         NFTsCounterLabel.font = .systemFont(ofSize: 15, weight: .regular)
-        if traitCollection.userInterfaceStyle == .dark {
-            NFTsCounterLabel.textColor = .white
-        } else {
-            NFTsCounterLabel.textColor = UIColor(hexString: "#1A1B22")
-        }
+        NFTsCounterLabel.textColor = .AppColors.black
         NFTsCounterLabel.isHidden = true
         return NFTsCounterLabel
     }()
@@ -81,13 +69,8 @@ final class ShoppingCartViewControllerImplementation: UIViewController, Shopping
         goToPaymentButton.layer.masksToBounds = true
         goToPaymentButton.setTitle(L10n.Cart.toPayment, for: .normal)
         goToPaymentButton.titleLabel?.font = .systemFont(ofSize: 17, weight: .bold)
-        if traitCollection.userInterfaceStyle == .dark {
-            goToPaymentButton.backgroundColor = .white
-            goToPaymentButton.setTitleColor(UIColor(hexString: "#1A1B22"), for: .normal)
-        } else {
-            goToPaymentButton.backgroundColor = UIColor(hexString: "#1A1B22")
-            goToPaymentButton.setTitleColor(.white, for: .normal)
-        }
+        goToPaymentButton.backgroundColor = .AppColors.black
+        goToPaymentButton.setTitleColor(.AppColors.white, for: .normal)
         goToPaymentButton.addTarget(self, action: #selector(goToPaymentButtonTapped), for: .touchUpInside)
         goToPaymentButton.isHidden = true
         return goToPaymentButton
@@ -115,11 +98,7 @@ final class ShoppingCartViewControllerImplementation: UIViewController, Shopping
         labelWhenDeletingNFT.text = L10n.Cart.DeleteAlert.message
         labelWhenDeletingNFT.numberOfLines = 2
         labelWhenDeletingNFT.textAlignment = .center
-        if traitCollection.userInterfaceStyle == .dark {
-            labelWhenDeletingNFT.textColor = .white
-        } else {
-            labelWhenDeletingNFT.textColor = UIColor(hexString: "#1A1B22")
-        }
+        labelWhenDeletingNFT.textColor = .AppColors.black
         labelWhenDeletingNFT.isHidden = true
         labelWhenDeletingNFT.alpha = 0
         return labelWhenDeletingNFT
@@ -130,13 +109,9 @@ final class ShoppingCartViewControllerImplementation: UIViewController, Shopping
         deleteNFTFromCartButton.setTitle(L10n.Cart.DeleteAlert.delete, for: .normal)
         deleteNFTFromCartButton.titleLabel?.font = .systemFont(ofSize: 17, weight: .regular)
         deleteNFTFromCartButton.setTitleColor(UIColor(hexString: "#F56B6C"), for: .normal)
+        deleteNFTFromCartButton.backgroundColor = .AppColors.black
         deleteNFTFromCartButton.layer.masksToBounds = true
         deleteNFTFromCartButton.layer.cornerRadius = 12
-        if traitCollection.userInterfaceStyle == .dark {
-            deleteNFTFromCartButton.backgroundColor = .white
-        } else {
-            deleteNFTFromCartButton.backgroundColor = UIColor(hexString: "#1A1B22")
-        }
         deleteNFTFromCartButton.isHidden = true
         deleteNFTFromCartButton.alpha = 0
         deleteNFTFromCartButton.addTarget(self, action: #selector(deleteNFTFromCartButtonTapped), for: .touchUpInside)
@@ -149,13 +124,9 @@ final class ShoppingCartViewControllerImplementation: UIViewController, Shopping
         goBackFromDeletingNFTButton.titleLabel?.font = .systemFont(ofSize: 17, weight: .regular)
         goBackFromDeletingNFTButton.layer.masksToBounds = true
         goBackFromDeletingNFTButton.layer.cornerRadius = 12
-        if traitCollection.userInterfaceStyle == .dark {
-            goBackFromDeletingNFTButton.backgroundColor = .white
-            goBackFromDeletingNFTButton.setTitleColor(UIColor(hexString: "#1A1B22"), for: .normal)
-        } else {
-            goBackFromDeletingNFTButton.backgroundColor = UIColor(hexString: "#1A1B22")
-            goBackFromDeletingNFTButton.setTitleColor(.white, for: .normal)
-        }
+        goBackFromDeletingNFTButton.backgroundColor = .AppColors.black
+        goBackFromDeletingNFTButton.setTitleColor(.AppColors.white, for: .normal)
+        goBackFromDeletingNFTButton.setTitleColor(UIColor(hexString: "#1A1B22"), for: .normal)
         goBackFromDeletingNFTButton.isHidden = true
         goBackFromDeletingNFTButton.alpha = 0
         goBackFromDeletingNFTButton.addTarget(self, action: #selector(goBackFromDeletingNFTButtonTapped), for: .touchUpInside)
@@ -168,11 +139,7 @@ final class ShoppingCartViewControllerImplementation: UIViewController, Shopping
         emptyCartLabel.numberOfLines = 1
         emptyCartLabel.textAlignment = .center
         emptyCartLabel.text = L10n.Cart.empty
-        if traitCollection.userInterfaceStyle == .dark {
-            emptyCartLabel.textColor = .white
-        } else {
-            emptyCartLabel.textColor = UIColor(hexString: "#1A1B22")
-        }
+        emptyCartLabel.textColor = .AppColors.black
         emptyCartLabel.isHidden = true
         return emptyCartLabel
     }()
@@ -193,8 +160,6 @@ final class ShoppingCartViewControllerImplementation: UIViewController, Shopping
             cell.delegate = self
             return cell
         }
-        #warning("проверить работает ли без этойс троки на симуляторе")
-        //NFTTableView.dataSource = diffableDataSource
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -304,6 +269,9 @@ extension ShoppingCartViewControllerImplementation: UITableViewDelegate {
 // MARK: view setup
 private extension ShoppingCartViewControllerImplementation {
     private func setupView() {
+        view.backgroundColor = .AppColors.white
+        navigationItem.backButtonDisplayMode = .minimal
+        
         view.addSubview(filterButton)
         view.addSubview(NFTTableView)
         view.addSubview(goToPaymentButtonBackgroundView)
@@ -382,44 +350,5 @@ private extension ShoppingCartViewControllerImplementation {
             emptyCartLabel.widthAnchor.constraint(equalToConstant: 300),
             emptyCartLabel.heightAnchor.constraint(equalToConstant: 30)
         ])
-        
-        navigationItem.backButtonDisplayMode = .minimal
-        if traitCollection.userInterfaceStyle == .dark {
-            view.backgroundColor = UIColor(hexString: "#1A1B22")
-        } else {
-            view.backgroundColor = .white
-        }
-    }
-}
-
-// MARK: Dark theme implementation
-extension ShoppingCartViewControllerImplementation {
-    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
-        super.traitCollectionDidChange(previousTraitCollection)
-        if traitCollection.userInterfaceStyle == .dark {
-            view.backgroundColor = UIColor(hexString: "#1A1B22")
-            filterButton.tintColor = .white
-            goToPaymentButtonBackgroundView.backgroundColor = UIColor(hexString: "#2C2C2E")
-            NFTsCounterLabel.textColor = .white
-            goToPaymentButton.backgroundColor = .white
-            goToPaymentButton.setTitleColor(UIColor(hexString: "#1A1B22"), for: .normal)
-            labelWhenDeletingNFT.textColor = .white
-            deleteNFTFromCartButton.backgroundColor = .white
-            goBackFromDeletingNFTButton.backgroundColor = .white
-            goBackFromDeletingNFTButton.setTitleColor(UIColor(hexString: "#1A1B22"), for: .normal)
-            emptyCartLabel.textColor = .white
-        } else {
-            view.backgroundColor = .white
-            filterButton.tintColor = UIColor(hexString: "#1A1B22")
-            goToPaymentButtonBackgroundView.backgroundColor = UIColor(hexString: "#F7F7F8")
-            NFTsCounterLabel.textColor = UIColor(hexString: "#1A1B22")
-            goToPaymentButton.backgroundColor = UIColor(hexString: "#1A1B22")
-            goToPaymentButton.setTitleColor(.white, for: .normal)
-            labelWhenDeletingNFT.textColor = UIColor(hexString: "#1A1B22")
-            deleteNFTFromCartButton.backgroundColor = UIColor(hexString: "#1A1B22")
-            goBackFromDeletingNFTButton.backgroundColor = UIColor(hexString: "#1A1B22")
-            goBackFromDeletingNFTButton.setTitleColor(.white, for: .normal)
-            emptyCartLabel.textColor = UIColor(hexString: "#1A1B22")
-        }
     }
 }
