@@ -35,18 +35,18 @@ final class CollectionPresenter: CollectionPresenterProtocol {
     private let userService: UserServiceProtocol?
     private let orderService: OrderServiceProtocol
     private let putOrederService: PutNewOrderServiceProtocol
+    private let profileService: ProfileServiceProtocol
+    private let profileStorage: ProfileStorage
     
     private var nftModels: [NftCellModel] = []
     private var cart: [String] = []
+    private var likes: [String] = []
     
     // MARK: - Initializers
     
     init(
         for collection: Collection,
-        nftService: NftService,
-        userService: UserServiceProtocol,
-        orderService: OrderServiceProtocol,
-        putOrederService: PutNewOrderServiceProtocol
+        servicesAssembler: ServicesAssembly
     ) {
         self.headerModel = CollectionHeaderModel(
             name: collection.name,
@@ -56,27 +56,33 @@ final class CollectionPresenter: CollectionPresenterProtocol {
         )
         self.title = nil
         self.nftIds = collection.nfts
-        self.nftService = nftService
-        self.userService = userService
-        self.orderService = orderService
-        self.putOrederService = putOrederService
+        
+        self.nftService = servicesAssembler.nftService
+        self.userService = servicesAssembler.userService
+        self.orderService = servicesAssembler.orderService
+        self.putOrederService = servicesAssembler.putOrderService
+        self.profileService = servicesAssembler.profileService
+        self.profileStorage = servicesAssembler.profileStorage
+        
         self.nftDetailAssembler = NftDetailAssembly(nftService: nftService)
     }
     
     init(
         for nftIds: [String],
         title: String,
-        nftService: NftService,
-        orderService: OrderServiceProtocol,
-        putOrederService: PutNewOrderServiceProtocol
+        servicesAssembler: ServicesAssembly
     ) {
         self.headerModel = nil
         self.title = title
         self.nftIds = nftIds
-        self.nftService = nftService
-        self.userService = nil
-        self.orderService = orderService
-        self.putOrederService = putOrederService
+        
+        self.nftService = servicesAssembler.nftService
+        self.userService = servicesAssembler.userService
+        self.orderService = servicesAssembler.orderService
+        self.putOrederService = servicesAssembler.putOrderService
+        self.profileService = servicesAssembler.profileService
+        self.profileStorage = servicesAssembler.profileStorage
+        
         self.nftDetailAssembler = NftDetailAssembly(nftService: nftService)
     }
     
@@ -88,6 +94,7 @@ final class CollectionPresenter: CollectionPresenterProtocol {
         let dispatchGroup = DispatchGroup()
         loadNfts(dispatchGroup: dispatchGroup)
         loadOrder(dispatchGroup: dispatchGroup)
+        loadLikes(dispatchGroup: dispatchGroup)
         if headerModel != nil {
             loadAuthor(dispatchGroup: dispatchGroup)
         }
@@ -101,10 +108,41 @@ final class CollectionPresenter: CollectionPresenterProtocol {
     }
     
     func switchLike(for nftIndex: Int) {
-        // TODO: Вызывать сервис профиля для установки лайка.
-        // Помнить про показ лоадера и ошибки.
+        view?.showLoading()
 
-        view?.setLike(true, for: nftIndex)
+        let nftId = nftModels[nftIndex].id
+        var newLikes = likes
+        var newLike = false
+        if let index = newLikes.firstIndex(of: nftId) {
+            newLikes.remove(at: index)
+            newLike = false
+        } else {
+            newLikes.append(nftId)
+            newLike = true
+        }
+        
+        profileService.sendLikeRequest(
+            nftId: nftId,
+            isLiked: newLike
+        ) { [weak self] result in
+            guard let self else { return }
+            switch result {
+            case .success:
+                self.likes = newLikes
+                self.view?.setLike(newLike, for: nftIndex)
+            case .failure(let error):
+                print("[\(#function)] Failed to set like: \(error.localizedDescription).")
+                let errorModel = ErrorModel(
+                    title: L10n.Error.data,
+                    message: nil,
+                    actionText: nil,
+                    action: nil
+                )
+                self.view?.showError(errorModel)
+            }
+            
+            view?.hideLoading()
+        }
     }
     
     func switchStateInCart(for nftIndex: Int) {
@@ -191,6 +229,9 @@ final class CollectionPresenter: CollectionPresenterProtocol {
     }
     
     private func loadOrder(dispatchGroup: DispatchGroup?) {
+        
+        // TODO: После слияния актуализировать этот метод относительно сервиса Вани.
+        
         dispatchGroup?.enter()
         orderService.fetchOrder() { [weak self] result in
             defer { dispatchGroup?.leave() }
@@ -201,6 +242,35 @@ final class CollectionPresenter: CollectionPresenterProtocol {
                 self.cart.append(contentsOf: order.nfts)
             case .failure(let error):
                 print("[\(#function)] Failed to load order: \(error.localizedDescription).")
+                let errorModel = ErrorModel(
+                    title: L10n.Error.data,
+                    message: nil,
+                    actionText: nil,
+                    action: nil
+                )
+                self.view?.showError(errorModel)
+            }
+        }
+    }
+    
+    private func loadLikes(dispatchGroup: DispatchGroup?) {
+        dispatchGroup?.enter()
+        
+        // TODO: После слияния актуализировать этот метод относительно сервиса Амины.
+        //
+        // Пока на всякий случай каждый раз при открытии экрана коллекции
+        // загружаю актуальный профайл, потому что в кэше может лежать неактуальная версия.
+        
+        profileService.fetchProfile { [weak self] result in
+            defer { dispatchGroup?.leave() }
+            guard let self else { return }
+            switch result {
+            case .success(let profile):
+                self.likes.removeAll()
+                self.likes.append(contentsOf: profile.likes)
+                self.profileStorage.profile = profile
+            case .failure(let error):
+                print("[\(#function)] Failed to load profile: \(error.localizedDescription).")
                 let errorModel = ErrorModel(
                     title: L10n.Error.data,
                     message: nil,

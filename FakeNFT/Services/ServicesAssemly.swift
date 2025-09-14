@@ -32,11 +32,21 @@ final class ServicesAssembly {
         UserService(networkClient: networkClient)
     }
     
+    // Все, что ниже - это для экранов Каталог и Коллекция.
+    
     var putOrderService: PutNewOrderServiceProtocol {
         PutNewOrderServiceImplementation()
     }
     
     var orderService: OrderServiceProtocol {
         OrderServiceImplementation()
+    }
+    
+    var profileService: ProfileServiceProtocol {
+        ProfileService.shared
+    }
+    
+    var profileStorage: ProfileStorage {
+        ProfileStorage.shared
     }
 }
