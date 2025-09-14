@@ -21,7 +21,7 @@ final class PaymentViewController: UIViewController, PaymentViewProtocol {
         paymentLabel.translatesAutoresizingMaskIntoConstraints = false
         paymentLabel.numberOfLines = 1
         paymentLabel.textAlignment = .center
-        paymentLabel.font = .systemFont(ofSize: 17, weight: .bold)
+        paymentLabel.font = .bodyBold
         paymentLabel.text = L10n.Payment.title
         paymentLabel.textColor = .AppColors.black
         return paymentLabel
@@ -49,7 +49,7 @@ final class PaymentViewController: UIViewController, PaymentViewProtocol {
         payButton.layer.masksToBounds = true
         payButton.layer.cornerRadius = 16
         payButton.setTitle(L10n.Payment.pay, for: .normal)
-        payButton.titleLabel?.font = .systemFont(ofSize: 17, weight: .bold)
+        payButton.titleLabel?.font = .bodyBold
         payButton.backgroundColor = .AppColors.black
         payButton.setTitleColor(.AppColors.white, for: .normal)
         return payButton
@@ -58,7 +58,7 @@ final class PaymentViewController: UIViewController, PaymentViewProtocol {
         let userAgreementLabel = UILabel()
         userAgreementLabel.translatesAutoresizingMaskIntoConstraints = false
         userAgreementLabel.numberOfLines = 1
-        userAgreementLabel.font = .systemFont(ofSize: 13, weight: .regular)
+        userAgreementLabel.font = .caption2
         userAgreementLabel.textAlignment = .left
         if Locale.current.languageCode == "ru" {
             userAgreementLabel.text = "Совершая покупку, вы соглашаетесь с условиями"
@@ -71,7 +71,7 @@ final class PaymentViewController: UIViewController, PaymentViewProtocol {
     private lazy var userAgreementButton: UIButton = {
         let userAgreementButton = UIButton()
         userAgreementButton.translatesAutoresizingMaskIntoConstraints = false
-        userAgreementButton.titleLabel?.font = .systemFont(ofSize: 13, weight: .regular)
+        userAgreementButton.titleLabel?.font = .caption2
         userAgreementButton.setTitleColor(UIColor(hexString: "#0A84FF"), for: .normal)
         userAgreementButton.contentHorizontalAlignment = .left
         if Locale.current.languageCode == "ru" {

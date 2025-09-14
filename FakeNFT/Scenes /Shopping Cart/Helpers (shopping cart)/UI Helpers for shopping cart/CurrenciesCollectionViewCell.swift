@@ -34,7 +34,7 @@ final class CurrenciesCollectionViewCell: UICollectionViewCell {
     private lazy var currencyNameLabel: UILabel = {
         let currencyNameLabel = UILabel()
         currencyNameLabel.translatesAutoresizingMaskIntoConstraints = false
-        currencyNameLabel.font = .systemFont(ofSize: 13, weight: .regular)
+        currencyNameLabel.font = .caption2
         currencyNameLabel.numberOfLines = 1
         currencyNameLabel.textAlignment = .left
         currencyNameLabel.backgroundColor = .clear
@@ -44,7 +44,7 @@ final class CurrenciesCollectionViewCell: UICollectionViewCell {
     private lazy var currencyAbbreviationLabel: UILabel = {
         let currencyAbbreviationLabel = UILabel()
         currencyAbbreviationLabel.translatesAutoresizingMaskIntoConstraints = false
-        currencyAbbreviationLabel.font = .systemFont(ofSize: 13, weight: .regular)
+        currencyAbbreviationLabel.font = .caption2
         currencyAbbreviationLabel.numberOfLines = 1
         currencyAbbreviationLabel.textAlignment = .left
         currencyAbbreviationLabel.backgroundColor = .clear

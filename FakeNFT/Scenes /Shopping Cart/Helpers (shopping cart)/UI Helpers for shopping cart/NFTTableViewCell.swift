@@ -19,7 +19,7 @@ final class NFTTableViewCell: UITableViewCell {
     private lazy var NFTNameLabel: UILabel = {
         let NFTNameLabel = UILabel()
         NFTNameLabel.translatesAutoresizingMaskIntoConstraints = false
-        NFTNameLabel.font = .systemFont(ofSize: 17, weight: .bold)
+        NFTNameLabel.font = .bodyBold
         NFTNameLabel.textColor = .AppColors.black
         return NFTNameLabel
     }()
@@ -33,7 +33,7 @@ final class NFTTableViewCell: UITableViewCell {
         let priceLabel = UILabel()
         priceLabel.translatesAutoresizingMaskIntoConstraints = false
         priceLabel.text = L10n.Cart.price
-        priceLabel.font = .systemFont(ofSize: 13, weight: .regular)
+        priceLabel.font = .caption2
         priceLabel.textColor = .AppColors.black
         return priceLabel
     }()
@@ -41,6 +41,7 @@ final class NFTTableViewCell: UITableViewCell {
         let priceValueLabel = UILabel()
         priceValueLabel.translatesAutoresizingMaskIntoConstraints = false
         priceValueLabel.textColor = .AppColors.black
+        priceValueLabel.font = .bodyBold
         return priceValueLabel
     }()
     private lazy var NFTImageView: UIImageView = {

@@ -49,7 +49,7 @@ final class ShoppingCartViewControllerImplementation: UIViewController, Shopping
     private lazy var NFTsCounterLabel: UILabel = {
         let NFTsCounterLabel = UILabel()
         NFTsCounterLabel.translatesAutoresizingMaskIntoConstraints = false
-        NFTsCounterLabel.font = .systemFont(ofSize: 15, weight: .regular)
+        NFTsCounterLabel.font = .caption1
         NFTsCounterLabel.textColor = .AppColors.black
         NFTsCounterLabel.isHidden = true
         return NFTsCounterLabel
@@ -58,7 +58,7 @@ final class ShoppingCartViewControllerImplementation: UIViewController, Shopping
         let NFTsTotalPriceLabel = UILabel()
         NFTsTotalPriceLabel.translatesAutoresizingMaskIntoConstraints = false
         NFTsTotalPriceLabel.textColor = UIColor(hexString: "#1C9F00")
-        NFTsTotalPriceLabel.font = .systemFont(ofSize: 17, weight: .bold)
+        NFTsTotalPriceLabel.font = .bodyBold
         NFTsTotalPriceLabel.isHidden = true
         return NFTsTotalPriceLabel
     }()
@@ -68,7 +68,7 @@ final class ShoppingCartViewControllerImplementation: UIViewController, Shopping
         goToPaymentButton.layer.cornerRadius = 16
         goToPaymentButton.layer.masksToBounds = true
         goToPaymentButton.setTitle(L10n.Cart.toPayment, for: .normal)
-        goToPaymentButton.titleLabel?.font = .systemFont(ofSize: 17, weight: .bold)
+        goToPaymentButton.titleLabel?.font = .bodyBold
         goToPaymentButton.backgroundColor = .AppColors.black
         goToPaymentButton.setTitleColor(.AppColors.white, for: .normal)
         goToPaymentButton.addTarget(self, action: #selector(goToPaymentButtonTapped), for: .touchUpInside)
@@ -94,7 +94,7 @@ final class ShoppingCartViewControllerImplementation: UIViewController, Shopping
     private lazy var labelWhenDeletingNFT: UILabel = {
         let labelWhenDeletingNFT = UILabel()
         labelWhenDeletingNFT.translatesAutoresizingMaskIntoConstraints = false
-        labelWhenDeletingNFT.font = .systemFont(ofSize: 13, weight: .regular)
+        labelWhenDeletingNFT.font = .caption2
         labelWhenDeletingNFT.text = L10n.Cart.DeleteAlert.message
         labelWhenDeletingNFT.numberOfLines = 2
         labelWhenDeletingNFT.textAlignment = .center
@@ -107,7 +107,7 @@ final class ShoppingCartViewControllerImplementation: UIViewController, Shopping
         let deleteNFTFromCartButton = UIButton()
         deleteNFTFromCartButton.translatesAutoresizingMaskIntoConstraints = false
         deleteNFTFromCartButton.setTitle(L10n.Cart.DeleteAlert.delete, for: .normal)
-        deleteNFTFromCartButton.titleLabel?.font = .systemFont(ofSize: 17, weight: .regular)
+        deleteNFTFromCartButton.titleLabel?.font = .bodyRegular
         deleteNFTFromCartButton.setTitleColor(UIColor(hexString: "#F56B6C"), for: .normal)
         deleteNFTFromCartButton.backgroundColor = .AppColors.black
         deleteNFTFromCartButton.layer.masksToBounds = true
@@ -121,7 +121,7 @@ final class ShoppingCartViewControllerImplementation: UIViewController, Shopping
         let goBackFromDeletingNFTButton = UIButton()
         goBackFromDeletingNFTButton.translatesAutoresizingMaskIntoConstraints = false
         goBackFromDeletingNFTButton.setTitle(L10n.Cart.DeleteAlert.cancel, for: .normal)
-        goBackFromDeletingNFTButton.titleLabel?.font = .systemFont(ofSize: 17, weight: .regular)
+        goBackFromDeletingNFTButton.titleLabel?.font = .bodyRegular
         goBackFromDeletingNFTButton.layer.masksToBounds = true
         goBackFromDeletingNFTButton.layer.cornerRadius = 12
         goBackFromDeletingNFTButton.backgroundColor = .AppColors.black
@@ -135,7 +135,7 @@ final class ShoppingCartViewControllerImplementation: UIViewController, Shopping
     private lazy var emptyCartLabel: UILabel = {
         let emptyCartLabel = UILabel()
         emptyCartLabel.translatesAutoresizingMaskIntoConstraints = false
-        emptyCartLabel.font = .systemFont(ofSize: 17, weight: .bold)
+        emptyCartLabel.font = .bodyBold
         emptyCartLabel.numberOfLines = 1
         emptyCartLabel.textAlignment = .center
         emptyCartLabel.text = L10n.Cart.empty
