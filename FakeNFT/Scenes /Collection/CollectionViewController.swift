@@ -1,14 +1,15 @@
 import UIKit
 import ProgressHUD
 
-typealias CollectionDataSourceSnapshot = NSDiffableDataSourceSnapshot<CollectionCollectionSection, Nft>
+typealias CollectionDataSourceSnapshot = NSDiffableDataSourceSnapshot<CollectionCollectionSection, NftCellModel>
 
 // MARK: - Protocol
 
 protocol CollectionViewControllerProtocol: AnyObject, LoadingView, ErrorView {
     var presenter: CollectionPresenterProtocol { get }
     
-    func updateCollectionViewAnimated(from newNfts: [Nft])
+    func updateCollectionViewAnimated(from newNfts: [NftCellModel])
+    func setAuthor(name: String, webcite: String?)
     func setLike(_ value: Bool, for cellIndex: Int)
     func setStateInCart(_ value: Bool, for cellIndex: Int)
 }
@@ -41,7 +42,7 @@ final class CollectionViewController: UICollectionViewController, CollectionView
         headerDelegate: self,
         cellDelegate: self
     )
-    private var nfts: [Nft] = []
+    private var nfts: [NftCellModel] = []
     
     // MARK: - UI Properties
     
@@ -55,7 +56,7 @@ final class CollectionViewController: UICollectionViewController, CollectionView
     init(presenter: CollectionPresenterProtocol) {
         self.presenter = presenter
         let layout = CollectionViewController.createLayout(
-            withHeader: presenter.collection != nil
+            withHeader: presenter.headerModel != nil
         )
         super.init(collectionViewLayout: layout)
     }
@@ -75,7 +76,7 @@ final class CollectionViewController: UICollectionViewController, CollectionView
         setNavigationBar()
         configureCollectionView()
         
-        presenter.loadNfts()
+        presenter.viewDidLoad()
     }
     
     // MARK: - Overridden Methods
@@ -96,13 +97,25 @@ final class CollectionViewController: UICollectionViewController, CollectionView
     
     // MARK: - Collection View Controller Protocol
     
-    func updateCollectionViewAnimated(from newNfts: [Nft]) {
+    func updateCollectionViewAnimated(from newNfts: [NftCellModel]) {
         nfts = newNfts
         
         var snapshot = CollectionDataSourceSnapshot()
         snapshot.appendSections([CollectionCollectionSection.main])
         snapshot.appendItems(newNfts, toSection: .main)
         dataSource.apply(snapshot, animatingDifferences: true)
+    }
+    
+    func setAuthor(name: String, webcite: String?) {
+        guard
+            let header = collectionView.supplementaryView(
+                forElementKind: UICollectionView.elementKindSectionHeader,
+                at: IndexPath(row: 0, section: 0)
+            ) as? CollectionCollectionHeader
+        else { return }
+        
+        header.authorName = name
+        header.authorWebsite = webcite
     }
     
     func setLike(_ value: Bool, for cellIndex: Int) {
@@ -139,10 +152,21 @@ final class CollectionViewController: UICollectionViewController, CollectionView
     
     // MARK: - UI Updates
     
+    func showLoading() {
+        activityIndicator.startAnimating()
+        collectionView.isUserInteractionEnabled = false
+    }
+
+    func hideLoading() {
+        activityIndicator.stopAnimating()
+        collectionView.isUserInteractionEnabled = true
+    }
+    
     private func setNavigationBar() {
         let standardAppearance = UINavigationBarAppearance()
         standardAppearance.configureWithTransparentBackground()
         standardAppearance.backgroundColor = .AppColors.white
+        standardAppearance.backButtonAppearance = UIBarButtonItemAppearance()
         
         if let title = presenter.title {
             navigationItem.title = title
@@ -150,18 +174,20 @@ final class CollectionViewController: UICollectionViewController, CollectionView
                 NSAttributedString.Key.foregroundColor: UIColor.AppColors.black,
                 NSAttributedString.Key.font: UIFont.bodyBold
             ]
-            navigationController?.navigationBar.scrollEdgeAppearance = standardAppearance
+            navigationItem.scrollEdgeAppearance = standardAppearance
         } else {
             let scrollAppearance = UINavigationBarAppearance()
             scrollAppearance.configureWithTransparentBackground()
 
-            navigationController?.navigationBar.scrollEdgeAppearance = scrollAppearance
+            navigationItem.scrollEdgeAppearance = scrollAppearance
             
             collectionView.contentInsetAdjustmentBehavior = .never
         }
         
-        navigationController?.navigationBar.standardAppearance = standardAppearance
-        navigationController?.navigationBar.compactAppearance = standardAppearance
+        navigationItem.standardAppearance = standardAppearance
+        navigationItem.compactAppearance = standardAppearance
+        
+        navigationItem.backButtonDisplayMode = .minimal
     }
     
     private func configureCollectionView() {

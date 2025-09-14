@@ -76,23 +76,20 @@ final class CollectionCollectionHeader: UICollectionReusableView, ReuseIdentifyi
     
     private lazy var authorButton: UIButton = {
         let authorButton = UIButton(type: .custom)
-        // authorButton.setTitle("John Doe", for: .normal) // TODO: Удалить!
         authorButton.titleLabel?.lineBreakMode = .byTruncatingTail
         authorButton.contentHorizontalAlignment = .leading
-        authorButton.titleLabel?.font = .caption1
-        authorButton.setTitleColor(.AppColors.Universal.blue, for: .normal)
         authorButton.translatesAutoresizingMaskIntoConstraints = false
         authorButton.addTarget(
             self,
             action: #selector(didTapAuthorButton),
             for: .touchUpInside
         )
+        changeButtonState(authorButton, to: false)
         return authorButton
     } ()
     
     private lazy var descriptionView: UILabel = {
         let descriptionView = UILabel()
-        descriptionView.text = "Персиковый — как облака над закатным солнцем в океане. В этой коллекции совмещены трогательная нежность и живая игривость сказочных зефирных зверей." // TODO: Удалить
         descriptionView.font = UIFont.caption2
         descriptionView.textColor = .AppColors.black
         descriptionView.textAlignment = .natural
@@ -142,7 +139,12 @@ final class CollectionCollectionHeader: UICollectionReusableView, ReuseIdentifyi
         }
     }
     
-    var authorWebsite: String?
+    var authorWebsite: String? {
+        didSet {
+            let state = authorWebsite != nil
+            changeButtonState(authorButton, to: state)
+        }
+    }
     
     var descriptionText: String? {
         didSet {
@@ -229,6 +231,15 @@ final class CollectionCollectionHeader: UICollectionReusableView, ReuseIdentifyi
             constant: delta
         )
         coverHeightConstraint?.isActive = true
+    }
+    
+    private func changeButtonState(_ button: UIButton, to isEnabled: Bool) {
+        button.setTitleColor(
+            isEnabled ? .AppColors.Universal.blue : .AppColors.black,
+            for: .normal
+        )
+        button.titleLabel?.font = isEnabled ? .caption1 : .caption2
+        button.isEnabled = isEnabled
     }
     
     private func setConstraints() {

@@ -23,7 +23,10 @@ final class CollectionViewAssembly: CollectionViewAssemblyProtocol {
     func build(with collection: Collection) -> UIViewController {
         var presenter: CollectionPresenterProtocol = CollectionPresenter(
             for: collection,
-            nftService: servicesAssembler.nftService
+            nftService: servicesAssembler.nftService,
+            userService: servicesAssembler.userService,
+            orderService: servicesAssembler.orderService,
+            putOrederService: servicesAssembler.putOrderService
         )
         let viewController = build(with: &presenter)
         return viewController
@@ -34,7 +37,9 @@ final class CollectionViewAssembly: CollectionViewAssemblyProtocol {
         var presenter: CollectionPresenterProtocol = CollectionPresenter(
             for: nftIds,
             title: title,
-            nftService: servicesAssembler.nftService
+            nftService: servicesAssembler.nftService,
+            orderService: servicesAssembler.orderService,
+            putOrederService: servicesAssembler.putOrderService
         )
         let viewController = build(with: &presenter)
         return viewController

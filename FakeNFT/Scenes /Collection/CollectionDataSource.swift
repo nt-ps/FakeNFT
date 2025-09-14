@@ -8,7 +8,7 @@ enum CollectionCollectionSection: Int, CaseIterable {
 
 // MARK: - Data Source Implementation
 
-final class CollectionDataSource: UICollectionViewDiffableDataSource<CollectionCollectionSection, Nft> {
+final class CollectionDataSource: UICollectionViewDiffableDataSource<CollectionCollectionSection, NftCellModel> {
     
     // MARK: - Internal Properties
     
@@ -37,6 +37,8 @@ final class CollectionDataSource: UICollectionViewDiffableDataSource<CollectionC
             cell.rating = UInt(nft.rating)
             cell.name = nft.name
             cell.price = nft.price
+            cell.isLiked = nft.isLiked
+            cell.inCart = nft.inCart
             
             return cell
         }
@@ -51,7 +53,7 @@ final class CollectionDataSource: UICollectionViewDiffableDataSource<CollectionC
     ) -> UICollectionReusableView {
         if
             kind == UICollectionView.elementKindSectionHeader,
-            let collection = presenter.collection
+            let model = presenter.headerModel
         {
             let header: CollectionCollectionHeader = collectionView.dequeueReusableSupplementaryView(
                 indexPath: indexPath,
@@ -59,12 +61,11 @@ final class CollectionDataSource: UICollectionViewDiffableDataSource<CollectionC
             )
             
             header.delegate = headerDelegate
-            header.cover = collection.cover
-            header.name = collection.name
-            // TODO: Добавить поля:
-            // header.authorName = ...
-            // header.authorWebsite = ...
-            header.descriptionText = collection.description
+            header.cover = model.cover
+            header.name = model.name
+            header.descriptionText = model.description
+            header.authorName = model.authorName
+            header.authorWebsite = model.authorName
             
             return header
         }

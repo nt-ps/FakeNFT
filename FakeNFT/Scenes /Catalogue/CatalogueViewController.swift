@@ -110,7 +110,7 @@ final class CatalogueViewController: UITableViewController, CatalogueViewControl
         
         navigationItem.backButtonDisplayMode = .minimal
         navigationItem.rightBarButtonItem = sortButton
-        
+
         view.addSubview(activityIndicator)
         activityIndicator.constraintCenters(to: view.safeAreaLayoutGuide)
         
