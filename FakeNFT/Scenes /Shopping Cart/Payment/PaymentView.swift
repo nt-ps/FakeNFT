@@ -85,7 +85,7 @@ final class PaymentViewController: UIViewController, PaymentViewProtocol {
         }
         return userAgreementLabel
     }()
-    private let userAgreementButton: UIButton = {
+    private lazy var userAgreementButton: UIButton = {
         let userAgreementButton = UIButton()
         userAgreementButton.translatesAutoresizingMaskIntoConstraints = false
         userAgreementButton.titleLabel?.font = .systemFont(ofSize: 13, weight: .regular)
@@ -96,7 +96,7 @@ final class PaymentViewController: UIViewController, PaymentViewProtocol {
         } else {
             userAgreementButton.setTitle("User agreement", for: .normal)
         }
-        userAgreementButton.addTarget(userAgreementButton.self, action: #selector(userAgreementButtonTapped), for: .touchUpInside)
+        userAgreementButton.addTarget(self, action: #selector(userAgreementButtonTapped), for: .touchUpInside)
         return userAgreementButton
     }()
     
