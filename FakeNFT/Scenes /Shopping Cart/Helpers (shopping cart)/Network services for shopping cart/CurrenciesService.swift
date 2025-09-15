@@ -10,6 +10,7 @@ import Foundation
 protocol CurrenciesServiceProtocol {
     func fetchCurrencies(completion: @escaping ([Currency]) -> Void)
 }
+
 final class CurrenciesService: CurrenciesServiceProtocol {
     func fetchCurrencies(completion: @escaping ([Currency]) -> Void) {
         guard let url = URL(string: "https://d5dn3j2ouj72b0ejucbl.apigw.yandexcloud.net//api/v1/currencies")
