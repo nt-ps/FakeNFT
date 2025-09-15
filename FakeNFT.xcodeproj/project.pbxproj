@@ -64,7 +64,7 @@
 		3A5844C02E77426200D295B2 /* ProfileService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A5844BF2E77426200D295B2 /* ProfileService.swift */; };
 		3A5844C22E77429200D295B2 /* ProfileStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A5844C12E77429200D295B2 /* ProfileStorage.swift */; };
 		3A5844C42E7742BD00D295B2 /* ProfileSortType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A5844C32E7742BD00D295B2 /* ProfileSortType.swift */; };
-		3A5844C62E77444000D295B2 /* SetLikeRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A5844C52E77444000D295B2 /* SetLikeRequest.swift */; };
+		3A5844C62E77444000D295B2 /* SetLikesRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A5844C52E77444000D295B2 /* SetLikesRequest.swift */; };
 		3A5844C82E77445C00D295B2 /* LikeModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A5844C72E77445C00D295B2 /* LikeModel.swift */; };
 		3AAB09372E6C7CC00079920F /* CatalogueNavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AAB09312E6C7CC00079920F /* CatalogueNavigationController.swift */; };
 		3AAB09382E6C7CC00079920F /* CatalogueViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AAB09342E6C7CC00079920F /* CatalogueViewController.swift */; };
@@ -190,7 +190,7 @@
 		3A5844BF2E77426200D295B2 /* ProfileService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileService.swift; sourceTree = "<group>"; };
 		3A5844C12E77429200D295B2 /* ProfileStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileStorage.swift; sourceTree = "<group>"; };
 		3A5844C32E7742BD00D295B2 /* ProfileSortType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileSortType.swift; sourceTree = "<group>"; };
-		3A5844C52E77444000D295B2 /* SetLikeRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetLikeRequest.swift; sourceTree = "<group>"; };
+		3A5844C52E77444000D295B2 /* SetLikesRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetLikesRequest.swift; sourceTree = "<group>"; };
 		3A5844C72E77445C00D295B2 /* LikeModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LikeModel.swift; sourceTree = "<group>"; };
 		3A8770EC2E630BE4004BABB9 /* catalogue_tasks.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = catalogue_tasks.md; sourceTree = "<group>"; };
 		3AAB09302E6C7CC00079920F /* CatalogueDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CatalogueDataSource.swift; sourceTree = "<group>"; };
@@ -422,7 +422,7 @@
 			isa = PBXGroup;
 			children = (
 				3A5844C72E77445C00D295B2 /* LikeModel.swift */,
-				3A5844C52E77444000D295B2 /* SetLikeRequest.swift */,
+				3A5844C52E77444000D295B2 /* SetLikesRequest.swift */,
 				3A5844C32E7742BD00D295B2 /* ProfileSortType.swift */,
 				3A5844C12E77429200D295B2 /* ProfileStorage.swift */,
 				3A5844BF2E77426200D295B2 /* ProfileService.swift */,
@@ -911,7 +911,7 @@
 				CD95B2302E672363008CDB81 /* CellsReusingUtils.swift in Sources */,
 				CD95B2312E672363008CDB81 /* NetworkTask.swift in Sources */,
 				CD95B2322E672363008CDB81 /* NetworkClient.swift in Sources */,
-				3A5844C62E77444000D295B2 /* SetLikeRequest.swift in Sources */,
+				3A5844C62E77444000D295B2 /* SetLikesRequest.swift in Sources */,
 				3A5844B22E77016B00D295B2 /* PutNewOrderService.swift in Sources */,
 				CD95B2332E672363008CDB81 /* NetworkRequest.swift in Sources */,
 				3A5844B02E77015E00D295B2 /* Order.swift in Sources */,

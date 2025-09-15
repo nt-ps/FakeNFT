@@ -4,6 +4,7 @@ import Foundation
 //
 //       - Метод sendLikeRequest перенесен сюда из NFTImageView.
 //         Добавил в него complition, убрал лишние методы и networkClient.
+//         Заменил входные параметры nftId и isLiked на likes.
 //
 //       Помнить про это при слиянии.
 
@@ -12,7 +13,7 @@ protocol ProfileServiceProtocol {
     func fetchProfile(completion: @escaping (Result<ProfileInfoModel, Error>) -> Void)
     func editProfile(_ editProfileModel: EditProfileModel, completion: @escaping (Result<ProfileInfoModel, Error>) -> Void)
     func getNFTs(completion: @escaping (Result<[Nft], Error>) -> Void)
-    func sendLikeRequest(nftId: String, isLiked: Bool, completion: @escaping (Result<Bool, Error>) -> Void)
+    func sendLikeRequest(likes: [String], completion: @escaping (Result<Bool, Error>) -> Void)
 }
 
 // MARK: - Implementation
@@ -84,11 +85,10 @@ final class ProfileService: ProfileServiceProtocol {
     }
     
     func sendLikeRequest(
-        nftId: String,
-        isLiked: Bool,
+        likes: [String],
         completion: @escaping (Result<Bool, Error>) -> Void
     ) {
-        let request = SetLikeRequest(nftId: nftId, isLiked: isLiked)
+        let request = SetLikesRequest(likes: likes)
         networkClient.send(request: request, type: ProfileInfoModel.self) { result in
             DispatchQueue.main.async {
                 switch result {

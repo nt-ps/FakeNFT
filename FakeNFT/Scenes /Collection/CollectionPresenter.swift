@@ -34,7 +34,7 @@ final class CollectionPresenter: CollectionPresenterProtocol {
     private let nftService: NftService
     private let userService: UserServiceProtocol?
     private let orderService: OrderServiceProtocol
-    private let putOrederService: PutNewOrderServiceProtocol
+    private let putOrderService: PutNewOrderServiceProtocol
     private let profileService: ProfileServiceProtocol
     private let profileStorage: ProfileStorage
     
@@ -52,7 +52,8 @@ final class CollectionPresenter: CollectionPresenterProtocol {
             name: collection.name,
             cover: collection.cover,
             description: collection.description,
-            authorId: collection.author
+            authorId: collection.author,
+            authorName: collection.author
         )
         self.title = nil
         self.nftIds = collection.nfts
@@ -60,7 +61,7 @@ final class CollectionPresenter: CollectionPresenterProtocol {
         self.nftService = servicesAssembler.nftService
         self.userService = servicesAssembler.userService
         self.orderService = servicesAssembler.orderService
-        self.putOrederService = servicesAssembler.putOrderService
+        self.putOrderService = servicesAssembler.putOrderService
         self.profileService = servicesAssembler.profileService
         self.profileStorage = servicesAssembler.profileStorage
         
@@ -79,7 +80,7 @@ final class CollectionPresenter: CollectionPresenterProtocol {
         self.nftService = servicesAssembler.nftService
         self.userService = servicesAssembler.userService
         self.orderService = servicesAssembler.orderService
-        self.putOrederService = servicesAssembler.putOrderService
+        self.putOrderService = servicesAssembler.putOrderService
         self.profileService = servicesAssembler.profileService
         self.profileStorage = servicesAssembler.profileStorage
         
@@ -102,29 +103,26 @@ final class CollectionPresenter: CollectionPresenterProtocol {
         dispatchGroup.notify(queue: .main) { [weak self] in
             guard let self else { return }
             self.view?.updateCollectionViewAnimated(from: self.nftModels)
-            self.updateCartButtons()
+            self.updateCellButtons()
             self.view?.hideLoading()
         }
     }
     
+    // TODO: После слияния актуализировать этот метод относительно сервиса Амины.
     func switchLike(for nftIndex: Int) {
         view?.showLoading()
 
         let nftId = nftModels[nftIndex].id
         var newLikes = likes
-        var newLike = false
+        var newLike = false;
         if let index = newLikes.firstIndex(of: nftId) {
             newLikes.remove(at: index)
-            newLike = false
         } else {
             newLikes.append(nftId)
             newLike = true
         }
         
-        profileService.sendLikeRequest(
-            nftId: nftId,
-            isLiked: newLike
-        ) { [weak self] result in
+        profileService.sendLikeRequest(likes: newLikes) { [weak self] result in
             guard let self else { return }
             switch result {
             case .success:
@@ -145,6 +143,7 @@ final class CollectionPresenter: CollectionPresenterProtocol {
         }
     }
     
+    // TODO: После слияния актуализировать этот метод относительно сервиса Вани.
     func switchStateInCart(for nftIndex: Int) {
         view?.showLoading()
         
@@ -159,7 +158,7 @@ final class CollectionPresenter: CollectionPresenterProtocol {
             newState = true
         }
         
-        putOrederService.postNewOrder(with: newCart) { [weak self] result in
+        putOrderService.postNewOrder(with: newCart) { [weak self] result in
             guard let self else { return }
             switch result {
             case .success:
@@ -182,9 +181,10 @@ final class CollectionPresenter: CollectionPresenterProtocol {
     
     // MARK: - Private Methods
     
-    private func updateCartButtons() {
+    private func updateCellButtons() {
         nftModels.indices.forEach { i in
             view?.setStateInCart(cart.contains(nftModels[i].id), for: i)
+            view?.setLike(likes.contains(nftModels[i].id), for: i)
         }
     }
     
@@ -228,10 +228,8 @@ final class CollectionPresenter: CollectionPresenterProtocol {
         }
     }
     
+    // TODO: После слияния актуализировать этот метод относительно сервиса Вани.
     private func loadOrder(dispatchGroup: DispatchGroup?) {
-        
-        // TODO: После слияния актуализировать этот метод относительно сервиса Вани.
-        
         dispatchGroup?.enter()
         orderService.fetchOrder() { [weak self] result in
             defer { dispatchGroup?.leave() }
@@ -253,14 +251,12 @@ final class CollectionPresenter: CollectionPresenterProtocol {
         }
     }
     
+    // TODO: После слияния актуализировать этот метод относительно сервиса Амины.
+    //
+    // Пока на всякий случай каждый раз при открытии экрана коллекции
+    // загружаю актуальный профайл, потому что в кэше может лежать неактуальная версия.
     private func loadLikes(dispatchGroup: DispatchGroup?) {
         dispatchGroup?.enter()
-        
-        // TODO: После слияния актуализировать этот метод относительно сервиса Амины.
-        //
-        // Пока на всякий случай каждый раз при открытии экрана коллекции
-        // загружаю актуальный профайл, потому что в кэше может лежать неактуальная версия.
-        
         profileService.fetchProfile { [weak self] result in
             defer { dispatchGroup?.leave() }
             guard let self else { return }
@@ -277,33 +273,18 @@ final class CollectionPresenter: CollectionPresenterProtocol {
                     actionText: nil,
                     action: nil
                 )
+                
                 self.view?.showError(errorModel)
             }
         }
     }
 
     private func loadAuthor(dispatchGroup: DispatchGroup?) {
-        dispatchGroup?.enter()
-        
-        userService?.loadUser(
-            by: "77bd726b-15bc-4ad3-92c4-c4c97adb9491"/*headerModel?.authorName ?? ""*/
-        ) { [weak self] result in
-            defer { dispatchGroup?.leave() }
-            guard let self else { return }
-            switch result {
-            case .success(let user):
-                self.headerModel?.authorName = user.name
-                self.headerModel?.authorWebsite = user.website
-            case .failure(let error):
-                print("[\(#function)] Failed to load user: \(error.localizedDescription).")
-                let errorModel = ErrorModel(
-                    title: L10n.Error.data,
-                    message: nil,
-                    actionText: nil,
-                    action: nil
-                )
-                self.view?.showError(errorModel)
-            }
-        }
+        // Тут должен быть сервис загрузки пользователя по ID
+        // для получения его сайта. Но поскольку GET Collection
+        // возвращает имя автора, то в хэдер пишу только полученное
+        // имя, а сайт вставляю дефолтный (кто-то где-то в ТЗ
+        // увидел, что нужно ставить эту ссылку).
+        headerModel?.authorWebsite = "https://practicum.yandex.ru/ios-developer"
     }
 }
