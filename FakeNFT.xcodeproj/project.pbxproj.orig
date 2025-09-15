@@ -475,8 +475,11 @@
 		3F6806C729CBBC5B00B4F915 /* Scenes  */ = {
 			isa = PBXGroup;
 			children = (
+<<<<<<< HEAD
 				3A5843232E75741700D295B2 /* Collection */,
+=======
 				CD95B2AB2E6F1DEC008CDB81 /* UsersProfile */,
+>>>>>>> statistic_epic
 				3A58412A2E6DD06200D295B2 /* WebView */,
 				674B6D472E6DCBA2004C628E /* Profile */,
 				CD95B1ED2E65D8B8008CDB81 /* Statistics */,

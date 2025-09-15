@@ -1,9 +1,17 @@
 import Foundation
 
-typealias UserCompletion = (Result<[User], Error>) -> Void
+typealias UsersCompletion = (Result<[User], Error>) -> Void
+typealias UserCompletion = (Result<User, Error>) -> Void
 
 protocol UserServiceProtocol {
-    func loadUsers(page: Int, completion: @escaping UserCompletion)
+    func loadUsers(page: Int, size: Int, sortBy: String, completion: @escaping UsersCompletion)
+    func loadUser(by id: String, completion: @escaping UserCompletion)
+}
+
+extension UserServiceProtocol {
+    func loadUsers(page: Int, size: Int, sortBy: String, completion: @escaping UsersCompletion) {}
+    
+    func loadUser(by id: String, completion: @escaping UserCompletion){}
 }
 
 final class UserService: UserServiceProtocol {
@@ -13,12 +21,33 @@ final class UserService: UserServiceProtocol {
         self.networkClient = networkClient
     }
     
-    func loadUsers(page: Int, completion: @escaping UserCompletion) {
-        let request = UsersRequest(page: page)
+    static func serverSortBy(for sortType: SortType) -> String {
+        switch sortType {
+        case .rating:
+            return "rating"
+        case .name:
+            return "name"
+        }
+    }
+    
+    func loadUsers(page: Int, size: Int, sortBy: String, completion: @escaping UsersCompletion) {
+        let request = UsersRequest(page: page, size: size, sortBy: sortBy)
         networkClient.send(request: request, type: [User].self) { result in
             switch result {
             case .success(let users):
                 completion(.success(users))
+            case .failure(let error):
+                completion(.failure(error))
+            }
+        }
+    }
+    
+    func loadUser(by id: String, completion: @escaping UserCompletion) {
+        let request = UserByIdRequest(userId: id)
+        networkClient.send(request: request, type: User.self) { result in
+            switch result {
+            case .success(let user):
+                completion(.success(user))
             case .failure(let error):
                 completion(.failure(error))
             }

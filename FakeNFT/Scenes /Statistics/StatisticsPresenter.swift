@@ -6,6 +6,7 @@ protocol StatisticsPresenterProtocol {
     func sortByRating()
     func viewDidLoad()
     func loadMoreUsers()
+    func didSelectUser(_ user: User)
 }
 
 enum SortType: String {
@@ -63,11 +64,18 @@ final class StatisticsPresenter: StatisticsPresenterProtocol {
         loadUsers()
     }
     
+    func didSelectUser(_ user: User) {
+        let presenter = UsersProfilePresenter(user: user)
+        let profileViewController = UsersProfileViewController(presenter: presenter)
+        profileViewController.hidesBottomBarWhenPushed = true
+        view?.navigationController?.pushViewController(profileViewController, animated: true)
+    }
+    
     private func loadUsers() {
         guard !isLoading else { return }
         isLoading = true
         
-        servicesAssembly.userService.loadUsers(page: currentPage) { [weak self] result in
+        servicesAssembly.userService.loadUsers(page: currentPage, size: 10, sortBy: UserService.serverSortBy(for: .rating)) { [weak self] result in
             guard let self else { return }
             
             switch result {

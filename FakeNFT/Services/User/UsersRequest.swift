@@ -10,8 +10,8 @@ struct UsersRequest: NetworkRequest {
     
     var httpMethod: HttpMethod = .get
     
-    init(page: Int){
-        self.query = UsersQuery(page: page, size: 10, sortBy: "rating")
+    init(page: Int, size: Int, sortBy: String) {
+        self.query = UsersQuery(page: page, size: size, sortBy: sortBy)
     }
 }
 
