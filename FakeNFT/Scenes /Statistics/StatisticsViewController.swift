@@ -118,7 +118,7 @@ extension StatisticsViewController: UITableViewDataSource,
     
     func tableView(_ tableView: UITableView,
                    cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell: StatCell = tableView.dequeueReusableCell()
+        let cell: StatCell = tableView.dequeueReusableCell(indexPath: indexPath)
         
         let user = publishedUsers[indexPath.row]
         cell.configure(with: user, position: indexPath.row + 1)

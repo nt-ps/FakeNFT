@@ -171,7 +171,7 @@ extension UsersProfileViewController: UITableViewDelegate, UITableViewDataSource
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell: UserProfileNFTCollectionCell = tableView.dequeueReusableCell()
+        let cell: UserProfileNFTCollectionCell = tableView.dequeueReusableCell(indexPath: indexPath)
         cell.configure(with: user?.nftCount ?? 0)
         
         return cell
