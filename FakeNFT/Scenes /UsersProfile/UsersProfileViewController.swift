@@ -4,6 +4,7 @@ import Kingfisher
 
 protocol UsersProfileViewControllerProtocol: AnyObject {
     func configure(with user: User)
+    func navigateToViewController(viewController: UIViewController)
 }
 
 final class UsersProfileViewController: UIViewController, UsersProfileViewControllerProtocol {
@@ -67,19 +68,6 @@ final class UsersProfileViewController: UIViewController, UsersProfileViewContro
         tableView.translatesAutoresizingMaskIntoConstraints = false
         return tableView
     }()
-    
-//    private lazy var accessoryButton: UIButton = {
-//        let button = UIButton(type: .system)
-//        let icon = UIImage(systemName: "chevron.right")
-//        button.setImage(icon, for: .normal)
-//        button.tintColor = .AppColors.black
-//        button.sizeToFit()
-//        button.addTarget(self, action: #selector(collectionButtonDidTapped), for: .touchUpInside)
-//        button.translatesAutoresizingMaskIntoConstraints = false
-//        
-//
-//        return button
-//    }()
 
     init(presenter: UsersProfilePresenter) {
         self.presenter = presenter
@@ -115,6 +103,10 @@ final class UsersProfileViewController: UIViewController, UsersProfileViewContro
         }
         
         tableView.reloadData()
+    }
+    
+    func navigateToViewController(viewController: UIViewController) {
+        navigationController?.pushViewController(viewController, animated: true)
     }
     
     private func setupUI() {
@@ -167,9 +159,7 @@ final class UsersProfileViewController: UIViewController, UsersProfileViewContro
     }
     
     @objc private func websiteButtonTapped() {
-        presenter.didTapUserWebsite { [weak self] viewController in
-            self?.navigationController?.pushViewController(viewController, animated: true)
-        }
+        presenter.didTappedUserWebsite()
     }
     
     @objc private func collectionButtonDidTapped() {}
