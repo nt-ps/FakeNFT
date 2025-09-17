@@ -9,6 +9,7 @@ import UIKit
 
 protocol PaymentViewProtocol: AnyObject {
     func reloadCurrenciesCollectionView(currencies: [Currency])
+    func showPaymentFailedAlert()
 }
 
 final class PaymentViewController: UIViewController, PaymentViewProtocol {
@@ -43,6 +44,7 @@ final class PaymentViewController: UIViewController, PaymentViewProtocol {
         payButton.backgroundColor = .AppColors.black
         payButton.setTitleColor(.AppColors.white, for: .normal)
         payButton.addTarget(self, action: #selector(payButtonTapped), for: .touchUpInside)
+        payButton.isEnabled = false
         return payButton
     }()
     private lazy var userAgreementLabel: UILabel = {
@@ -93,6 +95,7 @@ final class PaymentViewController: UIViewController, PaymentViewProtocol {
     override func viewDidLoad() {
         super.viewDidLoad()
         setupView()
+        currenciesCollectionView.delegate = self
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -117,6 +120,20 @@ final class PaymentViewController: UIViewController, PaymentViewProtocol {
         ProgressHUDProvider.dismissProgressHUD()
     }
     
+    func showPaymentFailedAlert() {
+        let alert = UIAlertController(title: L10n.Payment.FailureAlert.title, message: nil, preferredStyle: .alert)
+        let cancelAction = UIAlertAction(title: L10n.Payment.FailureAlert.cancel, style: .cancel) { _ in }
+        let repeatAction = UIAlertAction(title: L10n.Payment.FailureAlert.repeat, style: .default) { [weak self] _ in
+            self?.paymentPresenter?.makePayment()
+        }
+        alert.addAction(cancelAction)
+        alert.addAction(repeatAction)
+        alert.preferredAction = repeatAction
+        DispatchQueue.main.async {
+            self.present(alert, animated: true)
+        }
+    }
+    
     // MARK: UI Actions
     @objc private func userAgreementButtonTapped() {
         guard let url = URL(string: "https://yandex.ru/legal/practicum_termsofuse") else { return }
@@ -126,7 +143,25 @@ final class PaymentViewController: UIViewController, PaymentViewProtocol {
     }
     
     @objc private func payButtonTapped() {
-        
+        paymentPresenter?.makePayment()
+    }
+}
+
+// MARK: currenciesCollectionView delegate
+extension PaymentViewController: UICollectionViewDelegate {
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        payButton.isEnabled = true
+        guard let selectedCell = currenciesCollectionView.cellForItem(at: indexPath) as? CurrenciesCollectionViewCell,
+        let currencies = paymentPresenter?.getCurrencies()
+        else { return }
+        paymentPresenter?.setSelectedCurrencyID(currencies[indexPath.item].id)
+        selectedCell.borderView.isHidden = false
+        for counter in 0...currencies.count {
+            guard let cellToDeselect = currenciesCollectionView.cellForItem(at: IndexPath(item: counter, section: 0)) as? CurrenciesCollectionViewCell else { return }
+            if cellToDeselect != selectedCell {
+                cellToDeselect.borderView.isHidden = true
+            }
+        }
     }
 }
 
