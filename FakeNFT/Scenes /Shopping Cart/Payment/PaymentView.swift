@@ -42,6 +42,7 @@ final class PaymentViewController: UIViewController, PaymentViewProtocol {
         payButton.titleLabel?.font = .bodyBold
         payButton.backgroundColor = .AppColors.black
         payButton.setTitleColor(.AppColors.white, for: .normal)
+        payButton.addTarget(self, action: #selector(payButtonTapped), for: .touchUpInside)
         return payButton
     }()
     private lazy var userAgreementLabel: UILabel = {
@@ -92,14 +93,18 @@ final class PaymentViewController: UIViewController, PaymentViewProtocol {
     override func viewDidLoad() {
         super.viewDidLoad()
         setupView()
-        paymentPresenter?.loadCurrenciesFromServer()
-        ProgressHUDProvider.showProgressHUD()
     }
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
+        paymentPresenter?.clearCurrencies()
         let snapshot = NSDiffableDataSourceSnapshot<Int, Currency>()
         currenciesCollectionViewDiffableDataSource.apply(snapshot, animatingDifferences: true)
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        paymentPresenter?.loadCurrenciesFromServer()
+        ProgressHUDProvider.showProgressHUD()
     }
     
     func reloadCurrenciesCollectionView(currencies: [Currency]) {
@@ -118,6 +123,10 @@ final class PaymentViewController: UIViewController, PaymentViewProtocol {
         let request = URLRequest(url: url)
         let webViewController = WebViewAssembly().build(with: request)
         navigationController?.pushViewController(webViewController, animated: true)
+    }
+    
+    @objc private func payButtonTapped() {
+        
     }
 }
 
@@ -173,5 +182,23 @@ private extension PaymentViewController {
             userAgreementButton.widthAnchor.constraint(equalToConstant: 202),
             userAgreementButton.heightAnchor.constraint(equalToConstant: 26)
         ])
+    }
+}
+
+// MARK: дополнительная настройка цвета текста в navigationBar при смене темы (просто установить navigationController?.navigationBar.titleTextAttributes = [.foregroundColor: UIColor.AppColors.black] ) - недостаточно
+extension PaymentViewController {
+    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        super.traitCollectionDidChange(previousTraitCollection)
+        if traitCollection.userInterfaceStyle == .light {
+            navigationController?.navigationBar.titleTextAttributes = [
+                .font: UIFont.systemFont(ofSize: 17, weight: .bold),
+                .foregroundColor: UIColor(hexString: "#1A1B22")
+            ]
+        } else {
+            navigationController?.navigationBar.titleTextAttributes = [
+                .font: UIFont.systemFont(ofSize: 17, weight: .bold),
+                .foregroundColor: UIColor.white
+            ]
+        }
     }
 }
