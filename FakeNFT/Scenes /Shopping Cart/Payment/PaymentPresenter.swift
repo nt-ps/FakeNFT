@@ -55,6 +55,6 @@ final class PaymentPresenter: PaymentPresenterProtocol {
     }
     
     func showPaymentSucceed() {
-        
+        paymentView?.showPaymentSucceed()
     }
 }

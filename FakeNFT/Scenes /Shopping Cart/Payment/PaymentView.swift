@@ -10,6 +10,7 @@ import UIKit
 protocol PaymentViewProtocol: AnyObject {
     func reloadCurrenciesCollectionView(currencies: [Currency])
     func showPaymentFailedAlert()
+    func showPaymentSucceed()
 }
 
 final class PaymentViewController: UIViewController, PaymentViewProtocol {
@@ -75,6 +76,45 @@ final class PaymentViewController: UIViewController, PaymentViewProtocol {
         userAgreementButton.addTarget(self, action: #selector(userAgreementButtonTapped), for: .touchUpInside)
         return userAgreementButton
     }()
+    private lazy var backToCartButton: UIButton = {
+        let backToCartButton = UIButton()
+        backToCartButton.translatesAutoresizingMaskIntoConstraints = false
+        backToCartButton.layer.masksToBounds = true
+        backToCartButton.layer.cornerRadius = 16
+        backToCartButton.setTitle(L10n.Payment.backToCataloge, for: .normal)
+        backToCartButton.titleLabel?.font = .bodyBold
+        backToCartButton.backgroundColor = .AppColors.black
+        backToCartButton.setTitleColor(.AppColors.white, for: .normal)
+        backToCartButton.addTarget(self, action: #selector(backToCartButtonTapped), for: .touchUpInside)
+        backToCartButton.isHidden = true
+        backToCartButton.alpha = 0
+        backToCartButton.transform = CGAffineTransform(scaleX: 0.8, y: 0.8)
+        return backToCartButton
+    }()
+    private lazy var successfullPaymentImageView: UIImageView = {
+        let successfullPaymentImageView = UIImageView()
+        successfullPaymentImageView.translatesAutoresizingMaskIntoConstraints = false
+        successfullPaymentImageView.backgroundColor = .clear
+        successfullPaymentImageView.image = .successfulPayment
+        successfullPaymentImageView.isHidden = true
+        successfullPaymentImageView.alpha = 0
+        successfullPaymentImageView.transform = CGAffineTransform(scaleX: 0.8, y: 0.8)
+        return successfullPaymentImageView
+    }()
+    private lazy var successfullPaymentLabel: UILabel = {
+        let successfullPaymentLabel = UILabel()
+        successfullPaymentLabel.translatesAutoresizingMaskIntoConstraints = false
+        successfullPaymentLabel.backgroundColor = .clear
+        successfullPaymentLabel.font = .headline3
+        successfullPaymentLabel.textColor = .AppColors.black
+        successfullPaymentLabel.text = L10n.Payment.Success.title
+        successfullPaymentLabel.textAlignment = .center
+        successfullPaymentLabel.numberOfLines = 4
+        successfullPaymentLabel.isHidden = true
+        successfullPaymentLabel.alpha = 0
+        successfullPaymentLabel.transform = CGAffineTransform(scaleX: 0.8, y: 0.8)
+        return successfullPaymentLabel
+    }()
     
     private lazy var currenciesCollectionViewFlowLayout: UICollectionViewFlowLayout = {
         let currenciesCollectionViewFlowLayout = UICollectionViewFlowLayout()
@@ -134,6 +174,30 @@ final class PaymentViewController: UIViewController, PaymentViewProtocol {
         }
     }
     
+    func showPaymentSucceed() {
+        DispatchQueue.main.async {
+            self.navigationController?.navigationBar.isHidden = true
+            self.currenciesCollectionView.isHidden = true
+            self.bottomBackgroundView.isHidden = true
+            self.payButton.isHidden = true
+            self.userAgreementLabel.isHidden = true
+            self.userAgreementButton.isHidden = true
+            self.backToCartButton.isHidden = false
+            self.successfullPaymentLabel.isHidden = false
+            self.successfullPaymentImageView.isHidden = false
+            UIView.animate(
+                withDuration: 0.5,
+                delay: 0) {
+                    self.successfullPaymentLabel.alpha = 1
+                    self.successfullPaymentLabel.transform = .identity
+                    self.backToCartButton.alpha = 1
+                    self.backToCartButton.transform = .identity
+                    self.successfullPaymentImageView.alpha = 1
+                    self.successfullPaymentImageView.transform = .identity
+                }
+        }
+    }
+    
     // MARK: UI Actions
     @objc private func userAgreementButtonTapped() {
         guard let url = URL(string: "https://yandex.ru/legal/practicum_termsofuse") else { return }
@@ -144,6 +208,10 @@ final class PaymentViewController: UIViewController, PaymentViewProtocol {
     
     @objc private func payButtonTapped() {
         paymentPresenter?.makePayment()
+    }
+    
+    @objc private func backToCartButtonTapped() {
+        navigationController?.popToRootViewController(animated: true)
     }
 }
 
@@ -186,7 +254,10 @@ private extension PaymentViewController {
         view.addSubview(payButton)
         view.addSubview(userAgreementLabel)
         view.addSubview(userAgreementButton)
-    
+        view.addSubview(backToCartButton)
+        view.addSubview(successfullPaymentImageView)
+        view.addSubview(successfullPaymentLabel)
+        
         NSLayoutConstraint.activate([
             currenciesCollectionView.topAnchor.constraint(equalTo: view.topAnchor, constant: navBarMaxY + 20),
             currenciesCollectionView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
@@ -216,6 +287,24 @@ private extension PaymentViewController {
             userAgreementButton.topAnchor.constraint(equalTo: userAgreementLabel.bottomAnchor),
             userAgreementButton.widthAnchor.constraint(equalToConstant: 202),
             userAgreementButton.heightAnchor.constraint(equalToConstant: 26)
+        ])
+        NSLayoutConstraint.activate([
+            backToCartButton.widthAnchor.constraint(equalToConstant: 343),
+            backToCartButton.heightAnchor.constraint(equalToConstant: 60),
+            backToCartButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            backToCartButton.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -50)
+        ])
+        NSLayoutConstraint.activate([
+            successfullPaymentImageView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            successfullPaymentImageView.widthAnchor.constraint(equalToConstant: 278),
+            successfullPaymentImageView.heightAnchor.constraint(equalToConstant: 278),
+            successfullPaymentImageView.topAnchor.constraint(equalTo: view.topAnchor, constant: 196)
+        ])
+        NSLayoutConstraint.activate([
+            successfullPaymentLabel.topAnchor.constraint(equalTo: successfullPaymentImageView.bottomAnchor, constant: 20),
+            successfullPaymentLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 36),
+            successfullPaymentLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -36),
+            successfullPaymentLabel.heightAnchor.constraint(equalToConstant: 107)
         ])
     }
 }
