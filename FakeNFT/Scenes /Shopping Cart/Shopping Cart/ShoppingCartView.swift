@@ -248,6 +248,7 @@ final class ShoppingCartViewControllerImplementation: UIViewController, Shopping
     
     @objc private func goToPaymentButtonTapped() {
         guard let paymentView = shoppingCartPresenter?.preparePaymentView() else { return }
+        navigationItem.backButtonDisplayMode = .minimal
         navigationController?.pushViewController(paymentView, animated: true)
     }
     
@@ -270,7 +271,6 @@ extension ShoppingCartViewControllerImplementation: UITableViewDelegate {
 private extension ShoppingCartViewControllerImplementation {
     private func setupView() {
         view.backgroundColor = .AppColors.white
-        navigationItem.backButtonDisplayMode = .minimal
         
         view.addSubview(filterButton)
         view.addSubview(NFTTableView)

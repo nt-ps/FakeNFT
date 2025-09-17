@@ -16,16 +16,6 @@ final class PaymentViewController: UIViewController, PaymentViewProtocol {
     var paymentPresenter: PaymentPresenterProtocol?
     
     // MARK: UI Elements
-    private lazy var paymentLabel: UILabel = {
-        let paymentLabel = UILabel()
-        paymentLabel.translatesAutoresizingMaskIntoConstraints = false
-        paymentLabel.numberOfLines = 1
-        paymentLabel.textAlignment = .center
-        paymentLabel.font = .bodyBold
-        paymentLabel.text = L10n.Payment.title
-        paymentLabel.textColor = .AppColors.black
-        return paymentLabel
-    }()
     private lazy var currenciesCollectionView: UICollectionView = {
         let currenciesCollectionView = UICollectionView(frame: .zero, collectionViewLayout: currenciesCollectionViewFlowLayout)
         currenciesCollectionView.translatesAutoresizingMaskIntoConstraints = false
@@ -135,28 +125,26 @@ final class PaymentViewController: UIViewController, PaymentViewProtocol {
 private extension PaymentViewController {
     private func setupView() {
         view.backgroundColor = .AppColors.white
-        navigationItem.backBarButtonItem?.tintColor = .AppColors.black
         
-        view.addSubview(paymentLabel)
+        navigationController?.navigationBar.titleTextAttributes = [
+            .font: UIFont.systemFont(ofSize: 17, weight: .bold),
+            .foregroundColor: UIColor.AppColors.black
+        ]
+        navigationController?.navigationBar.tintColor = .AppColors.black
+        navigationItem.title = L10n.Payment.title
+        navigationItem.backButtonDisplayMode = .minimal
+        guard let navigationBar = navigationController?.navigationBar else { return }
+        let navBarFrameInView = view.convert(navigationBar.frame, from: navigationBar.superview)
+        let navBarMaxY = navBarFrameInView.maxY
+        
         view.addSubview(currenciesCollectionView)
         view.addSubview(bottomBackgroundView)
         view.addSubview(payButton)
         view.addSubview(userAgreementLabel)
         view.addSubview(userAgreementButton)
-        
-        if let navigationBar = navigationController?.navigationBar, navigationBar.superview != view {
-            view.addSubview(navigationBar)
-        }
-        guard let navigationBarCenterYAnchor = navigationController?.navigationBar.centerYAnchor else { return }
-        
+    
         NSLayoutConstraint.activate([
-            paymentLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            paymentLabel.centerYAnchor.constraint(equalTo: navigationBarCenterYAnchor),
-            paymentLabel.widthAnchor.constraint(equalToConstant: 261),
-            paymentLabel.heightAnchor.constraint(equalToConstant: 22)
-        ])
-        NSLayoutConstraint.activate([
-            currenciesCollectionView.topAnchor.constraint(equalTo: paymentLabel.bottomAnchor, constant: 30),
+            currenciesCollectionView.topAnchor.constraint(equalTo: view.topAnchor, constant: navBarMaxY + 20),
             currenciesCollectionView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             currenciesCollectionView.widthAnchor.constraint(equalToConstant: 343),
             currenciesCollectionView.heightAnchor.constraint(equalToConstant: 205)
