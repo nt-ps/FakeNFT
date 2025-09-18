@@ -162,7 +162,9 @@ final class UsersProfileViewController: UIViewController, UsersProfileViewContro
         presenter.didTappedUserWebsite()
     }
     
-    @objc private func collectionButtonDidTapped() {}
+    @objc private func collectionButtonDidTapped() {
+        presenter.didTappedUserCollection()
+    }
 }
 
 extension UsersProfileViewController: UITableViewDelegate, UITableViewDataSource {
@@ -174,6 +176,9 @@ extension UsersProfileViewController: UITableViewDelegate, UITableViewDataSource
         let cell: UserProfileNFTCollectionCell = tableView.dequeueReusableCell(indexPath: indexPath)
         cell.configure(with: user?.nftCount ?? 0)
         
+        cell.onAccessoryButtonTapped = { [weak self] in
+            self?.presenter.didTappedUserCollection()
+        }
         return cell
     }
     

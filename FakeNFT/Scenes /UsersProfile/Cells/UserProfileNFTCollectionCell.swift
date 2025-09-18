@@ -1,6 +1,8 @@
 import UIKit
 
 final class UserProfileNFTCollectionCell: UITableViewCell, ReuseIdentifying {
+    var onAccessoryButtonTapped: (() -> Void)?
+    
     private lazy var titleLabel: UILabel = {
         let label = UILabel()
         label.font = .bodyBold
@@ -62,7 +64,9 @@ final class UserProfileNFTCollectionCell: UITableViewCell, ReuseIdentifying {
         countLabel.text = "(\(nftCount))"
     }
     
-    @objc private func accessoryButtonTapped() {}
+    @objc private func accessoryButtonTapped() {
+        onAccessoryButtonTapped?()
+    }
     
     override func prepareForReuse() {
         super.prepareForReuse()
