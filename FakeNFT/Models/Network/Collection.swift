@@ -41,6 +41,7 @@ struct Collection: Decodable, Hashable {
         author = try container.decode(String.self, forKey: .author)
         id = try container.decode(String.self, forKey: .id)
     }
+    
     // MARK: - Hashable Protocol
     
     static func ==(lhs: Self, rhs: Self) -> Bool { lhs.id == rhs.id }

@@ -18,7 +18,7 @@ final class CollectionService: CollectionServiceProtocol {
     // MARK: - Private Properties
     
     private let networkClient: NetworkClient
-    private let storage: CollectionStorage
+    private let storage: CollectionStorageProtocol
     
     private var collections: [Collection] = []
     private var isListComplete = false
@@ -32,7 +32,7 @@ final class CollectionService: CollectionServiceProtocol {
     
     // MARK: - Initializers
 
-    init(networkClient: NetworkClient, storage: CollectionStorage) {
+    init(networkClient: NetworkClient, storage: CollectionStorageProtocol) {
         self.networkClient = networkClient
         self.storage = storage
     }

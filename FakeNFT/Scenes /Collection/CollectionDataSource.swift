@@ -8,24 +8,38 @@ enum CollectionCollectionSection: Int, CaseIterable {
 
 // MARK: - Data Source Implementation
 
-final class CollectionDataSource: UICollectionViewDiffableDataSource<CollectionCollectionSection, Nft> {
+final class CollectionDataSource: UICollectionViewDiffableDataSource<CollectionCollectionSection, NftCellModel> {
     
     // MARK: - Internal Properties
     
-    private let presenter: CollectionPresenterProtocol?
+    private let presenter: CollectionPresenterProtocol
+    private let headerDelegate: CollectionCollectionHeaderDelegate
+    private let cellDelegate: CollectionCollectionCellDelegate
     
     // MARK: - Initializers
     
     init(
         _ collectionView: UICollectionView,
-        presenter: CollectionPresenterProtocol
+        presenter: CollectionPresenterProtocol,
+        headerDelegate: CollectionCollectionHeaderDelegate,
+        cellDelegate: CollectionCollectionCellDelegate
     ) {
         self.presenter = presenter
+        self.headerDelegate = headerDelegate
+        self.cellDelegate = cellDelegate
         super.init(
             collectionView: collectionView
-        ) { (collectionView, indexPath, item) -> UICollectionViewCell? in
+        ) { (collectionView, indexPath, nft) -> UICollectionViewCell? in
             let cell: CollectionCollectionCell = collectionView.dequeueReusableCell(indexPath: indexPath)
-            // TODO: Добавить настройку ячейки при протягивании сети.
+            
+            cell.delegate = cellDelegate
+            cell.image = nft.images.first
+            cell.rating = UInt(nft.rating)
+            cell.name = nft.name
+            cell.price = nft.price
+            cell.isLiked = nft.isLiked
+            cell.inCart = nft.inCart
+            
             return cell
         }
     }
@@ -37,13 +51,22 @@ final class CollectionDataSource: UICollectionViewDiffableDataSource<CollectionC
         viewForSupplementaryElementOfKind kind: String,
         at indexPath: IndexPath
     ) -> UICollectionReusableView {
-        if kind == UICollectionView.elementKindSectionHeader
+        if
+            kind == UICollectionView.elementKindSectionHeader,
+            let model = presenter.headerModel
         {
             let header: CollectionCollectionHeader = collectionView.dequeueReusableSupplementaryView(
                 indexPath: indexPath,
                 kind: kind
             )
-            // TODO: Добавить настройку хэдера при протягивании сети.
+            
+            header.delegate = headerDelegate
+            header.cover = model.cover
+            header.name = model.name
+            header.descriptionText = model.description
+            header.authorName = model.authorName
+            header.authorWebsite = model.authorName
+            
             return header
         }
         

@@ -2,16 +2,16 @@ import UIKit
 
 public final class NftDetailAssembly {
 
-    private let servicesAssembler: ServicesAssembly
+    private let nftService: NftService
 
-    init(servicesAssembler: ServicesAssembly) {
-        self.servicesAssembler = servicesAssembler
+    init(nftService: NftService) {
+        self.nftService = nftService
     }
 
     public func build(with input: NftDetailInput) -> UIViewController {
         let presenter = NftDetailPresenterImpl(
             input: input,
-            service: servicesAssembler.nftService
+            service: nftService
         )
         let viewController = NftDetailViewController(presenter: presenter)
         presenter.view = viewController
