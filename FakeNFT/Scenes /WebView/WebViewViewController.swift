@@ -44,8 +44,6 @@ final class WebViewViewController: UIViewController, WebViewViewControllerProtoc
         super.viewDidLoad()
         
         view.backgroundColor = .AppColors.white
-
-        navigationController?.setNavigationBarHidden(false, animated: true)
         
         view.addSubview(webView)
         view.addSubview(progressView)

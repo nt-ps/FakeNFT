@@ -6,12 +6,16 @@ typealias NftCompletion = (Result<Nft, Error>) -> Void
 // MARK: - Protocol
 
 protocol NftService {
-    func loadNfts(
-        sortBy sortField: NftFields?,
-        completion: @escaping NftsCompletion
-    )
+    func loadNfts(sortBy sortField: NftFields?, completion: @escaping NftsCompletion)
+    func loadNfts(ids: [String], completion: @escaping NftsCompletion)
     
     func loadNft(id: String, completion: @escaping NftCompletion)
+}
+
+// MARK: - Error
+
+enum NftServiceError: Error {
+    case failedToLoadNfts([String])
 }
 
 // MARK: - Implementation
@@ -43,6 +47,38 @@ final class NftServiceImpl: NftService {
                 case .failure(let error):
                     completion(.failure(error))
                 }
+            }
+        }
+    }
+    
+    // TODO: Взял реализацию Амины из ProfileService с некоторыми доработками.
+    //       Учесть это при слиянии.
+    func loadNfts(ids: [String], completion: @escaping NftsCompletion) {
+        let group = DispatchGroup()
+        var nfts: [Nft] = []
+        var unloadedNfts: [String] = []
+        
+        for id in ids {
+            group.enter()
+            
+            loadNft(id: id) { result in
+                defer { group.leave() }
+                
+                switch result {
+                case .success(let nft):
+                    nfts.append(nft)
+                case .failure(let error):
+                    print("Failed to load NFT: \(error.localizedDescription)")
+                    unloadedNfts.append(id)
+                }
+            }
+        }
+        
+        group.notify(queue: .main) {
+            if unloadedNfts.isEmpty {
+                completion(.success(nfts))
+            } else {
+                completion(.failure(NftServiceError.failedToLoadNfts(unloadedNfts)))
             }
         }
     }
