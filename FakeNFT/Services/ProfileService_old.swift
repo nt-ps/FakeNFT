@@ -5,6 +5,10 @@
 //  Created by Amina Khusnutdinova on 02.09.2025.
 //
 
+// TODO: Смотри ProfileCopyForCatalogueEpic.
+//       Пересмотреть после слияния.
+
+/*
 import Foundation
 
 struct ProfileService {
@@ -55,3 +59,4 @@ struct ProfileService {
         }
     }
 }
+*/

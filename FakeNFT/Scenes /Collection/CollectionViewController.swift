@@ -1,11 +1,17 @@
 import UIKit
+import ProgressHUD
 
-typealias CollectionDataSourceSnapshot = NSDiffableDataSourceSnapshot<CollectionCollectionSection, Nft>
+typealias CollectionDataSourceSnapshot = NSDiffableDataSourceSnapshot<CollectionCollectionSection, NftCellModel>
 
 // MARK: - Protocol
 
-protocol CollectionViewControllerProtocol: AnyObject {
+protocol CollectionViewControllerProtocol: AnyObject, LoadingView, ErrorView {
     var presenter: CollectionPresenterProtocol { get }
+    
+    func updateCollectionViewAnimated(from newNfts: [NftCellModel])
+    func setAuthor(name: String, webcite: String?)
+    func setLike(_ value: Bool, for cellIndex: Int)
+    func setStateInCart(_ value: Bool, for cellIndex: Int)
 }
 
 // MARK: - Implementation
@@ -14,13 +20,29 @@ final class CollectionViewController: UICollectionViewController, CollectionView
     
     // TODO: Добавить прогресс (показывается при нажатии лайка и кнопки корзины).
     
+    // MARK: - Views
+    
+    lazy var activityIndicator: UIActivityIndicatorView = {
+        var activityIndicator = UIActivityIndicatorView(style: .large)
+        activityIndicator.color = .AppColors.black
+        activityIndicator.hidesWhenStopped = true
+        activityIndicator.translatesAutoresizingMaskIntoConstraints = false
+        return activityIndicator
+    } ()
+    
     // MARK: - Internal Properties
     
     let presenter: CollectionPresenterProtocol
     
     // MARK: - Private Properties
 
-    private lazy var dataSource: CollectionDataSource = .init(collectionView, presenter: presenter)
+    private lazy var dataSource: CollectionDataSource = .init(
+        collectionView,
+        presenter: presenter,
+        headerDelegate: self,
+        cellDelegate: self
+    )
+    private var nfts: [NftCellModel] = []
     
     // MARK: - UI Properties
     
@@ -34,7 +56,7 @@ final class CollectionViewController: UICollectionViewController, CollectionView
     init(presenter: CollectionPresenterProtocol) {
         self.presenter = presenter
         let layout = CollectionViewController.createLayout(
-            withHeader: presenter.collection != nil
+            withHeader: presenter.headerModel != nil
         )
         super.init(collectionViewLayout: layout)
     }
@@ -47,17 +69,14 @@ final class CollectionViewController: UICollectionViewController, CollectionView
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        view.addSubview(activityIndicator)
+        activityIndicator.constraintCenters(to: view.safeAreaLayoutGuide)
+        
         setNavigationBar()
         configureCollectionView()
-        updateCollectionViewAnimated() // TODO: Удалить после протягивания сети.
-    }
-    
-    // TODO: Переписать при протягивании сети.
-    func updateCollectionViewAnimated() {
-        var snapshot = CollectionDataSourceSnapshot()
-        snapshot.appendSections([CollectionCollectionSection.main])
-        snapshot.appendItems(MockData.nfts, toSection: .main)
-        dataSource.apply(snapshot, animatingDifferences: true)
+        
+        presenter.viewDidLoad()
     }
     
     // MARK: - Overridden Methods
@@ -76,12 +95,78 @@ final class CollectionViewController: UICollectionViewController, CollectionView
         }
     }
     
+    // MARK: - Collection View Controller Protocol
+    
+    func updateCollectionViewAnimated(from newNfts: [NftCellModel]) {
+        nfts = newNfts
+        
+        var snapshot = CollectionDataSourceSnapshot()
+        snapshot.appendSections([CollectionCollectionSection.main])
+        snapshot.appendItems(newNfts, toSection: .main)
+        dataSource.apply(snapshot, animatingDifferences: true)
+    }
+    
+    func setAuthor(name: String, webcite: String?) {
+        guard
+            let header = collectionView.supplementaryView(
+                forElementKind: UICollectionView.elementKindSectionHeader,
+                at: IndexPath(row: 0, section: 0)
+            ) as? CollectionCollectionHeader
+        else { return }
+        
+        header.authorName = name
+        header.authorWebsite = webcite
+    }
+    
+    func setLike(_ value: Bool, for cellIndex: Int) {
+        guard
+            let cell = collectionView.cellForItem(
+                at: IndexPath(row: cellIndex, section: 0)
+            ) as? CollectionCollectionCell
+        else { return }
+        
+        cell.isLiked = value
+    }
+    
+    func setStateInCart(_ value: Bool, for cellIndex: Int) {
+        guard
+            let cell = collectionView.cellForItem(
+                at: IndexPath(row: cellIndex, section: 0)
+            ) as? CollectionCollectionCell
+        else { return }
+        
+        cell.inCart = value
+    }
+    
+    // MARK: - Collection View Delegate Methods
+    
+    override func collectionView(
+        _ collectionView: UICollectionView,
+        didSelectItemAt indexPath: IndexPath
+    ) {
+        let nft = nfts[indexPath.row]
+        let nftDetail = NftDetailInput(id: nft.id)
+        let nftViewController = presenter.nftDetailAssembler.build(with: nftDetail)
+        present(nftViewController, animated: true)
+    }
+    
     // MARK: - UI Updates
+    
+    func showLoading() {
+        activityIndicator.startAnimating()
+        collectionView.isUserInteractionEnabled = false
+    }
+
+    func hideLoading() {
+        activityIndicator.stopAnimating()
+        collectionView.isUserInteractionEnabled = true
+    }
     
     private func setNavigationBar() {
         let standardAppearance = UINavigationBarAppearance()
         standardAppearance.configureWithTransparentBackground()
         standardAppearance.backgroundColor = .AppColors.white
+        standardAppearance.backButtonAppearance = UIBarButtonItemAppearance()
         
         if let title = presenter.title {
             navigationItem.title = title
@@ -89,18 +174,20 @@ final class CollectionViewController: UICollectionViewController, CollectionView
                 NSAttributedString.Key.foregroundColor: UIColor.AppColors.black,
                 NSAttributedString.Key.font: UIFont.bodyBold
             ]
-            navigationController?.navigationBar.scrollEdgeAppearance = standardAppearance
+            navigationItem.scrollEdgeAppearance = standardAppearance
         } else {
             let scrollAppearance = UINavigationBarAppearance()
             scrollAppearance.configureWithTransparentBackground()
 
-            navigationController?.navigationBar.scrollEdgeAppearance = scrollAppearance
+            navigationItem.scrollEdgeAppearance = scrollAppearance
             
             collectionView.contentInsetAdjustmentBehavior = .never
         }
         
-        navigationController?.navigationBar.standardAppearance = standardAppearance
-        navigationController?.navigationBar.compactAppearance = standardAppearance
+        navigationItem.standardAppearance = standardAppearance
+        navigationItem.compactAppearance = standardAppearance
+        
+        navigationItem.backButtonDisplayMode = .minimal
     }
     
     private func configureCollectionView() {
@@ -167,5 +254,28 @@ final class CollectionViewController: UICollectionViewController, CollectionView
         let layout = UICollectionViewCompositionalLayout(section: section)
         
         return layout
+    }
+}
+
+extension CollectionViewController: CollectionCollectionHeaderDelegate {
+    func show(viewController: UIViewController) {
+        viewController.hidesBottomBarWhenPushed = true
+        navigationController?.pushViewController(viewController, animated: true)
+    }
+    
+    func show(error model: ErrorModel) {
+        showError(model)
+    }
+}
+
+extension CollectionViewController: CollectionCollectionCellDelegate {
+    func switchLike(for cell: CollectionCollectionCell) {
+        guard let indexPath = collectionView.indexPath(for: cell) else { return }
+        presenter.switchLike(for: indexPath.row)
+    }
+    
+    func switchStateInCart(for cell: CollectionCollectionCell) {
+        guard let indexPath = collectionView.indexPath(for: cell) else { return }
+        presenter.switchStateInCart(for: indexPath.row)
     }
 }

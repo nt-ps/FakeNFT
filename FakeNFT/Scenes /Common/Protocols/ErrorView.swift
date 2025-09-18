@@ -3,8 +3,8 @@ import UIKit
 struct ErrorModel {
     let title: String?
     let message: String?
-    let actionText: String
-    let action: () -> Void
+    let actionText: (String)?
+    let action: (() -> Void)?
 }
 
 protocol ErrorView {
@@ -22,10 +22,17 @@ extension ErrorView where Self: UIViewController {
             message: model.message,
             preferredStyle: .alert
         )
-        let action = UIAlertAction(title: model.actionText, style: UIAlertAction.Style.default) {_ in
-            model.action()
+        
+        if let actionText = model.actionText {
+            let action = UIAlertAction(title: actionText, style: UIAlertAction.Style.default) {_ in
+                model.action?()
+            }
+            alert.addAction(action)
         }
-        alert.addAction(action)
+        
+        let cancelAction = UIAlertAction(title: L10n.Error.cancel, style: .cancel)
+        alert.addAction(cancelAction)
+        
         present(alert, animated: true)
     }
 }

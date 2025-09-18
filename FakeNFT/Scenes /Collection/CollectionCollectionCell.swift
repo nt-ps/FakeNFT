@@ -1,4 +1,14 @@
 import UIKit
+import Kingfisher
+
+// MARK: - Delegate
+
+protocol CollectionCollectionCellDelegate: AnyObject {
+    func switchLike(for cell: CollectionCollectionCell)
+    func switchStateInCart(for cell: CollectionCollectionCell)
+}
+
+// MARK: - Cell
 
 final class CollectionCollectionCell: UICollectionViewCell, ReuseIdentifying {
     
@@ -6,9 +16,9 @@ final class CollectionCollectionCell: UICollectionViewCell, ReuseIdentifying {
     
     private lazy var imageView: UIImageView = {
         let imageView = UIImageView()
-        imageView.image = UIImage(resource: .NftMock.archieCover) // TODO: Удалить!
         imageView.contentMode = .scaleAspectFill
         imageView.clipsToBounds = true
+        imageView.backgroundColor = .AppColors.lightGray
         imageView.layer.masksToBounds = true
         imageView.layer.cornerRadius = imageCornerRadius
         imageView.translatesAutoresizingMaskIntoConstraints = false
@@ -18,6 +28,11 @@ final class CollectionCollectionCell: UICollectionViewCell, ReuseIdentifying {
     private lazy var likeButton: LikeButton = {
         let likeButton = LikeButton()
         likeButton.translatesAutoresizingMaskIntoConstraints = false
+        likeButton.addTarget(
+            self,
+            action: #selector(didTapLikeButton),
+            for: .touchUpInside
+        )
         return likeButton
     } ()
     
@@ -47,7 +62,6 @@ final class CollectionCollectionCell: UICollectionViewCell, ReuseIdentifying {
     
     private lazy var nameLabel: UILabel = {
         let nameLabel = UILabel()
-        nameLabel.text = "Archie" // TODO: Удалить
         nameLabel.font = UIFont.bodyBold
         nameLabel.textColor = .AppColors.black
         nameLabel.textAlignment = .natural
@@ -57,7 +71,6 @@ final class CollectionCollectionCell: UICollectionViewCell, ReuseIdentifying {
     
     private lazy var priceLabel: UILabel = {
         let priceLabel = UILabel()
-        priceLabel.text = "1 ETH" // TODO: Удалить
         priceLabel.font = UIFont.caption3
         priceLabel.textColor = .AppColors.black
         priceLabel.textAlignment = .natural
@@ -69,6 +82,11 @@ final class CollectionCollectionCell: UICollectionViewCell, ReuseIdentifying {
         let cartButton = CartButton()
         cartButton.tintColor = .AppColors.black
         cartButton.translatesAutoresizingMaskIntoConstraints = false
+        cartButton.addTarget(
+            self,
+            action: #selector(didTapCartButton),
+            for: .touchUpInside
+        )
         return cartButton
     } ()
     
@@ -81,6 +99,49 @@ final class CollectionCollectionCell: UICollectionViewCell, ReuseIdentifying {
     private let ratingHeight: CGFloat = 12
     private let footerStackTopSpacing: CGFloat = 4
     private let footerStackBottomSpacing: CGFloat = 20
+    
+    // MARK: - Internal Properties
+    
+    weak var delegate: CollectionCollectionCellDelegate?
+    
+    var image: URL? {
+        didSet (oldValue) {
+            guard let image, image != oldValue else { return }
+            imageView.kf.cancelDownloadTask()
+            imageView.kf.setImage(with: image)
+        }
+    }
+    
+    var rating: UInt? {
+        didSet {
+            ratingView.value = rating ?? 0
+        }
+    }
+    
+    var name: String? {
+        didSet {
+            nameLabel.text = name
+        }
+    }
+    
+    var price: Float? {
+        didSet {
+            // TODO: После слития заюзать CurrencyFormatter.
+            priceLabel.text = String(format: "%.2f", price ?? 0) + " ETH"
+        }
+    }
+    
+    var isLiked: Bool? {
+        didSet {
+            likeButton.isActive = isLiked ?? false
+        }
+    }
+    
+    var inCart: Bool? {
+        didSet {
+            cartButton.isActive = inCart ?? false
+        }
+    }
     
     // MARK: - Initializers
     
@@ -113,6 +174,23 @@ final class CollectionCollectionCell: UICollectionViewCell, ReuseIdentifying {
         )
         layoutAttributes.size = size
         return layoutAttributes
+    }
+    
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        imageView.kf.cancelDownloadTask()
+    }
+    
+    // MARK: - Button Actions
+    
+    @objc
+    private func didTapLikeButton() {
+        delegate?.switchLike(for: self)
+    }
+    
+    @objc
+    private func didTapCartButton() {
+        delegate?.switchStateInCart(for: self)
     }
     
     // MARK: - UI Updates

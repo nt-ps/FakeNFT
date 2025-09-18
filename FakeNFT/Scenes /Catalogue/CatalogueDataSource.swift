@@ -13,18 +13,16 @@ final class CatalogueDataSource: UITableViewDiffableDataSource<CatalogueTableSec
     // MARK: - Initializers
     
     init(_ tableView: UITableView) {
-        super.init(tableView: tableView) { (tableView, indexPath, item) -> UITableViewCell? in
+        super.init(
+            tableView: tableView
+        ) { (tableView, indexPath, collection) -> UITableViewCell? in
             let cell: CatalogueTableCell = tableView.dequeueReusableCell(indexPath: indexPath)
-            CatalogueDataSource.configCell(cell, from: item)
+
+            cell.cover = collection.cover
+            cell.name = collection.name
+            cell.counterValue = collection.nfts.count
+            
             return cell
         }
-    }
-    
-    // MARK: - Cell Methods
-    
-    private static func configCell(_ cell: CatalogueTableCell, from collection: Collection) {
-        cell.cover = collection.cover
-        cell.name = collection.name
-        cell.counterValue = collection.nfts.count
     }
 }

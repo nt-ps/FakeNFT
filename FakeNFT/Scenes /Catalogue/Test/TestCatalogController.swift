@@ -28,7 +28,7 @@ final class TestCatalogViewController: UIViewController {
     
     @objc
     func showNft() {
-        let assembly = NftDetailAssembly(servicesAssembler: servicesAssembly)
+        let assembly = NftDetailAssembly(nftService: servicesAssembly.nftService)
         let nftInput = NftDetailInput(id: Constants.testNftId)
         let nftViewController = assembly.build(with: nftInput)
         present(nftViewController, animated: true)
