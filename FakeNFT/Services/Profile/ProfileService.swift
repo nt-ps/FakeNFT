@@ -12,6 +12,7 @@ protocol ProfileServiceProtocol {
     func fetchProfile(completion: @escaping (Result<ProfileInfoModel, Error>) -> Void)
     func editProfile(_ editProfileModel: EditProfileModel, completion: @escaping (Result<ProfileInfoModel, Error>) -> Void)
     func getNFTs(completion: @escaping (Result<[Nft], Error>) -> Void)
+    func setLikeRequest(likes: [String], completion: @escaping (Result<ProfileInfoModel, Error>) -> Void)
 }
 
 // MARK: - Implementation
@@ -112,6 +113,35 @@ final class ProfileService: ProfileServiceProtocol {
             } else {
                 completion(.success(nftModels))
             }
+        }
+    }
+    
+    func setLikeRequest(likes: [String], completion: @escaping (Result<ProfileInfoModel, Error>) -> Void) {
+        let request = SetLikeRequest(likes: likes)
+        
+        networkClient.send(request: request, type: ProfileInfoModel.self) { result in
+            DispatchQueue.main.async {
+                switch result {
+                case .success(let updatedProfile):
+                    ProfileStorage.shared.profile = updatedProfile
+                    completion(.success(updatedProfile))
+                case .failure(let error):
+                    print("Like request failed: \(error)")
+                    completion(.failure(error))
+                }
+            }
+        }
+    }
+}
+
+// MARK: - Errors
+enum ProfileServiceError: Error {
+    case noProfileFound
+    
+    var localizedDescription: String {
+        switch self {
+        case .noProfileFound:
+            return "No profile found in storage"
         }
     }
 }

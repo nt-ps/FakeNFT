@@ -41,7 +41,7 @@ final class MockProfileService: ProfileServiceProtocol {
                     coverImage: nil,
                     rating: 2,
                     price: 1.5,
-                    id: "archie",
+                    id: "7773e33c-ec15-4230-a102-92426a3a6d5a",
                     author: "John Doe"
                 ),
                 Nft(
@@ -50,7 +50,7 @@ final class MockProfileService: ProfileServiceProtocol {
                     coverImage: nil,
                     rating: 3,
                     price: 2.0,
-                    id: "art",
+                    id: "1e649115-1d4f-4026-ad56-9551a16763ee",
                     author: "John Doe"
                 ),
                 Nft(
@@ -59,7 +59,7 @@ final class MockProfileService: ProfileServiceProtocol {
                     coverImage: nil,
                     rating: 2,
                     price: 1.8,
-                    id: "nacho",
+                    id: "d6a02bd1-1255-46cd-815b-656174c1d9c0",
                     author: "John Doe"
                 ),
                 Nft(
@@ -68,12 +68,25 @@ final class MockProfileService: ProfileServiceProtocol {
                     coverImage: nil,
                     rating: 4,
                     price: 3.2,
-                    id: "tater",
+                    id: "de7c0518-6379-443b-a4be-81f5a7655f48",
                     author: "John Doe"
                 )
             ]
             
             completion(.success(mockNFTs))
+        }
+    }
+    
+    func setLikeRequest(likes: [String], completion: @escaping (Result<ProfileInfoModel, Error>) -> Void) {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
+            print("Mock: Updated likes to: \(likes)")
+            completion(.success(ProfileInfoModel(
+                name: "Амина Хуснутдинова",
+                avatar: "https://example.com/avatar.jpg",
+                description: "Дизайнер и коллекционер NFT",
+                website: "https://example.com",
+                nfts: [],
+                likes: likes)))
         }
     }
 }

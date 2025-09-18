@@ -19,12 +19,14 @@ final class MyNFTTableViewCell: UITableViewCell, ReuseIdentifying {
         }
         
         enum InfoStack {
+            static let width: CGFloat = 100
             static let spacing: CGFloat = 4
             static let inset: CGFloat = 20
             static let height: CGFloat = 62
         }
         
         enum PriceStack {
+            static let leadingInset: CGFloat = 137
             static let spacing: CGFloat = 2
             static let width: CGFloat = 100
         }
@@ -51,7 +53,7 @@ final class MyNFTTableViewCell: UITableViewCell, ReuseIdentifying {
         let stackView = UIStackView()
         stackView.spacing = 2
         stackView.axis = .vertical
-        stackView.alignment = .trailing
+        stackView.alignment = .leading
         return stackView
     }()
 
@@ -103,8 +105,10 @@ final class MyNFTTableViewCell: UITableViewCell, ReuseIdentifying {
         
         let imageString = model.images.first ?? ""
         nftImageView.setNFTImage(urlString: imageString)
-        nftImageView.setNFTId(model.name)
-        nftImageView.setLiked(false)
+        nftImageView.setNFTId(model.id)
+        
+        let isLiked = ProfileStorage.shared.profile?.likes.contains(model.id) ?? false
+        nftImageView.setLiked(isLiked)
     }
 
     private func setupUI() {
@@ -132,10 +136,10 @@ final class MyNFTTableViewCell: UITableViewCell, ReuseIdentifying {
             nftImageView.heightAnchor.constraint(equalToConstant: Constants.ImageView.size),
 
             infoStack.leadingAnchor.constraint(equalTo: nftImageView.trailingAnchor, constant: Constants.InfoStack.inset),
+            infoStack.widthAnchor.constraint(equalToConstant: Constants.InfoStack.width),
             infoStack.centerYAnchor.constraint(equalTo: nftImageView.centerYAnchor),
             
-            priceStack.leadingAnchor.constraint(equalTo: infoStack.trailingAnchor),
-            priceTextLabel.leadingAnchor.constraint(equalTo: priceStack.leadingAnchor),
+            priceStack.leadingAnchor.constraint(equalTo: nftImageView.trailingAnchor, constant: Constants.PriceStack.leadingInset),
             priceStack.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -Constants.Content.spacing),
             priceStack.centerYAnchor.constraint(equalTo: nftImageView.centerYAnchor),
         ])

@@ -42,8 +42,6 @@ final class ProfileViewController: UIViewController {
     init(presenter: ProfilePresenterProtocol) {
         self.presenter = presenter
         
-        // our profile doesn't have any nft, therefore comment this line
-        // to see just ui of non-empty my nft screen based on mock data
         self.profileService = ProfileService.shared
         
         super.init(nibName: nil, bundle: nil)

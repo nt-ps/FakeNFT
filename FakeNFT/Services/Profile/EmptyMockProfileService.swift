@@ -37,4 +37,17 @@ final class EmptyMockProfileService: ProfileServiceProtocol {
             completion(.success([]))
         }
     }
+    
+    func setLikeRequest(likes: [String], completion: @escaping (Result<ProfileInfoModel, Error>) -> Void) {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
+            print("EmptyMock: Updated likes to: \(likes)")
+            completion(.success(ProfileInfoModel(
+                name: "Амина Хуснутдинова",
+                avatar: "https://example.com/avatar.jpg",
+                description: "Дизайнер и коллекционер NFT",
+                website: "https://example.com",
+                nfts: [],
+                likes: likes)))
+        }
+    }
 }

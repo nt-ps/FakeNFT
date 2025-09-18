@@ -8,10 +8,9 @@
 import Foundation
 
 struct SetLikeRequest: NetworkRequest {
-    
-    let nftId: String
-    let isLiked: Bool
-    
+
+    let likes: [String]
+
     var endpoint: URL? {
         RequestConstants.Endpoint.profile.url
     }
@@ -21,13 +20,12 @@ struct SetLikeRequest: NetworkRequest {
     }
 
     var dto: Dto? {
-        LikeModel(nftId: nftId, isLiked: isLiked)
+        LikeModel(likes: likes)
     }
     
     var query: (any Query)?
-    
-    init(nftId: String, isLiked: Bool) {
-        self.nftId = nftId
-        self.isLiked = isLiked
+
+    init(likes: [String]) {
+        self.likes = likes
     }
 }

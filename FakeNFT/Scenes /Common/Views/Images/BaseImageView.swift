@@ -103,8 +103,8 @@ class BaseImageView: UIImageView {
         
         kf.setImage(with: url, options: options) { [weak self] result in
             switch result {
-            case .success(let imageResult):
-                print("Image loaded successfully: \(imageResult.image.size)")
+            case .success(_):
+                print("Image loaded successfully")
             case .failure(let error):
                 print("Image loading failed: \(error)")
                 DispatchQueue.main.async {

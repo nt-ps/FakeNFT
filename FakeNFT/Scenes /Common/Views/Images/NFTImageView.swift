@@ -18,6 +18,7 @@ final class NFTImageView: BaseImageView {
     private var isLiked: Bool = false
     private var nftId: String?
     var onLikeTapped: ((Bool) -> Void)?
+    var onLikeError: ((String) -> Void)?
     
     // MARK: Initializers
     init() {
@@ -78,27 +79,35 @@ final class NFTImageView: BaseImageView {
             return
         }
         
-        isLiked.toggle()
-        updateLikeButton()
-        onLikeTapped?(isLiked)
-        
-        sendLikeRequest(nftId: nftId, isLiked: isLiked)
+        setLikeRequest(nftId: nftId, isLiked: isLiked)
     }
     
-    private func sendLikeRequest(nftId: String, isLiked: Bool) {
-        let request = SetLikeRequest(nftId: nftId, isLiked: isLiked)
-        let networkClient = DefaultNetworkClient()
+    private func setLikeRequest(nftId: String, isLiked: Bool) {
+        let currentProfile = ProfileStorage.shared.profile
         
-        networkClient.send(request: request, type: ProfileInfoModel.self) { [weak self] result in
+        guard let profile = currentProfile else {
+            print("No profile found in storage")
+            onLikeError?("Профиль не найден. Пожалуйста, обновите приложение.")
+            return
+        }
+        
+        var updatedLikes = profile.likes
+        
+        isLiked ? updatedLikes.removeAll { $0 == nftId } : updatedLikes.append(nftId)
+        
+        
+        let profileService = ProfileService.shared
+        
+        profileService.setLikeRequest(likes: updatedLikes) { [weak self] result in
             DispatchQueue.main.async {
                 switch result {
                 case .success:
-                    break 
-                case .failure(let error):
-                    print("Like request failed: \(error)")
                     self?.isLiked.toggle()
                     self?.updateLikeButton()
                     self?.onLikeTapped?(self?.isLiked ?? false)
+                case .failure(let error):
+                    print("Like request failed: \(error)")
+                    self?.onLikeError?("Не удалось обновить лайк. Попробуйте еще раз.")
                 }
             }
         }

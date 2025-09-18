@@ -6,13 +6,16 @@
 //
 
 struct LikeModel: Dto {
-    let nftId: String
-    let isLiked: Bool
-    
+    let likes: [String]
+
+    enum CodingKeys: String, CodingKey {
+        case likes
+    }
+
     func asDictionary() -> [String: String] {
+        let likesString = likes.joined(separator: ",")
         return [
-            "nft_id": nftId,
-            "is_liked": isLiked ? "true" : "false"
+            CodingKeys.likes.rawValue: likesString
         ]
     }
 }
