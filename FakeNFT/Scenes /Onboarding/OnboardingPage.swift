@@ -20,15 +20,12 @@ final class OnboardingPage: UIPageViewController {
         return [firstPage, secondPage, thirdPage]
     }()
     
-    lazy var pageControl: UIPageControl = {
-        let pc = UIPageControl()
-        pc.numberOfPages = pages.count
-        pc.currentPage = 0
-        
-        pc.currentPageIndicatorTintColor = .AppColors.white
-        pc.pageIndicatorTintColor = .AppColors.lightGray
-        pc.translatesAutoresizingMaskIntoConstraints = false
-        return pc
+    lazy var stripPageControl: StripPageControl = {
+        let control = StripPageControl()
+        control.numberOfPages = pages.count
+        control.currentPage = 0
+        control.translatesAutoresizingMaskIntoConstraints = false
+        return control
     }()
     
     override func viewDidLoad() {
@@ -40,15 +37,20 @@ final class OnboardingPage: UIPageViewController {
             setViewControllers([firstPage], direction: .forward, animated: true, completion: nil)
         }
         
-        view.addSubview(pageControl)
+        setupPageControl()
+    }
+    
+    private func setupPageControl() {
+        view.addSubview(stripPageControl)
         
         NSLayoutConstraint.activate([
-            pageControl.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -168),
-            pageControl.centerXAnchor.constraint(equalTo: view.centerXAnchor)
+            stripPageControl.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 20),
+            stripPageControl.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
+            stripPageControl.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16)
         ])
     }
     
-    func createPage(image: UIImage,
+    private func createPage(image: UIImage,
                     headerText: String,
                     descriptionText: String,
                     buttonText: String?) -> UIViewController {
@@ -61,10 +63,10 @@ final class OnboardingPage: UIPageViewController {
         
         let gradientLayer = CAGradientLayer()
         gradientLayer.colors = [
-            UIColor.AppColors.Universal.black.withAlphaComponent(0.5).cgColor,
+            UIColor.AppColors.Universal.black.withAlphaComponent(0.8).cgColor,
             UIColor.AppColors.Universal.black.withAlphaComponent(0.0).cgColor
         ]
-        gradientLayer.locations = [0.0, 0.6]
+        gradientLayer.locations = [0.1, 0.6]
         gradientLayer.frame = vc.view.bounds
         
         let gradientView = UIView()
@@ -145,7 +147,7 @@ final class OnboardingPage: UIPageViewController {
         return vc
     }
     
-    @objc func buttonTapped() {
+    @objc private func buttonTapped() {
         dismiss(animated: true)
     }
 }
@@ -183,7 +185,7 @@ extension OnboardingPage: UIPageViewControllerDelegate, UIPageViewControllerData
                             transitionCompleted completed: Bool) {
         if let currentViewController = pageViewController.viewControllers?.first,
            let currentIndex = pages.firstIndex(of: currentViewController) {
-            pageControl.currentPage = currentIndex
+            stripPageControl.currentPage = currentIndex
         }
     }
 }
