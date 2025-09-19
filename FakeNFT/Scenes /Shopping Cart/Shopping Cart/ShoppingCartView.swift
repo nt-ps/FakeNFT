@@ -152,8 +152,9 @@ final class ShoppingCartViewControllerImplementation: UIViewController, Shopping
         NFTTableView.delegate = self
         diffableDataSource = UITableViewDiffableDataSource(tableView: NFTTableView) { [weak self]
             tableView, indexPath, identifier in
-            guard let self,
-                  let cell = self.NFTTableView.dequeueReusableCell(withIdentifier: "NFTTableViewCell", for: indexPath) as? NFTTableViewCell,
+            guard
+                let self,
+                let cell = self.NFTTableView.dequeueReusableCell(withIdentifier: "NFTTableViewCell", for: indexPath) as? NFTTableViewCell,
                   let nfts = shoppingCartPresenter?.getNFTs()
             else { return UITableViewCell() }
             cell.configure(nft: nfts[indexPath.row])
@@ -248,6 +249,7 @@ final class ShoppingCartViewControllerImplementation: UIViewController, Shopping
     
     @objc private func goToPaymentButtonTapped() {
         guard let paymentView = shoppingCartPresenter?.preparePaymentView() else { return }
+        navigationItem.backButtonDisplayMode = .minimal
         navigationController?.pushViewController(paymentView, animated: true)
     }
     
@@ -270,7 +272,6 @@ extension ShoppingCartViewControllerImplementation: UITableViewDelegate {
 private extension ShoppingCartViewControllerImplementation {
     private func setupView() {
         view.backgroundColor = .AppColors.white
-        navigationItem.backButtonDisplayMode = .minimal
         
         view.addSubview(filterButton)
         view.addSubview(NFTTableView)
