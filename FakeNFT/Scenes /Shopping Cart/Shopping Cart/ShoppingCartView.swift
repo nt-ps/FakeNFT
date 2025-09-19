@@ -152,8 +152,9 @@ final class ShoppingCartViewControllerImplementation: UIViewController, Shopping
         NFTTableView.delegate = self
         diffableDataSource = UITableViewDiffableDataSource(tableView: NFTTableView) { [weak self]
             tableView, indexPath, identifier in
-            guard let self,
-                  let cell = self.NFTTableView.dequeueReusableCell(withIdentifier: "NFTTableViewCell", for: indexPath) as? NFTTableViewCell,
+            guard
+                let self,
+                let cell = self.NFTTableView.dequeueReusableCell(withIdentifier: "NFTTableViewCell", for: indexPath) as? NFTTableViewCell,
                   let nfts = shoppingCartPresenter?.getNFTs()
             else { return UITableViewCell() }
             cell.configure(nft: nfts[indexPath.row])

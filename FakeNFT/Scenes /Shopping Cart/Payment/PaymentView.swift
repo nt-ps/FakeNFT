@@ -146,6 +146,7 @@ final class PaymentViewController: UIViewController, PaymentViewProtocol {
     }
     
     override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
         paymentPresenter?.loadCurrenciesFromServer()
         ProgressHUDProvider.showProgressHUD()
     }
@@ -219,8 +220,9 @@ final class PaymentViewController: UIViewController, PaymentViewProtocol {
 extension PaymentViewController: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         payButton.isEnabled = true
-        guard let selectedCell = currenciesCollectionView.cellForItem(at: indexPath) as? CurrenciesCollectionViewCell,
-        let currencies = paymentPresenter?.getCurrencies()
+        guard
+            let selectedCell = currenciesCollectionView.cellForItem(at: indexPath) as? CurrenciesCollectionViewCell,
+            let currencies = paymentPresenter?.getCurrencies()
         else { return }
         paymentPresenter?.setSelectedCurrencyID(currencies[indexPath.item].id)
         selectedCell.borderView.isHidden = false
