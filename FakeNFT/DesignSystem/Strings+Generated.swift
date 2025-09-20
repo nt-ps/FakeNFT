@@ -30,13 +30,19 @@ internal enum L10n {
   internal enum Catalog {
     /// Open Nft
     internal static let openNft = L10n.tr("Localizable", "catalog.openNft", fallback: "Open Nft")
-   internal enum FailureAlert {
-     /// Repeat
-     internal static let `repeat` = L10n.tr("Localizable", "catalog.failureAlert.repeat", fallback: "Repeat")
-     /// Data could not be
-     /// retrieved
-     internal static let title = L10n.tr("Localizable", "catalog.failureAlert.title", fallback: "Data could not be\nretrieved")
-   }
+    internal enum FailureAlert {
+      /// Repeat
+      internal static let `repeat` = L10n.tr("Localizable", "catalog.failureAlert.repeat", fallback: "Repeat")
+      /// Data could not be
+      /// retrieved
+      internal static let title = L10n.tr("Localizable", "catalog.failureAlert.title", fallback: "Data could not be\nretrieved")
+    }
+  }
+  internal enum Collection {
+    /// Collection author:
+    internal static let authorCaption = L10n.tr("Localizable", "collection.authorCaption", fallback: "Collection author:")
+    /// Collection NFT
+    internal static let title = L10n.tr("Localizable", "collection.title", fallback: "Collection NFT")
   }
   internal enum EditProfile {
     /// Description
@@ -88,6 +94,11 @@ internal enum L10n {
     }
   }
   internal enum Error {
+    /// Сancel
+    internal static let cancel = L10n.tr("Localizable", "error.cancel", fallback: "Сancel")
+    /// Data could not be
+    /// retrieved
+    internal static let data = L10n.tr("Localizable", "error.data", fallback: "Data could not be\nretrieved")
     /// A network error has occurred
     internal static let network = L10n.tr("Localizable", "error.network", fallback: "A network error has occurred")
     /// Repeat
@@ -96,10 +107,6 @@ internal enum L10n {
     internal static let title = L10n.tr("Localizable", "error.title", fallback: "Error")
     /// An unknown error has occurred
     internal static let unknown = L10n.tr("Localizable", "error.unknown", fallback: "An unknown error has occurred")
-    /// Data could not be retrieved
-    internal static let data = L10n.tr("Localizable", "error.data", fallback: "Data could not be retrieved")
-    /// Cancel
-    internal static let cancel = L10n.tr("Localizable", "error.cancel", fallback: "Cancel")
   }
   internal enum Favoritenft {
     /// Favorites of NFT
@@ -118,6 +125,26 @@ internal enum L10n {
     internal static let price = L10n.tr("Localizable", "myNFT.price", fallback: "Price")
     /// My NFTs
     internal static let title = L10n.tr("Localizable", "myNFT.title", fallback: "My NFTs")
+  }
+  internal enum Onboarding {
+    /// What's inside?
+    internal static let exitButton = L10n.tr("Localizable", "onboarding.exitButton", fallback: "What's inside?")
+    internal enum Description {
+      /// Join and discover a new world of unique NFTs for collectors
+      internal static let firstPage = L10n.tr("Localizable", "onboarding.description.firstPage", fallback: "Join and discover a new world of unique NFTs for collectors")
+      /// Expand your collection with exclusive AI-generated artwork
+      internal static let secondPage = L10n.tr("Localizable", "onboarding.description.secondPage", fallback: "Expand your collection with exclusive AI-generated artwork")
+      /// Check others' stats and show everyone you have the most valuable collection
+      internal static let thirdPage = L10n.tr("Localizable", "onboarding.description.thirdPage", fallback: "Check others' stats and show everyone you have the most valuable collection")
+    }
+    internal enum Header {
+      /// Explore
+      internal static let firstPage = L10n.tr("Localizable", "onboarding.header.firstPage", fallback: "Explore")
+      /// Collect
+      internal static let secondPage = L10n.tr("Localizable", "onboarding.header.secondPage", fallback: "Collect")
+      /// Compete
+      internal static let thirdPage = L10n.tr("Localizable", "onboarding.header.thirdPage", fallback: "Compete")
+    }
   }
   internal enum Payment {
     /// Return to the catalog
@@ -155,6 +182,10 @@ internal enum L10n {
     internal enum MyNFT {
       /// My NFTs
       internal static let title = L10n.tr("Localizable", "profile.myNFT.title", fallback: "My NFTs")
+    }
+    internal enum Website {
+      /// Go to user website
+      internal static let button = L10n.tr("Localizable", "profile.website.button", fallback: "Go to user website")
     }
   }
   internal enum SortAlert {
@@ -197,10 +228,6 @@ internal enum L10n {
     internal static let profile = L10n.tr("Localizable", "tab.profile", fallback: "Profile")
     /// Statistics
     internal static let statistics = L10n.tr("Localizable", "tab.statistics", fallback: "Statistics")
-  }
-  internal enum Collection {
-    /// Author caption
-    internal static let authorCaption = L10n.tr("Localizable", "collection.authorCaption", fallback: "Author caption")
   }
 }
 // swiftlint:enable explicit_type_interface function_parameter_count identifier_name line_length

@@ -10,13 +10,30 @@ final class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     )
 
     func scene(_: UIScene, willConnectTo _: UISceneSession, options _: UIScene.ConnectionOptions) {
-        UINavigationBar.appearance().tintColor = .AppColors.black
-        UIBarButtonItem.appearance().setTitleTextAttributes(
-                [.foregroundColor: UIColor.clear],
-                for: .normal
-            )
+        configureNavigationBar()
         
         let tabBarController = window?.rootViewController as? TabBarController
         tabBarController?.servicesAssembly = servicesAssembly
+    }
+    
+    private func configureNavigationBar() {
+        UINavigationBar.appearance().tintColor = .AppColors.black
+        let barButtonItemAppearance = UIBarButtonItem.appearance()
+        barButtonItemAppearance.setTitleTextAttributes(
+            [.foregroundColor: UIColor.clear],
+            for: .normal
+        )
+        barButtonItemAppearance.setTitleTextAttributes(
+            [.foregroundColor: UIColor.clear],
+            for: .highlighted
+        )
+        barButtonItemAppearance.setTitleTextAttributes(
+            [.foregroundColor: UIColor.clear],
+            for: .disabled
+        )
+        barButtonItemAppearance.setTitleTextAttributes(
+            [.foregroundColor: UIColor.clear],
+            for: .focused
+        )
     }
 }

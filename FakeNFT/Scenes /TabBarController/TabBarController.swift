@@ -60,6 +60,30 @@ final class TabBarController: UITabBarController {
         selectedViewController = catalogueController
         
         view.backgroundColor = .systemBackground
+        checkOnboardingStatus()
+
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+
+    }
+    
+    private func checkOnboardingStatus() {
+        let onboardingCompleted = UserDefaults.standard.bool(forKey: OnboardingPage.onboardingKey)
+        if !onboardingCompleted {
+            showOnboarding()
+        }
+    }
+    
+    private func showOnboarding() {
+        let onboardingVC = OnboardingPage(transitionStyle: .scroll, navigationOrientation: .horizontal)
+        onboardingVC.modalPresentationStyle = .fullScreen
+        DispatchQueue.main.async {
+            self.present(onboardingVC, animated: true)
+        }
+    }
+
     }
     
     private func configureShoppingCart() -> UIViewController {

@@ -252,6 +252,7 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
+		CD91EC8C2E7B3D8F005065CC /* Onboarding */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = Onboarding; sourceTree = "<group>"; };
 		C664F0C22E661DB6006AE8EB /* Shopping Cart */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = "Shopping Cart"; sourceTree = "<group>"; };
 		CD95B1ED2E65D8B8008CDB81 /* Statistics */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = Statistics; sourceTree = "<group>"; };
 		CD95B2392E689171008CDB81 /* User */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = User; sourceTree = "<group>"; };
@@ -518,6 +519,7 @@
 		3F6806C729CBBC5B00B4F915 /* Scenes  */ = {
 			isa = PBXGroup;
 			children = (
+				CD91EC8C2E7B3D8F005065CC /* Onboarding */,
 				3A5843232E75741700D295B2 /* Collection */,
 				CD95B2AB2E6F1DEC008CDB81 /* UsersProfile */,
 				3A58412A2E6DD06200D295B2 /* WebView */,
@@ -738,7 +740,7 @@
 			dependencies = (
 			);
 			fileSystemSynchronizedGroups = (
-				C664F0C22E661DB6006AE8EB /* Shopping Cart */,
+				CD91EC8C2E7B3D8F005065CC /* Onboarding */,
 				CD95B1ED2E65D8B8008CDB81 /* Statistics */,
 				CD95B2392E689171008CDB81 /* User */,
 				CD95B2402E68F83D008CDB81 /* UserDefaultsKeys */,

@@ -163,18 +163,8 @@ final class CollectionViewController: UICollectionViewController, CollectionView
     }
     
     private func setNavigationBar() {
-        let standardAppearance = UINavigationBarAppearance()
-        standardAppearance.configureWithTransparentBackground()
-        standardAppearance.backgroundColor = .AppColors.white
-        standardAppearance.backButtonAppearance = UIBarButtonItemAppearance()
-        
         if let title = presenter.title {
             navigationItem.title = title
-            standardAppearance.titleTextAttributes = [
-                NSAttributedString.Key.foregroundColor: UIColor.AppColors.black,
-                NSAttributedString.Key.font: UIFont.bodyBold
-            ]
-            navigationItem.scrollEdgeAppearance = standardAppearance
         } else {
             let scrollAppearance = UINavigationBarAppearance()
             scrollAppearance.configureWithTransparentBackground()
@@ -183,11 +173,6 @@ final class CollectionViewController: UICollectionViewController, CollectionView
             
             collectionView.contentInsetAdjustmentBehavior = .never
         }
-        
-        navigationItem.standardAppearance = standardAppearance
-        navigationItem.compactAppearance = standardAppearance
-        
-        navigationItem.backButtonDisplayMode = .minimal
     }
     
     private func configureCollectionView() {

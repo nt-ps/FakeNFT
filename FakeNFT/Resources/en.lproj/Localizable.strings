@@ -49,6 +49,7 @@
 
 "profile.myNFT.title" = "My NFTs";
 "profile.favoritenft.title" = "Favorites of NFT";
+"profile.website.button" = "Go to user website";
 
 "myNFT.title" = "My NFTs";
 "myNFT.price" = "Price";
@@ -76,3 +77,18 @@
 "error.cancel" = "Сancel";
 
 "collection.authorCaption" = "Collection author:";
+"collection.title" = "Collection NFT";
+
+"editProfile.avatar.deleteAlert.title" = "Delete profile photo?";
+"editProfile.avatar.deleteAlert.message" = "This action cannot be undone";
+"editProfile.avatar.deleteAlert.delete" = "Delete";
+"editProfile.avatar.error.invalidURL" = "Invalid URL format";
+"editProfile.avatar.error.updateFailed" = "Failed to update avatar";
+
+"onboarding.header.firstPage" = "Explore";
+"onboarding.header.secondPage" = "Collect";
+"onboarding.header.thirdPage" = "Compete";
+"onboarding.description.firstPage" = "Join and discover a new world of unique NFTs for collectors";
+"onboarding.description.secondPage" = "Expand your collection with exclusive AI-generated artwork";
+"onboarding.description.thirdPage" = "Check others' stats and show everyone you have the most valuable collection";
+"onboarding.exitButton" = "What's inside?";

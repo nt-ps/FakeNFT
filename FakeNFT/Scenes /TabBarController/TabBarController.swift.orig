@@ -46,27 +46,6 @@ final class TabBarController: UITabBarController {
         let catalogueController = CatalogueNavigationController(
             servicesAssembly: servicesAssembly
         )
-<<<<<<< HEAD
-        catalogueController.tabBarItem = catalogTabBarItem
-
-        let shoppingCartNavigationController = configureShoppingCart()
-        
-        viewControllers = [catalogueController, shoppingCartNavigationController]
-        
-        catalogueController.tabBarItem = catalogTabBarItem
-        
-        // TODO: Удалить после добавления всех вкладок.
-        let testCatalogController = TestCatalogViewController(
-            servicesAssembly: servicesAssembly
-        )
-        testCatalogController.tabBarItem = testCatalogTabBarItem
-
- //       viewControllers = [
- //           catalogueController,
- //           testCatalogController // TODO: Удалить!
- //       ]
-
-=======
         catalogueController.tabBarItem = catalogTabBarItem
         
         let statisticsPresenter = StatisticsPresenter(servicesAssembly: servicesAssembly)
@@ -80,10 +59,12 @@ final class TabBarController: UITabBarController {
         
         selectedViewController = catalogueController
         
->>>>>>> 86ecc874964aca655d42ea85dbc6347619fc9f73
         view.backgroundColor = .systemBackground
+        checkOnboardingStatus()
+
     }
     
+<<<<<<< HEAD
     private func configureShoppingCart() -> UIViewController {
         let shoppingCartModel = ShoppingCartModelImplementation()
         let shoppingCartViewController = ShoppingCartViewControllerImplementation()
@@ -93,4 +74,26 @@ final class TabBarController: UITabBarController {
         shoppingCartViewController.tabBarItem = shoppingCartTabBarItem
         return UINavigationController(rootViewController: shoppingCartViewController)
     }
+=======
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+
+    }
+    
+    private func checkOnboardingStatus() {
+        let onboardingCompleted = UserDefaults.standard.bool(forKey: OnboardingPage.onboardingKey)
+        if !onboardingCompleted {
+            showOnboarding()
+        }
+    }
+    
+    private func showOnboarding() {
+        let onboardingVC = OnboardingPage(transitionStyle: .scroll, navigationOrientation: .horizontal)
+        onboardingVC.modalPresentationStyle = .fullScreen
+        DispatchQueue.main.async {
+            self.present(onboardingVC, animated: true)
+        }
+    }
+
+>>>>>>> e1aeb70f1946c600665a26507721a0a9350d9019
 }

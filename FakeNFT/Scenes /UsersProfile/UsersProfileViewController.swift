@@ -46,7 +46,7 @@ final class UsersProfileViewController: UIViewController, UsersProfileViewContro
     
     private lazy var userWebSiteButton: UIButton = {
         let button = UIButton(type: .system)
-        button.setTitle("Перейти на сайт пользователя", for: .normal)
+        button.setTitle(L10n.Profile.Website.button, for: .normal)
         button.setTitleColor(.AppColors.black, for: .normal)
         button.titleLabel?.font = .bodyRegular
         button.addTarget(self, action: #selector(websiteButtonTapped), for: .touchUpInside)
@@ -81,7 +81,7 @@ final class UsersProfileViewController: UIViewController, UsersProfileViewContro
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        navigationController?.setNavigationBarHidden(false, animated: true)
+        //navigationController?.setNavigationBarHidden(false, animated: true)
         setupUI()
         presenter.viewDidLoad()
     }
@@ -162,7 +162,9 @@ final class UsersProfileViewController: UIViewController, UsersProfileViewContro
         presenter.didTappedUserWebsite()
     }
     
-    @objc private func collectionButtonDidTapped() {}
+    @objc private func collectionButtonDidTapped() {
+        presenter.didTappedUserCollection()
+    }
 }
 
 extension UsersProfileViewController: UITableViewDelegate, UITableViewDataSource {
@@ -174,6 +176,9 @@ extension UsersProfileViewController: UITableViewDelegate, UITableViewDataSource
         let cell: UserProfileNFTCollectionCell = tableView.dequeueReusableCell(indexPath: indexPath)
         cell.configure(with: user?.nftCount ?? 0)
         
+        cell.onAccessoryButtonTapped = { [weak self] in
+            self?.presenter.didTappedUserCollection()
+        }
         return cell
     }
     

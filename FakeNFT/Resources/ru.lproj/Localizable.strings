@@ -44,6 +44,7 @@
 
 "profile.myNFT.title" = "Мои NFT";
 "profile.favouriteNFT.title" = "Избранные NFT";
+"profile.website.button" = "Перейти на сайт пользователя";
 
 "myNFT.title" = "Мои NFT";
 "myNFT.price" = "Цена";
@@ -71,9 +72,18 @@
 "error.cancel" = "Отмена";
 
 "collection.authorCaption" = "Автор коллекции:";
+"collection.title" = "Коллекция NFT";
 
 "editProfile.avatar.deleteAlert.title" = "Удалить фото профиля?";
 "editProfile.avatar.deleteAlert.message" = "Это действие нельзя отменить";
 "editProfile.avatar.deleteAlert.delete" = "Удалить";
 "editProfile.avatar.error.invalidURL" = "Неверный формат URL";
 "editProfile.avatar.error.updateFailed" = "Не удалось обновить аватар";
+
+"onboarding.header.firstPage" = "Исследуйте";
+"onboarding.header.secondPage" = "Коллекционируйте";
+"onboarding.header.thirdPage" = "Состязайтесь";
+"onboarding.description.firstPage" = "Присоединяйтесь и откройте новый мир уникальных NFT для коллекционеров";
+"onboarding.description.secondPage" = "Пополняйте свою коллекцию эксклюзивными картинками, созданными нейросетью";
+"onboarding.description.thirdPage" = "Смотрите статистику других и покажите всем, что у вас самая ценная коллекция";
+"onboarding.exitButton" = "Что внутри?";

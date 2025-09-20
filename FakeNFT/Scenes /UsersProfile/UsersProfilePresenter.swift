@@ -5,14 +5,17 @@ protocol UserProfilePresenterProtocol: AnyObject {
     var view: UsersProfileViewControllerProtocol? { get set }
     func viewDidLoad()
     func didTappedUserWebsite()
+    func didTappedUserCollection()
 }
 
 final class UsersProfilePresenter: UserProfilePresenterProtocol {
     weak var view: UsersProfileViewControllerProtocol?
     private var user: User?
+    private let servicesAssembly: ServicesAssembly
     
-    init(user: User?) {
+    init(user: User?, servicesAssembly: ServicesAssembly) {
         self.user = user
+        self.servicesAssembly = servicesAssembly
     }
     
     func viewDidLoad() {
@@ -28,7 +31,15 @@ final class UsersProfilePresenter: UserProfilePresenterProtocol {
             return
         }
         let urlRequest = URLRequest(url: url)
-        var viewController = WebViewAssembly().build(with: urlRequest)
+        let viewController = WebViewAssembly().build(with: urlRequest)
+        
+        view?.navigateToViewController(viewController: viewController)
+    }
+    
+    func didTappedUserCollection() {
+        guard let user else { return }
+        
+        let viewController = CollectionViewAssembly(servicesAssembler: servicesAssembly).build(with: user.nfts, title: L10n.Collection.title)
         
         view?.navigateToViewController(viewController: viewController)
     }
