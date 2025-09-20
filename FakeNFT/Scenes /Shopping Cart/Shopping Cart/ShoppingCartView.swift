@@ -178,8 +178,7 @@ final class ShoppingCartViewControllerImplementation: UIViewController, Shopping
     func reloadDataInTableView(nfts: [NFT], totalNFTsPrice: Float, totalNFTsAmount: Int) {
         var snapshot = NSDiffableDataSourceSnapshot<Int, NFT>()
         snapshot.appendSections([0])
-        let uniqueNFTs = Array(Set(nfts))
-        snapshot.appendItems(uniqueNFTs)
+        snapshot.appendItems(nfts)
         DispatchQueue.main.async {
             self.NFTsCounterLabel.text = "\(totalNFTsAmount) NFT"
             self.NFTsTotalPriceLabel.text = "\(totalNFTsPrice) ETH"
