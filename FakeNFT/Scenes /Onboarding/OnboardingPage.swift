@@ -53,9 +53,9 @@ final class OnboardingPage: UIPageViewController {
     }
     
     private func createPage(image: UIImage,
-                    headerText: String,
-                    descriptionText: String,
-                    buttonText: String?) -> UIViewController {
+                            headerText: String,
+                            descriptionText: String,
+                            buttonText: String?) -> UIViewController {
         let vc = UIViewController()
         
         let image = UIImageView(image: image)
@@ -122,7 +122,7 @@ final class OnboardingPage: UIPageViewController {
             button.addTarget(self, action: #selector(buttonTapped), for: .touchUpInside)
             button.translatesAutoresizingMaskIntoConstraints = false
             vc.view.addSubview(button)
-
+            
             NSLayoutConstraint.activate([
                 button.trailingAnchor.constraint(equalTo: vc.view.trailingAnchor, constant: -16),
                 button.topAnchor.constraint(equalTo: vc.view.safeAreaLayoutGuide.topAnchor, constant: 28),

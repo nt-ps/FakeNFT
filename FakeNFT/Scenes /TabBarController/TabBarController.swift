@@ -59,12 +59,6 @@ final class TabBarController: UITabBarController {
         
         view.backgroundColor = .systemBackground
         checkOnboardingStatus()
-
-    }
-    
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
-
     }
     
     private func checkOnboardingStatus() {
@@ -81,5 +75,4 @@ final class TabBarController: UITabBarController {
             self.present(onboardingVC, animated: true)
         }
     }
-
 }

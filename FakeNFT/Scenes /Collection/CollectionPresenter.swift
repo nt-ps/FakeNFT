@@ -262,8 +262,7 @@ final class CollectionPresenter: CollectionPresenterProtocol {
             guard let self else { return }
             switch result {
             case .success(let profile):
-                self.likes.removeAll()
-                self.likes.append(contentsOf: profile.likes)
+                self.likes = profile.likes
                 self.profileStorage.profile = profile
             case .failure(let error):
                 print("[\(#function)] Failed to load profile: \(error.localizedDescription).")

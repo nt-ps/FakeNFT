@@ -68,13 +68,14 @@ final class UsersProfileViewController: UIViewController, UsersProfileViewContro
         tableView.translatesAutoresizingMaskIntoConstraints = false
         return tableView
     }()
-
+    
     init(presenter: UsersProfilePresenter) {
         self.presenter = presenter
         super.init(nibName: nil, bundle: nil)
         self.presenter.view = self
     }
     
+    @available(*, unavailable)
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
