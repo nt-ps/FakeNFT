@@ -81,7 +81,7 @@ final class UsersProfileViewController: UIViewController, UsersProfileViewContro
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        navigationController?.setNavigationBarHidden(false, animated: true)
+        //navigationController?.setNavigationBarHidden(false, animated: true)
         setupUI()
         presenter.viewDidLoad()
     }
