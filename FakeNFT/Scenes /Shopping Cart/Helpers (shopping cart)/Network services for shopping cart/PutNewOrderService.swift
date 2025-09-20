@@ -13,6 +13,8 @@ protocol PutNewOrderServiceProtocol {
     func postNewOrder(with NFTs: [NFT])
 }
 
+
+
 final class PutNewOrderServiceImplementation: PutNewOrderServiceProtocol {
     func postNewOrder(with NFTs: [NFT]) {
         let stringWithCommaSeparatedNFTsIds = NFTs.map { $0.id }.joined(separator: ", ")

@@ -12,8 +12,6 @@ protocol OrderServiceProtocol {
 }
 
 final class OrderServiceImplementation: OrderServiceProtocol {
-    private let decoder = JSONDecoder()
-    
     func fetchOrder(completion: @escaping ((Order) -> Void)) {
         guard let url = URL(string: "https://d5dn3j2ouj72b0ejucbl.apigw.yandexcloud.net//api/v1/orders/1")
         else {
@@ -23,8 +21,7 @@ final class OrderServiceImplementation: OrderServiceProtocol {
         var request = URLRequest(url: url)
         request.httpMethod = "GET"
         request.setValue(RequestConstants.token, forHTTPHeaderField: "X-Practicum-Mobile-Token")
-        let task = URLSession.shared.dataTask(with: request) { [weak self] data, response, error in
-            guard let self else { return }
+        let task = URLSession.shared.dataTask(with: request) { data, response, error in
             if let error {
                 print("error in OrderServiceImplementation: \(error)")
                 return
@@ -35,7 +32,7 @@ final class OrderServiceImplementation: OrderServiceProtocol {
                 return
             }
             do {
-                let decodedData = try self.decoder.decode(Order.self, from: data)
+                let decodedData = try JSONDecoder().decode(Order.self, from: data)
                 completion(decodedData)
             } catch {
                 print("error in OrderServiceImplementation while decoding data: \(error)")

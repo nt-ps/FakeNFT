@@ -12,10 +12,6 @@ protocol PaymentPresenterProtocol: AnyObject {
     func loadCurrenciesFromServer()
     func reloadCurrenciesCollectionInUI()
     func clearCurrencies()
-    func setSelectedCurrencyID(_ id: String)
-    func makePayment()
-    func showPaymentFailedAlert()
-    func showPaymentSucceed()
 }
 
 final class PaymentPresenter: PaymentPresenterProtocol {
@@ -40,21 +36,5 @@ final class PaymentPresenter: PaymentPresenterProtocol {
     
     func clearCurrencies() {
         paymentModel.currencies.removeAll()
-    }
-    
-    func setSelectedCurrencyID(_ id: String) {
-        paymentModel.selectedCurrencyID = id
-    }
-    
-    func makePayment() {
-        paymentModel.payOrder()
-    }
-    
-    func showPaymentFailedAlert() {
-        paymentView?.showPaymentFailedAlert()
-    }
-    
-    func showPaymentSucceed() {
-        paymentView?.showPaymentSucceed()
     }
 }

@@ -9,8 +9,6 @@ import UIKit
 
 protocol PaymentViewProtocol: AnyObject {
     func reloadCurrenciesCollectionView(currencies: [Currency])
-    func showPaymentFailedAlert()
-    func showPaymentSucceed()
 }
 
 final class PaymentViewController: UIViewController, PaymentViewProtocol {
@@ -18,6 +16,16 @@ final class PaymentViewController: UIViewController, PaymentViewProtocol {
     var paymentPresenter: PaymentPresenterProtocol?
     
     // MARK: UI Elements
+    private lazy var paymentLabel: UILabel = {
+        let paymentLabel = UILabel()
+        paymentLabel.translatesAutoresizingMaskIntoConstraints = false
+        paymentLabel.numberOfLines = 1
+        paymentLabel.textAlignment = .center
+        paymentLabel.font = .bodyBold
+        paymentLabel.text = L10n.Payment.title
+        paymentLabel.textColor = .AppColors.black
+        return paymentLabel
+    }()
     private lazy var currenciesCollectionView: UICollectionView = {
         let currenciesCollectionView = UICollectionView(frame: .zero, collectionViewLayout: currenciesCollectionViewFlowLayout)
         currenciesCollectionView.translatesAutoresizingMaskIntoConstraints = false
@@ -44,8 +52,6 @@ final class PaymentViewController: UIViewController, PaymentViewProtocol {
         payButton.titleLabel?.font = .bodyBold
         payButton.backgroundColor = .AppColors.black
         payButton.setTitleColor(.AppColors.white, for: .normal)
-        payButton.addTarget(self, action: #selector(payButtonTapped), for: .touchUpInside)
-        payButton.isEnabled = false
         return payButton
     }()
     private lazy var userAgreementLabel: UILabel = {
@@ -76,45 +82,6 @@ final class PaymentViewController: UIViewController, PaymentViewProtocol {
         userAgreementButton.addTarget(self, action: #selector(userAgreementButtonTapped), for: .touchUpInside)
         return userAgreementButton
     }()
-    private lazy var backToCartButton: UIButton = {
-        let backToCartButton = UIButton()
-        backToCartButton.translatesAutoresizingMaskIntoConstraints = false
-        backToCartButton.layer.masksToBounds = true
-        backToCartButton.layer.cornerRadius = 16
-        backToCartButton.setTitle(L10n.Payment.backToCataloge, for: .normal)
-        backToCartButton.titleLabel?.font = .bodyBold
-        backToCartButton.backgroundColor = .AppColors.black
-        backToCartButton.setTitleColor(.AppColors.white, for: .normal)
-        backToCartButton.addTarget(self, action: #selector(backToCartButtonTapped), for: .touchUpInside)
-        backToCartButton.isHidden = true
-        backToCartButton.alpha = 0
-        backToCartButton.transform = CGAffineTransform(scaleX: 0.8, y: 0.8)
-        return backToCartButton
-    }()
-    private lazy var successfullPaymentImageView: UIImageView = {
-        let successfullPaymentImageView = UIImageView()
-        successfullPaymentImageView.translatesAutoresizingMaskIntoConstraints = false
-        successfullPaymentImageView.backgroundColor = .clear
-        successfullPaymentImageView.image = .successfulPayment
-        successfullPaymentImageView.isHidden = true
-        successfullPaymentImageView.alpha = 0
-        successfullPaymentImageView.transform = CGAffineTransform(scaleX: 0.8, y: 0.8)
-        return successfullPaymentImageView
-    }()
-    private lazy var successfullPaymentLabel: UILabel = {
-        let successfullPaymentLabel = UILabel()
-        successfullPaymentLabel.translatesAutoresizingMaskIntoConstraints = false
-        successfullPaymentLabel.backgroundColor = .clear
-        successfullPaymentLabel.font = .headline3
-        successfullPaymentLabel.textColor = .AppColors.black
-        successfullPaymentLabel.text = L10n.Payment.Success.title
-        successfullPaymentLabel.textAlignment = .center
-        successfullPaymentLabel.numberOfLines = 4
-        successfullPaymentLabel.isHidden = true
-        successfullPaymentLabel.alpha = 0
-        successfullPaymentLabel.transform = CGAffineTransform(scaleX: 0.8, y: 0.8)
-        return successfullPaymentLabel
-    }()
     
     private lazy var currenciesCollectionViewFlowLayout: UICollectionViewFlowLayout = {
         let currenciesCollectionViewFlowLayout = UICollectionViewFlowLayout()
@@ -135,20 +102,14 @@ final class PaymentViewController: UIViewController, PaymentViewProtocol {
     override func viewDidLoad() {
         super.viewDidLoad()
         setupView()
-        currenciesCollectionView.delegate = self
+        paymentPresenter?.loadCurrenciesFromServer()
+        ProgressHUDProvider.showProgressHUD()
     }
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
-        paymentPresenter?.clearCurrencies()
         let snapshot = NSDiffableDataSourceSnapshot<Int, Currency>()
         currenciesCollectionViewDiffableDataSource.apply(snapshot, animatingDifferences: true)
-    }
-    
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        paymentPresenter?.loadCurrenciesFromServer()
-        ProgressHUDProvider.showProgressHUD()
     }
     
     func reloadCurrenciesCollectionView(currencies: [Currency]) {
@@ -161,44 +122,6 @@ final class PaymentViewController: UIViewController, PaymentViewProtocol {
         ProgressHUDProvider.dismissProgressHUD()
     }
     
-    func showPaymentFailedAlert() {
-        let alert = UIAlertController(title: L10n.Payment.FailureAlert.title, message: nil, preferredStyle: .alert)
-        let cancelAction = UIAlertAction(title: L10n.Payment.FailureAlert.cancel, style: .cancel) { _ in }
-        let repeatAction = UIAlertAction(title: L10n.Payment.FailureAlert.repeat, style: .default) { [weak self] _ in
-            self?.paymentPresenter?.makePayment()
-        }
-        alert.addAction(cancelAction)
-        alert.addAction(repeatAction)
-        alert.preferredAction = repeatAction
-        DispatchQueue.main.async {
-            self.present(alert, animated: true)
-        }
-    }
-    
-    func showPaymentSucceed() {
-        DispatchQueue.main.async {
-            self.navigationController?.navigationBar.isHidden = true
-            self.currenciesCollectionView.isHidden = true
-            self.bottomBackgroundView.isHidden = true
-            self.payButton.isHidden = true
-            self.userAgreementLabel.isHidden = true
-            self.userAgreementButton.isHidden = true
-            self.backToCartButton.isHidden = false
-            self.successfullPaymentLabel.isHidden = false
-            self.successfullPaymentImageView.isHidden = false
-            UIView.animate(
-                withDuration: 0.5,
-                delay: 0) {
-                    self.successfullPaymentLabel.alpha = 1
-                    self.successfullPaymentLabel.transform = .identity
-                    self.backToCartButton.alpha = 1
-                    self.backToCartButton.transform = .identity
-                    self.successfullPaymentImageView.alpha = 1
-                    self.successfullPaymentImageView.transform = .identity
-                }
-        }
-    }
-    
     // MARK: UI Actions
     @objc private func userAgreementButtonTapped() {
         guard let url = URL(string: "https://yandex.ru/legal/practicum_termsofuse") else { return }
@@ -206,62 +129,34 @@ final class PaymentViewController: UIViewController, PaymentViewProtocol {
         let webViewController = WebViewAssembly().build(with: request)
         navigationController?.pushViewController(webViewController, animated: true)
     }
-    
-    @objc private func payButtonTapped() {
-        paymentPresenter?.makePayment()
-    }
-    
-    @objc private func backToCartButtonTapped() {
-        navigationController?.popToRootViewController(animated: true)
-    }
-}
-
-// MARK: currenciesCollectionView delegate
-extension PaymentViewController: UICollectionViewDelegate {
-    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        payButton.isEnabled = true
-        guard
-            let selectedCell = currenciesCollectionView.cellForItem(at: indexPath) as? CurrenciesCollectionViewCell,
-            let currencies = paymentPresenter?.getCurrencies()
-        else { return }
-        paymentPresenter?.setSelectedCurrencyID(currencies[indexPath.item].id)
-        selectedCell.borderView.isHidden = false
-        for counter in 0...currencies.count {
-            guard let cellToDeselect = currenciesCollectionView.cellForItem(at: IndexPath(item: counter, section: 0)) as? CurrenciesCollectionViewCell else { return }
-            if cellToDeselect != selectedCell {
-                cellToDeselect.borderView.isHidden = true
-            }
-        }
-    }
 }
 
 // MARK: setupView
 private extension PaymentViewController {
     private func setupView() {
         view.backgroundColor = .AppColors.white
+        navigationItem.backBarButtonItem?.tintColor = .AppColors.black
         
-        navigationController?.navigationBar.titleTextAttributes = [
-            .font: UIFont.systemFont(ofSize: 17, weight: .bold),
-            .foregroundColor: UIColor.AppColors.black
-        ]
-        navigationController?.navigationBar.tintColor = .AppColors.black
-        navigationItem.title = L10n.Payment.title
-        navigationItem.backButtonDisplayMode = .minimal
-        guard let navigationBar = navigationController?.navigationBar else { return }
-        let navBarFrameInView = view.convert(navigationBar.frame, from: navigationBar.superview)
-        let navBarMaxY = navBarFrameInView.maxY
-        
+        view.addSubview(paymentLabel)
         view.addSubview(currenciesCollectionView)
         view.addSubview(bottomBackgroundView)
         view.addSubview(payButton)
         view.addSubview(userAgreementLabel)
         view.addSubview(userAgreementButton)
-        view.addSubview(backToCartButton)
-        view.addSubview(successfullPaymentImageView)
-        view.addSubview(successfullPaymentLabel)
+        
+        if let navigationBar = navigationController?.navigationBar, navigationBar.superview != view {
+            view.addSubview(navigationBar)
+        }
+        guard let navigationBarCenterYAnchor = navigationController?.navigationBar.centerYAnchor else { return }
         
         NSLayoutConstraint.activate([
-            currenciesCollectionView.topAnchor.constraint(equalTo: view.topAnchor, constant: navBarMaxY + 20),
+            paymentLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            paymentLabel.centerYAnchor.constraint(equalTo: navigationBarCenterYAnchor),
+            paymentLabel.widthAnchor.constraint(equalToConstant: 261),
+            paymentLabel.heightAnchor.constraint(equalToConstant: 22)
+        ])
+        NSLayoutConstraint.activate([
+            currenciesCollectionView.topAnchor.constraint(equalTo: paymentLabel.bottomAnchor, constant: 30),
             currenciesCollectionView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             currenciesCollectionView.widthAnchor.constraint(equalToConstant: 343),
             currenciesCollectionView.heightAnchor.constraint(equalToConstant: 205)
@@ -290,41 +185,5 @@ private extension PaymentViewController {
             userAgreementButton.widthAnchor.constraint(equalToConstant: 202),
             userAgreementButton.heightAnchor.constraint(equalToConstant: 26)
         ])
-        NSLayoutConstraint.activate([
-            backToCartButton.widthAnchor.constraint(equalToConstant: 343),
-            backToCartButton.heightAnchor.constraint(equalToConstant: 60),
-            backToCartButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            backToCartButton.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -50)
-        ])
-        NSLayoutConstraint.activate([
-            successfullPaymentImageView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            successfullPaymentImageView.widthAnchor.constraint(equalToConstant: 278),
-            successfullPaymentImageView.heightAnchor.constraint(equalToConstant: 278),
-            successfullPaymentImageView.topAnchor.constraint(equalTo: view.topAnchor, constant: 196)
-        ])
-        NSLayoutConstraint.activate([
-            successfullPaymentLabel.topAnchor.constraint(equalTo: successfullPaymentImageView.bottomAnchor, constant: 20),
-            successfullPaymentLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 36),
-            successfullPaymentLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -36),
-            successfullPaymentLabel.heightAnchor.constraint(equalToConstant: 107)
-        ])
-    }
-}
-
-// MARK: дополнительная настройка цвета текста в navigationBar при смене темы (просто установить navigationController?.navigationBar.titleTextAttributes = [.foregroundColor: UIColor.AppColors.black] ) - недостаточно
-extension PaymentViewController {
-    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
-        super.traitCollectionDidChange(previousTraitCollection)
-        if traitCollection.userInterfaceStyle == .light {
-            navigationController?.navigationBar.titleTextAttributes = [
-                .font: UIFont.systemFont(ofSize: 17, weight: .bold),
-                .foregroundColor: UIColor(hexString: "#1A1B22")
-            ]
-        } else {
-            navigationController?.navigationBar.titleTextAttributes = [
-                .font: UIFont.systemFont(ofSize: 17, weight: .bold),
-                .foregroundColor: UIColor.white
-            ]
-        }
     }
 }
