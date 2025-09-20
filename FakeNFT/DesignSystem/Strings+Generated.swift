@@ -30,6 +30,13 @@ internal enum L10n {
   internal enum Catalog {
     /// Open Nft
     internal static let openNft = L10n.tr("Localizable", "catalog.openNft", fallback: "Open Nft")
+   internal enum FailureAlert {
+     /// Repeat
+     internal static let `repeat` = L10n.tr("Localizable", "catalog.failureAlert.repeat", fallback: "Repeat")
+     /// Data could not be
+     /// retrieved
+     internal static let title = L10n.tr("Localizable", "catalog.failureAlert.title", fallback: "Data could not be\nretrieved")
+   }
   }
   internal enum EditProfile {
     /// Description
@@ -89,6 +96,10 @@ internal enum L10n {
     internal static let title = L10n.tr("Localizable", "error.title", fallback: "Error")
     /// An unknown error has occurred
     internal static let unknown = L10n.tr("Localizable", "error.unknown", fallback: "An unknown error has occurred")
+    /// Data could not be retrieved
+    internal static let data = L10n.tr("Localizable", "error.data", fallback: "Data could not be retrieved")
+    /// Cancel
+    internal static let cancel = L10n.tr("Localizable", "error.cancel", fallback: "Cancel")
   }
   internal enum Favoritenft {
     /// Favorites of NFT
@@ -186,6 +197,10 @@ internal enum L10n {
     internal static let profile = L10n.tr("Localizable", "tab.profile", fallback: "Profile")
     /// Statistics
     internal static let statistics = L10n.tr("Localizable", "tab.statistics", fallback: "Statistics")
+  }
+  internal enum Collection {
+    /// Author caption
+    internal static let authorCaption = L10n.tr("Localizable", "collection.authorCaption", fallback: "Author caption")
   }
 }
 // swiftlint:enable explicit_type_interface function_parameter_count identifier_name line_length

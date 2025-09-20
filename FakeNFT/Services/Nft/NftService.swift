@@ -6,17 +6,23 @@ typealias NftCompletion = (Result<Nft, Error>) -> Void
 // MARK: - Protocol
 
 protocol NftService {
-    func loadNfts(
-        sortBy sortField: NftFields?,
-        completion: @escaping NftsCompletion
-    )
+    func loadNfts(sortBy sortField: NftFields?, completion: @escaping NftsCompletion)
+    func loadNfts(ids: [String], completion: @escaping NftsCompletion)
     
     func loadNft(id: String, completion: @escaping NftCompletion)
+}
+
+// MARK: - Error
+
+enum NftServiceError: Error {
+    case failedToLoadNfts([String])
 }
 
 // MARK: - Implementation
 
 final class NftServiceImpl: NftService {
+    
+    // TODO: Дописать по аналогии с CollectionService.
 
     private let networkClient: NetworkClient
     private let storage: NftStorage
@@ -30,33 +36,71 @@ final class NftServiceImpl: NftService {
         sortBy sortField: NftFields? = nil,
         completion: @escaping NftsCompletion
     ) {
-        let query = NftApiQuery(sortBy: sortField)
+        let query = NftsApiQuery(sortBy: sortField)
         let request = NftsRequest(query: query)
         networkClient.send(request: request, type: [Nft].self) { [weak storage] result in
-            switch result {
-            case .success(let nfts):
-                storage?.saveNfts(nfts)
+            DispatchQueue.main.async {
+                switch result {
+                case .success(let nfts):
+                    storage?.saveNfts(nfts)
+                    completion(.success(nfts))
+                case .failure(let error):
+                    completion(.failure(error))
+                }
+            }
+        }
+    }
+    
+    // TODO: Взял реализацию Амины из ProfileService с некоторыми доработками.
+    //       Учесть это при слиянии.
+    func loadNfts(ids: [String], completion: @escaping NftsCompletion) {
+        let group = DispatchGroup()
+        var nfts: [Nft] = []
+        var unloadedNfts: [String] = []
+        
+        for id in ids {
+            group.enter()
+            
+            loadNft(id: id) { result in
+                defer { group.leave() }
+                
+                switch result {
+                case .success(let nft):
+                    nfts.append(nft)
+                case .failure(let error):
+                    print("Failed to load NFT: \(error.localizedDescription)")
+                    unloadedNfts.append(id)
+                }
+            }
+        }
+        
+        group.notify(queue: .main) {
+            if unloadedNfts.isEmpty {
                 completion(.success(nfts))
-            case .failure(let error):
-                completion(.failure(error))
+            } else {
+                completion(.failure(NftServiceError.failedToLoadNfts(unloadedNfts)))
             }
         }
     }
     
     func loadNft(id: String, completion: @escaping NftCompletion) {
         if let nft = storage.getNft(with: id) {
-            completion(.success(nft))
+            DispatchQueue.main.async {
+                completion(.success(nft))
+            }
             return
         }
 
         let request = NftRequest(id: id)
         networkClient.send(request: request, type: Nft.self) { [weak storage] result in
-            switch result {
-            case .success(let nft):
-                storage?.saveNft(nft)
-                completion(.success(nft))
-            case .failure(let error):
-                completion(.failure(error))
+            DispatchQueue.main.async {
+                switch result {
+                case .success(let nft):
+                    storage?.saveNft(nft)
+                    completion(.success(nft))
+                case .failure(let error):
+                    completion(.failure(error))
+                }
             }
         }
     }

@@ -1,9 +1,10 @@
 import UIKit
 
 struct ErrorModel {
-    let message: String
-    let actionText: String
-    let action: () -> Void
+    let title: String?
+    let message: String?
+    let actionText: (String)?
+    let action: (() -> Void)?
 }
 
 protocol ErrorView {
@@ -13,16 +14,25 @@ protocol ErrorView {
 extension ErrorView where Self: UIViewController {
 
     func showError(_ model: ErrorModel) {
-        let title = L10n.Error.title
+        // Заметка: В модель добавлено поле title,
+        // поскольку окна с ошибками отличаются заголовками.
+        // let title = L10n.Error.title
         let alert = UIAlertController(
-            title: title,
+            title: model.title,
             message: model.message,
             preferredStyle: .alert
         )
-        let action = UIAlertAction(title: model.actionText, style: UIAlertAction.Style.default) {_ in
-            model.action()
+        
+        if let actionText = model.actionText {
+            let action = UIAlertAction(title: actionText, style: UIAlertAction.Style.default) {_ in
+                model.action?()
+            }
+            alert.addAction(action)
         }
-        alert.addAction(action)
+        
+        let cancelAction = UIAlertAction(title: L10n.Error.cancel, style: .cancel)
+        alert.addAction(cancelAction)
+        
         present(alert, animated: true)
     }
 }

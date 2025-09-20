@@ -65,7 +65,14 @@
 "statistics.failureAlert.cancel" = "Cancel";
 
 "catalog.openNft" = "Open Nft";
+"catalog.failureAlert.title" = "Data could not be\nretrieved";
+"catalog.failureAlert.repeat" = "Repeat";
+
 "error.network" = "A network error has occurred";
 "error.unknown" = "An unknown error has occurred";
+"error.data" = "Data could not be\nretrieved";
 "error.repeat" = "Repeat";
 "error.title" = "Error";
+"error.cancel" = "Сancel";
+
+"collection.authorCaption" = "Collection author:";

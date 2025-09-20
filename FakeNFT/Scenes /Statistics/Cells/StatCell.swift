@@ -1,11 +1,11 @@
 import UIKit
 import Kingfisher
 
-final class StatCell: UITableViewCell {
+final class StatCell: UITableViewCell, ReuseIdentifying {
     private lazy var positionLabel: UILabel = {
         let label = UILabel()
-        label.font = .systemFont(ofSize: 15, weight: .regular)
-        label.textColor = UIColor(resource: .AppColors.black)
+        label.font = .caption1
+        label.textColor = .AppColors.black
         label.textAlignment = .center
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
@@ -13,7 +13,7 @@ final class StatCell: UITableViewCell {
     
     private lazy var grayBackgroundView: UIView = {
         let view = UIView()
-        view.backgroundColor = UIColor(resource: .AppColors.lightGray)
+        view.backgroundColor = .AppColors.lightGray
         view.layer.cornerRadius = 12
         view.layer.masksToBounds = true
         view.translatesAutoresizingMaskIntoConstraints = false
@@ -22,6 +22,7 @@ final class StatCell: UITableViewCell {
     
     private lazy var avatarImage: UIImageView = {
         let imageView = UIImageView()
+        imageView.image = .Icons.profileTab
         imageView.layer.cornerRadius = 14
         imageView.layer.masksToBounds = true
         imageView.contentMode = .scaleAspectFill
@@ -31,16 +32,16 @@ final class StatCell: UITableViewCell {
     
     private lazy var nameLabel: UILabel = {
         let label = UILabel()
-        label.font = UIFont.systemFont(ofSize: 16, weight: .semibold)
-        label.textColor = UIColor(resource: .AppColors.black)
+        label.font = .bodyBold
+        label.textColor = .AppColors.black
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
     
     private lazy var nftCountLabel: UILabel = {
         let label = UILabel()
-        label.font = UIFont.systemFont(ofSize: 22, weight: .bold)
-        label.textColor = UIColor(resource: .AppColors.black)
+        label.font = .headline4
+        label.textColor = .AppColors.black
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
@@ -104,7 +105,7 @@ final class StatCell: UITableViewCell {
                 options: [.transition(.fade(0.2))]
             )
         } else {
-            avatarImage.image = UIImage(resource: .Icons.profileTab)
+            avatarImage.image = .Icons.profileTab
         }
     }
     

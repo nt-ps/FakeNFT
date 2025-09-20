@@ -5,10 +5,17 @@ final class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
     let servicesAssembly = ServicesAssembly(
         networkClient: DefaultNetworkClient(),
-        nftStorage: NftStorageImpl()
+        nftStorage: NftStorageImpl(),
+        collectionStorage: CollectionStorage()
     )
 
     func scene(_: UIScene, willConnectTo _: UISceneSession, options _: UIScene.ConnectionOptions) {
+        UINavigationBar.appearance().tintColor = .AppColors.black
+        UIBarButtonItem.appearance().setTitleTextAttributes(
+                [.foregroundColor: UIColor.clear],
+                for: .normal
+            )
+        
         let tabBarController = window?.rootViewController as? TabBarController
         tabBarController?.servicesAssembly = servicesAssembly
     }

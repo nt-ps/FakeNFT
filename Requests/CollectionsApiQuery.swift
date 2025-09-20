@@ -1,4 +1,4 @@
-struct NftApiQuery: Query {
+struct CollectionsApiQuery: Query {
 
     private(set) var dictionary: [String: String]
     
@@ -6,12 +6,7 @@ struct NftApiQuery: Query {
         case sortBy, page, size
     }
     
-    struct Pagination {
-        var page: Int
-        var size: Int
-    }
-    
-    init(sortBy sortField: NftFields? = nil, pagination: Pagination? = nil) {
+    init(sortBy sortField: CollectionFields? = nil, pagination: Pagination? = nil) {
         self.dictionary = [:]
         
         if let sortField {

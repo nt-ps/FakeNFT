@@ -19,4 +19,12 @@ extension UIView {
             centerYAnchor.constraint(equalTo: view.centerYAnchor)
         ])
     }
+    
+    func constraintCenters(to layout: UILayoutGuide) {
+        translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            centerXAnchor.constraint(equalTo: layout.centerXAnchor),
+            centerYAnchor.constraint(equalTo: layout.centerYAnchor)
+        ])
+    }
 }

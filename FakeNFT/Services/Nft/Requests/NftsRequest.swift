@@ -8,7 +8,7 @@ struct NftsRequest: NetworkRequest {
     var query: Query?
     var dto: Dto?
     
-    init(query: NftApiQuery? = nil) {
+    init(query: NftsApiQuery? = nil) {
         self.httpMethod = .get
         self.query = query
     }

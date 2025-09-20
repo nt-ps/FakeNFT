@@ -2,33 +2,17 @@ import UIKit
 
 final class TabBarController: UITabBarController {
     var servicesAssembly: ServicesAssembly!
-<<<<<<< HEAD
 
-    private let catalogueTabBarItem = UITabBarItem(
-=======
-    
     private let catalogTabBarItem = UITabBarItem(
->>>>>>> develop
         title: L10n.Tab.catalog,
         image: UIImage(resource: .Icons.catalogTab),
-        tag: 0
-    )
-    
-<<<<<<< HEAD
-    private let shoppingCartTabBarItem = UITabBarItem(title: L10n.Tab.cart, image: .Icons.cartTab, tag: 2)
-
-=======
-    // TODO: Удалить после добавления всех вкладок.
-    private let testCatalogTabBarItem = UITabBarItem(
-        title: L10n.Tab.catalog,
-        image: UIImage(systemName: "square.stack.3d.up.fill"),
         tag: 1
     )
     
     private let statisticsTabBarItem = UITabBarItem(
         title: L10n.Tab.statistics,
         image: UIImage(resource: .Icons.statisticTab),
-        tag: 3
+        tag: 4
     )
     
     private var profileNavigationController: UINavigationController {
@@ -37,44 +21,53 @@ final class TabBarController: UITabBarController {
         navigationController.tabBarItem = UITabBarItem(
             title: L10n.Tab.profile,
             image: .Icons.profileTab,
-            selectedImage: nil
+            tag: 0
         )
         
         return navigationController
     }
     
->>>>>>> develop
+    private let shoppingCartTabBarItem = UITabBarItem(title: L10n.Tab.cart, image: .Icons.cartTab, tag: 2)
+
     override func viewDidLoad() {
         super.viewDidLoad()
-        tabBar.unselectedItemTintColor = .AppColors.black
+        
+        let appearance = UITabBarAppearance()
+        appearance.configureWithTransparentBackground()
+        appearance.backgroundColor = .AppColors.white
+        appearance.stackedLayoutAppearance.normal.iconColor = .AppColors.black
+        appearance.stackedLayoutAppearance.normal.titleTextAttributes = [
+            .foregroundColor: UIColor.AppColors.black
+        ]
+        tabBar.standardAppearance = appearance
+        tabBar.scrollEdgeAppearance = appearance
+        tabBar.tintColor = .AppColors.Universal.blue
         
         let catalogueController = CatalogueNavigationController(
             servicesAssembly: servicesAssembly
         )
 <<<<<<< HEAD
-        catalogueController.tabBarItem = catalogueTabBarItem
+        catalogueController.tabBarItem = catalogTabBarItem
 
         let shoppingCartNavigationController = configureShoppingCart()
         
         viewControllers = [catalogueController, shoppingCartNavigationController]
-=======
         
         catalogueController.tabBarItem = catalogTabBarItem
->>>>>>> develop
         
         // TODO: Удалить после добавления всех вкладок.
         let testCatalogController = TestCatalogViewController(
             servicesAssembly: servicesAssembly
         )
-<<<<<<< HEAD
+        testCatalogController.tabBarItem = testCatalogTabBarItem
 
-        viewControllers = [
-            catalogueController,
-            testCatalogController // TODO: Удалить!
-        ]
+ //       viewControllers = [
+ //           catalogueController,
+ //           testCatalogController // TODO: Удалить!
+ //       ]
 
 =======
-        testCatalogController.tabBarItem = testCatalogTabBarItem
+        catalogueController.tabBarItem = catalogTabBarItem
         
         let statisticsPresenter = StatisticsPresenter(servicesAssembly: servicesAssembly)
         let statisticsController = StatisticsViewController(presenter: statisticsPresenter)
@@ -83,14 +76,16 @@ final class TabBarController: UITabBarController {
         
         statisticsNavigationController.tabBarItem = statisticsTabBarItem
         
-        viewControllers = [catalogueController, testCatalogController, statisticsNavigationController, profileNavigationController]
+        viewControllers = [profileNavigationController, catalogueController, statisticsNavigationController]
         
->>>>>>> develop
+        selectedViewController = catalogueController
+        
+>>>>>>> 86ecc874964aca655d42ea85dbc6347619fc9f73
         view.backgroundColor = .systemBackground
     }
     
     private func configureShoppingCart() -> UIViewController {
-        let shoppingCartModel = ShoppingCartModelImplementation(servicesAssembly: servicesAssembly)
+        let shoppingCartModel = ShoppingCartModelImplementation()
         let shoppingCartViewController = ShoppingCartViewControllerImplementation()
         let shoppingCartPresenter = ShoppingCartPresenterImplementation(shoppingCartView: shoppingCartViewController, shoppingCartModel: shoppingCartModel)
         shoppingCartViewController.shoppingCartPresenter = shoppingCartPresenter
