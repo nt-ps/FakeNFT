@@ -5,6 +5,9 @@
 //  Created by Amina Khusnutdinova on 02.09.2025.
 //
 
+// TODO: Дублируется с Network/Nft.
+//       Объединить их в Nft после полной готовности экрана профиля.
+
 import Foundation
 
 struct NFTModel: Decodable {

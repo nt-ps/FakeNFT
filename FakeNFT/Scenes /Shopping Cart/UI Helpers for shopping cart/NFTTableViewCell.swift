@@ -69,7 +69,7 @@ final class NFTTableViewCell: UITableViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
-    func configure(nft: NFT) {
+    func configure(nft: Nft) {
         NFTNameLabel.text = nft.name
         switch nft.rating {
         case 0:

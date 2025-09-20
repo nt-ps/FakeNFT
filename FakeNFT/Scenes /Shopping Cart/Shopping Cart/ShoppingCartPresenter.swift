@@ -10,7 +10,7 @@ import Foundation
 protocol ShoppingCartPresenterProtocol: AnyObject {
     var NFTsToDeleteName: String { get set }
     func getOrder()
-    func reloadCartInUI(nfts: [NFT], totalNFTsPrice: Float, totalNFTsAmount: Int)
+    func reloadCartInUI(nfts: [Nft], totalNFTsPrice: Float, totalNFTsAmount: Int)
     func clearNftsInCart()
     func deleteNFTFromCart()
     func showPlaceholderIf(needed: Bool)
@@ -34,7 +34,7 @@ final class ShoppingCartPresenterImplementation: ShoppingCartPresenterProtocol {
         shoppingCartModel.getOrder()
     }
     
-    func reloadCartInUI(nfts: [NFT], totalNFTsPrice: Float, totalNFTsAmount: Int) {
+    func reloadCartInUI(nfts: [Nft], totalNFTsPrice: Float, totalNFTsAmount: Int) {
         shoppingCartView?.reloadDataInTableView(nfts: nfts, totalNFTsPrice: totalNFTsPrice, totalNFTsAmount: totalNFTsAmount)
     }
     

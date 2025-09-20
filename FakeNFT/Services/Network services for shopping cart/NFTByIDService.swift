@@ -8,13 +8,13 @@
 import Foundation
 
 protocol NFTByIDServiceProtocol {
-    func getNFTByID(id: String, completion: @escaping ((NFT) -> Void))
+    func getNFTByID(id: String, completion: @escaping ((Nft) -> Void))
 }
 
 final class NFTByIDServiceImplementation: NFTByIDServiceProtocol {
     private let decoder = JSONDecoder()
     
-    func getNFTByID(id: String, completion: @escaping ((NFT) -> Void)) {
+    func getNFTByID(id: String, completion: @escaping ((Nft) -> Void)) {
         guard let url = URL(string: "https://d5dn3j2ouj72b0ejucbl.apigw.yandexcloud.net//api/v1/nft/\(id)")
         else {
             print("could't create url from string in OrderServiceImplementation")
@@ -35,7 +35,7 @@ final class NFTByIDServiceImplementation: NFTByIDServiceProtocol {
                 return
             }
             do {
-                let decodedData = try self.decoder.decode(NFT.self, from: data)
+                let decodedData = try self.decoder.decode(Nft.self, from: data)
                 completion(decodedData)
             } catch {
                 print("error in OrderServiceImplementation while decoding data: \(error)")

@@ -8,7 +8,7 @@
 import UIKit
 
 protocol ShoppingCartViewProtocol: AnyObject {
-    func reloadDataInTableView(nfts: [NFT], totalNFTsPrice: Float, totalNFTsAmount: Int)
+    func reloadDataInTableView(nfts: [Nft], totalNFTsPrice: Float, totalNFTsAmount: Int)
     func showPlaceholderIf(needed: Bool)
 }
 
@@ -143,7 +143,7 @@ final class ShoppingCartViewControllerImplementation: UIViewController, Shopping
         return emptyCartLabel
     }()
     
-    private var diffableDataSource: UITableViewDiffableDataSource<Int, NFT>?
+    private var diffableDataSource: UITableViewDiffableDataSource<Int, Nft>?
     
     // MARK: Overrides methods
     override func viewDidLoad() {
@@ -169,13 +169,13 @@ final class ShoppingCartViewControllerImplementation: UIViewController, Shopping
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
-        let snapshot = NSDiffableDataSourceSnapshot<Int, NFT>()
+        let snapshot = NSDiffableDataSourceSnapshot<Int, Nft>()
         shoppingCartPresenter?.clearNftsInCart()
         diffableDataSource?.apply(snapshot)
     }
     
-    func reloadDataInTableView(nfts: [NFT], totalNFTsPrice: Float, totalNFTsAmount: Int) {
-        var snapshot = NSDiffableDataSourceSnapshot<Int, NFT>()
+    func reloadDataInTableView(nfts: [Nft], totalNFTsPrice: Float, totalNFTsAmount: Int) {
+        var snapshot = NSDiffableDataSourceSnapshot<Int, Nft>()
         snapshot.appendSections([0])
         snapshot.appendItems(nfts)
         DispatchQueue.main.async {
@@ -227,17 +227,17 @@ final class ShoppingCartViewControllerImplementation: UIViewController, Shopping
     @objc private func filterButtonTapped() {
         let alert = UIAlertController(title: L10n.SortAlert.title, message: nil, preferredStyle: .actionSheet)
         alert.addAction(UIAlertAction(title: L10n.SortAlert.byPrice, style: .default) { [weak self] _ in
-            let snapshot = NSDiffableDataSourceSnapshot<Int, NFT>()
+            let snapshot = NSDiffableDataSourceSnapshot<Int, Nft>()
             self?.diffableDataSource?.apply(snapshot)
             self?.shoppingCartPresenter?.sortOrderBy(L10n.SortAlert.byPrice)
         })
         alert.addAction(UIAlertAction(title: L10n.SortAlert.byRating, style: .default,) { [weak self] _ in
-            let snapshot = NSDiffableDataSourceSnapshot<Int, NFT>()
+            let snapshot = NSDiffableDataSourceSnapshot<Int, Nft>()
             self?.diffableDataSource?.apply(snapshot)
             self?.shoppingCartPresenter?.sortOrderBy(L10n.SortAlert.byRating)
         })
         alert.addAction(UIAlertAction(title: L10n.SortAlert.byName, style: .default,) { [weak self] _ in
-            let snapshot = NSDiffableDataSourceSnapshot<Int, NFT>()
+            let snapshot = NSDiffableDataSourceSnapshot<Int, Nft>()
             self?.diffableDataSource?.apply(snapshot)
             self?.shoppingCartPresenter?.sortOrderBy(L10n.SortAlert.byName)
         })

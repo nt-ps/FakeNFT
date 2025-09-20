@@ -8,7 +8,7 @@
 import Foundation
 
 protocol ShoppingCartModelProtocol: AnyObject {
-    var NFTsInCart: [NFT] { get set }
+    var NFTsInCart: [Nft] { get set }
     var chosenSortMethod: String { get set }
     func getOrder()
     func postNewOrderWithoutDeletedNFT()
@@ -19,7 +19,7 @@ final class ShoppingCartModelImplementation: ShoppingCartModelProtocol {
     //MARK: Presenter
     weak var shoppingCartPresenter: ShoppingCartPresenterProtocol?
     
-    var NFTsInCart: [NFT] = [] {
+    var NFTsInCart: [Nft] = [] {
         didSet {
             NFTsInCartTotalPrice = 0
             for nft in NFTsInCart {

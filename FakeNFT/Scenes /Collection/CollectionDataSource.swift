@@ -33,12 +33,15 @@ final class CollectionDataSource: UICollectionViewDiffableDataSource<CollectionC
             let cell: CollectionCollectionCell = collectionView.dequeueReusableCell(indexPath: indexPath)
             
             cell.delegate = cellDelegate
-            cell.image = nft.images.first
             cell.rating = UInt(nft.rating)
             cell.name = nft.name
             cell.price = nft.price
             cell.isLiked = nft.isLiked
             cell.inCart = nft.inCart
+            
+            if let firstImageUrlString = nft.images.first {
+                cell.image = URL(string: firstImageUrlString)
+            }
             
             return cell
         }
