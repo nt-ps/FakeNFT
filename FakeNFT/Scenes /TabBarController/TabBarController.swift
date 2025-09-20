@@ -59,7 +59,9 @@ final class TabBarController: UITabBarController {
         
         statisticsNavigationController.tabBarItem = statisticsTabBarItem
         
-        viewControllers = [profileNavigationController, catalogueController, statisticsNavigationController]
+        let shoppingCartNavigationController = configureShoppingCart()
+        
+        viewControllers = [profileNavigationController, catalogueController, shoppingCartNavigationController, statisticsNavigationController]
         
         selectedViewController = catalogueController
         
