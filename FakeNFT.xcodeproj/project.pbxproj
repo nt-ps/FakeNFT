@@ -250,10 +250,8 @@
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
 				CurrenciesService.swift,
-				NFTByIDService.swift,
-				"OrderService [sc].swift",
+				OrderService.swift,
 				PaymentService.swift,
-				"PutNewOrderService [sc].swift",
 			);
 			target = 3F68069229CBBAF100B4F915 /* FakeNFT */;
 		};
@@ -277,7 +275,7 @@
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		3ADF2C9A2E7EE51000A9D7A0 /* Onboarding */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = Onboarding; sourceTree = "<group>"; };
 		C664F0C22E661DB6006AE8EB /* Shopping Cart */ = {isa = PBXFileSystemSynchronizedRootGroup; exceptions = (C6FB368B2E7EBF6E0090BE73 /* PBXFileSystemSynchronizedBuildFileExceptionSet */, ); explicitFileTypes = {}; explicitFolders = (); path = "Shopping Cart"; sourceTree = "<group>"; };
-		C6AFBA712E7EC9F0006079FC /* Network services for shopping cart */ = {isa = PBXFileSystemSynchronizedRootGroup; exceptions = (C6AFBA772E7EC9F0006079FC /* PBXFileSystemSynchronizedBuildFileExceptionSet */, ); explicitFileTypes = {}; explicitFolders = (); path = "Network services for shopping cart"; sourceTree = "<group>"; };
+		C6AFBA712E7EC9F0006079FC /* ShoppingCart */ = {isa = PBXFileSystemSynchronizedRootGroup; exceptions = (C6AFBA772E7EC9F0006079FC /* PBXFileSystemSynchronizedBuildFileExceptionSet */, ); explicitFileTypes = {}; explicitFolders = (); path = ShoppingCart; sourceTree = "<group>"; };
 		CD95B1ED2E65D8B8008CDB81 /* Statistics */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = Statistics; sourceTree = "<group>"; };
 		CD95B2392E689171008CDB81 /* User */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = User; sourceTree = "<group>"; };
 		CD95B2402E68F83D008CDB81 /* UserDefaultsKeys */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = UserDefaultsKeys; sourceTree = "<group>"; };
@@ -667,7 +665,7 @@
 				CD95B2042E67217A008CDB81 /* Requests */,
 				CD95B2052E67217A008CDB81 /* ExamplePutService.swift */,
 				CD95B2072E67217A008CDB81 /* ServicesAssemly.swift */,
-				C6AFBA712E7EC9F0006079FC /* Network services for shopping cart */,
+				C6AFBA712E7EC9F0006079FC /* ShoppingCart */,
 			);
 			path = Services;
 			sourceTree = "<group>";

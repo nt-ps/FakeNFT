@@ -23,9 +23,7 @@ final class CatalogueViewController: UITableViewController, CatalogueViewControl
         action: #selector(didTapSortButton)
     )
     
-    private lazy var sortAlert: UIAlertController = {
-        // TODO: Сохранять выбранный способ сортировки в UserDefaults.
-        
+    private lazy var sortAlert: UIAlertController = {        
         let alert = UIAlertController(
             title: L10n.SortAlert.title,
             message: nil,

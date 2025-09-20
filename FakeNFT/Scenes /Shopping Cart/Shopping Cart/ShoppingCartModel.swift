@@ -41,18 +41,16 @@ final class ShoppingCartModelImplementation: ShoppingCartModelProtocol {
     private var NFTsInCartTotalPrice: Float = 0
     private var totalNFTsAmount: Int = 0
     
-    private let orderService: OrderServiceProtocol?
-    private let NFTByIDService: NFTByIDServiceProtocol?
-    private let postNewShoppingCartService: PutNewOrderServiceProtocol?
+    private let orderService: OrderServiceProtocol
+    private let nftService: NftService
     
-    init() {
-        self.orderService = OrderServiceImplementation()
-        self.NFTByIDService = NFTByIDServiceImplementation()
-        self.postNewShoppingCartService = PutNewOrderServiceImplementation()
+    init(servicesAssembler: ServicesAssembly) {
+        self.orderService = servicesAssembler.orderService
+        self.nftService = servicesAssembler.nftService
     }
     
     func getOrder() {
-        orderService?.fetchOrder() { [weak self] result in
+        orderService.fetchOrder() { [weak self] result in
             guard let self else { return }
             switch result {
             case .success(let order):
@@ -72,7 +70,7 @@ final class ShoppingCartModelImplementation: ShoppingCartModelProtocol {
     
     func postNewOrderWithoutDeletedNFT() {
         let NFTsInCartNames = NFTsInCart.map { $0.id }
-        postNewShoppingCartService?.postNewOrder(with: NFTsInCartNames) { _ in }
+        orderService.postNewOrder(with: NFTsInCartNames) { _ in }
     }
     
     func sortOrderBy(_ parameter: String) {
@@ -90,10 +88,17 @@ final class ShoppingCartModelImplementation: ShoppingCartModelProtocol {
     }
     
     private func getNFTByID(id: String) {
-        NFTByIDService?.getNFTByID(id: id) { [weak self] nft in
-            guard let self else { return }
-            self.NFTsInCart.append(nft)
-            sortOrderBy(chosenSortMethod)
+        nftService.loadNft(id: id) { [weak self] result in
+            switch result {
+            case .success(let nft):
+                guard let self else { return }
+                self.NFTsInCart.append(nft)
+                sortOrderBy(chosenSortMethod)
+                break
+            case .failure(let error):
+                print("[\(#function)] Failed to load NFT: \(error.localizedDescription).")
+                break
+            }
         }
     }
 }

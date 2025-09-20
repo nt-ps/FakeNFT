@@ -34,7 +34,6 @@ final class CollectionPresenter: CollectionPresenterProtocol {
     private let nftService: NftService
     private let userService: UserServiceProtocol?
     private let orderService: OrderServiceProtocol
-    private let putOrderService: PutNewOrderServiceProtocol
     private let profileService: ProfileServiceProtocol
     private let profileStorage: ProfileStorage
     
@@ -61,7 +60,6 @@ final class CollectionPresenter: CollectionPresenterProtocol {
         self.nftService = servicesAssembler.nftService
         self.userService = servicesAssembler.userService
         self.orderService = servicesAssembler.orderService
-        self.putOrderService = servicesAssembler.putOrderService
         self.profileService = servicesAssembler.profileService
         self.profileStorage = servicesAssembler.profileStorage
         
@@ -80,7 +78,6 @@ final class CollectionPresenter: CollectionPresenterProtocol {
         self.nftService = servicesAssembler.nftService
         self.userService = servicesAssembler.userService
         self.orderService = servicesAssembler.orderService
-        self.putOrderService = servicesAssembler.putOrderService
         self.profileService = servicesAssembler.profileService
         self.profileStorage = servicesAssembler.profileStorage
         
@@ -157,7 +154,7 @@ final class CollectionPresenter: CollectionPresenterProtocol {
             newState = true
         }
         
-        putOrderService.postNewOrder(with: newCart) { [weak self] result in
+        orderService.postNewOrder(with: newCart) { [weak self] result in
             guard let self else { return }
             switch result {
             case .success:

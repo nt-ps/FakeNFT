@@ -37,6 +37,8 @@ final class UserDefaultsStorage: LocalStorageProtocol {
     
     private let defaultCollectionSortField: CollectionFields = .name
     
+    
+    
     private enum Keys: String {
         case collectionSortField
     }

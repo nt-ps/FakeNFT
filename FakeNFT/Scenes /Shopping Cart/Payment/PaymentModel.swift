@@ -23,12 +23,12 @@ final class PaymentModel: PaymentModelProtocol {
     
     private let currenciesService: CurrenciesServiceProtocol
     private let paymentService: PaymentServiceProtocol
-    private let postNewOrderService: PutNewOrderServiceProtocol
+    private let orderService: OrderServiceProtocol
     
-    init() {
-        self.currenciesService = CurrenciesService()
-        self.paymentService = PaymentService()
-        self.postNewOrderService = PutNewOrderServiceImplementation()
+    init(servicesAssembler: ServicesAssembly) {
+        self.currenciesService = servicesAssembler.currenciesService
+        self.paymentService = servicesAssembler.paymentService
+        self.orderService = servicesAssembler.orderService
     }
     
     func fetchCurrencies() {
@@ -53,6 +53,6 @@ final class PaymentModel: PaymentModelProtocol {
     }
     
     private func clearOrder() {
-        postNewOrderService.postNewOrder(with: []) { _ in }
+        orderService.postNewOrder(with: []) { _ in }
     }
 }

@@ -91,9 +91,13 @@ final class TabBarController: UITabBarController {
     }
     
     private func configureShoppingCart() -> UIViewController {
-        let shoppingCartModel = ShoppingCartModelImplementation()
+        let shoppingCartModel = ShoppingCartModelImplementation(servicesAssembler: servicesAssembly)
         let shoppingCartViewController = ShoppingCartViewControllerImplementation()
-        let shoppingCartPresenter = ShoppingCartPresenterImplementation(shoppingCartView: shoppingCartViewController, shoppingCartModel: shoppingCartModel)
+        let shoppingCartPresenter = ShoppingCartPresenterImplementation(
+            shoppingCartView: shoppingCartViewController,
+            shoppingCartModel: shoppingCartModel,
+            servicesAssembler: servicesAssembly
+        )
         shoppingCartViewController.shoppingCartPresenter = shoppingCartPresenter
         shoppingCartModel.shoppingCartPresenter = shoppingCartPresenter
         shoppingCartViewController.tabBarItem = shoppingCartTabBarItem

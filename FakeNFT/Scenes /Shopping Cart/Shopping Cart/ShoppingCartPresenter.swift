@@ -22,12 +22,18 @@ final class ShoppingCartPresenterImplementation: ShoppingCartPresenterProtocol {
     // MARK: View and Model
     private weak var shoppingCartView: ShoppingCartViewProtocol?
     private let shoppingCartModel: ShoppingCartModelProtocol
+    private let servicesAssembler: ServicesAssembly
     
     var NFTsToDeleteName: String = ""
     
-    init(shoppingCartView: ShoppingCartViewProtocol, shoppingCartModel: ShoppingCartModelProtocol) {
+    init(
+        shoppingCartView: ShoppingCartViewProtocol,
+        shoppingCartModel: ShoppingCartModelProtocol,
+        servicesAssembler: ServicesAssembly
+    ) {
         self.shoppingCartView = shoppingCartView
         self.shoppingCartModel = shoppingCartModel
+        self.servicesAssembler = servicesAssembler
     }
     
     func getOrder() {
@@ -59,7 +65,7 @@ final class ShoppingCartPresenterImplementation: ShoppingCartPresenterProtocol {
     }
     
     func preparePaymentView() -> PaymentViewController {
-        let paymentModel = PaymentModel()
+        let paymentModel = PaymentModel(servicesAssembler: servicesAssembler)
         let paymentView = PaymentViewController()
         let paymentPresenter = PaymentPresenter(paymentView: paymentView, paymentModel: paymentModel)
         paymentModel.paymentPresenter = paymentPresenter
