@@ -60,7 +60,7 @@ final class UserProfileNFTCollectionCell: UITableViewCell, ReuseIdentifying {
     }
     
     func configure(with nftCount: Int) {
-        titleLabel.text = "Коллекция NFT"
+        titleLabel.text = L10n.Collection.title
         countLabel.text = "(\(nftCount))"
     }
     

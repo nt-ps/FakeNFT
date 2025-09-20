@@ -39,7 +39,7 @@ final class UsersProfilePresenter: UserProfilePresenterProtocol {
     func didTappedUserCollection() {
         guard let user else { return }
         
-        let viewController = CollectionViewAssembly(servicesAssembler: servicesAssembly).build(with: user.nfts, title: "Коллекция NFT")
+        let viewController = CollectionViewAssembly(servicesAssembler: servicesAssembly).build(with: user.nfts, title: L10n.Collection.title)
         
         view?.navigateToViewController(viewController: viewController)
     }

@@ -5,17 +5,19 @@ final class OnboardingPage: UIPageViewController {
     
     lazy var pages: [UIViewController] = {
         let firstPage = createPage(image: UIImage(resource: .firstPage),
-                                   headerText: "Исследуйте",
-                                   descriptionText: "Присоединяйтесь и откройте новый мир уникальных NFT для коллекционеров",
+                                   headerText: L10n.Onboarding.Header.firstPage,
+                                   descriptionText: L10n.Onboarding.Description.firstPage,
                                    buttonText: nil)
         
         let secondPage = createPage(image: .secondPage,
-                                    headerText: "Коллекционируйте",
-                                    descriptionText: "Пополняйте свою коллекцию эксклюзивными картинками, созданными нейросетью",
+                                    headerText: L10n.Onboarding.Header.secondPage,
+                                    descriptionText: L10n.Onboarding.Description.secondPage,
                                     buttonText: nil)
         
         let thirdPage = createPage(image: .thirdPage,
-                                   headerText: "Состязайтесь", descriptionText: "Смотрите статистику других и покажите всем, что у вас самая ценная коллекция", buttonText: "Что внутри?")
+                                   headerText: L10n.Onboarding.Header.thirdPage,
+                                   descriptionText: L10n.Onboarding.Description.thirdPage,
+                                   buttonText: L10n.Onboarding.exitButton)
         
         return [firstPage, secondPage, thirdPage]
     }()
@@ -148,6 +150,7 @@ final class OnboardingPage: UIPageViewController {
     }
     
     @objc private func buttonTapped() {
+        UserDefaults.standard.set(true, forKey: OnboardingPage.onboardingKey)
         dismiss(animated: true)
     }
 }

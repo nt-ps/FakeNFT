@@ -46,7 +46,7 @@ final class UsersProfileViewController: UIViewController, UsersProfileViewContro
     
     private lazy var userWebSiteButton: UIButton = {
         let button = UIButton(type: .system)
-        button.setTitle("Перейти на сайт пользователя", for: .normal)
+        button.setTitle(L10n.Profile.Website.button, for: .normal)
         button.setTitleColor(.AppColors.black, for: .normal)
         button.titleLabel?.font = .bodyRegular
         button.addTarget(self, action: #selector(websiteButtonTapped), for: .touchUpInside)
