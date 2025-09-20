@@ -10,7 +10,11 @@ import ProgressHUD
 
 final class ProgressHUDProvider {
     private static var window: UIWindow? {
-        return UIApplication.shared.windows.first
+        guard
+            let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene
+        else { return nil }
+        
+        return windowScene.windows.first
     }
     
     static func showProgressHUD() {
