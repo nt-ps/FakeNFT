@@ -12,6 +12,8 @@ protocol CurrenciesServiceProtocol {
 }
 
 final class CurrenciesService: CurrenciesServiceProtocol {
+    private let decoder = JSONDecoder()
+    
     func fetchCurrencies(completion: @escaping ([Currency]) -> Void) {
         guard let url = URL(string: "https://d5dn3j2ouj72b0ejucbl.apigw.yandexcloud.net//api/v1/currencies")
         else {
@@ -21,7 +23,8 @@ final class CurrenciesService: CurrenciesServiceProtocol {
         var request = URLRequest(url: url)
         request.httpMethod = "GET"
         request.setValue(RequestConstants.token, forHTTPHeaderField: "X-Practicum-Mobile-Token")
-        let task = URLSession.shared.dataTask(with: request) { data, response, error in
+        let task = URLSession.shared.dataTask(with: request) { [weak self] data, response, error in
+            guard let self else { return }
             if let error {
                 print("error in CurrenciesService: \(error)")
                 return
@@ -32,7 +35,7 @@ final class CurrenciesService: CurrenciesServiceProtocol {
                 return
             }
             do {
-                let decodedData = try JSONDecoder().decode([Currency].self, from: data)
+                let decodedData = try self.decoder.decode([Currency].self, from: data)
                 completion(decodedData)
             } catch {
                 print("error in CurrenciesService while decoding data: \(error)")

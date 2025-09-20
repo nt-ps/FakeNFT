@@ -255,6 +255,7 @@
 		C6FB368B2E7EBF6E0090BE73 /* PBXFileSystemSynchronizedBuildFileExceptionSet */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
+				"Helpers (shopping cart)/Models for shopping cart/Payment (model).swift",
 				"Helpers (shopping cart)/Network services for shopping cart/PaymentService.swift",
 			);
 			target = 3F68069229CBBAF100B4F915 /* FakeNFT */;

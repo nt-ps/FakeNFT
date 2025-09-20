@@ -7,13 +7,9 @@
 
 import Foundation
 
-
-
 protocol PutNewOrderServiceProtocol {
     func postNewOrder(with NFTs: [NFT])
 }
-
-
 
 final class PutNewOrderServiceImplementation: PutNewOrderServiceProtocol {
     func postNewOrder(with NFTs: [NFT]) {
