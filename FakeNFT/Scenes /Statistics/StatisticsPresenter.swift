@@ -9,34 +9,32 @@ protocol StatisticsPresenterProtocol {
     func didSelectUser(_ user: User)
 }
 
-enum SortType: String {
+enum StatisticsSortType: String {
     case rating
     case name
 }
 
 final class StatisticsPresenter: StatisticsPresenterProtocol {
     private let servicesAssembly: ServicesAssembly
+    private var localStorage: LocalStorageProtocol
+    
     weak var view: StatisticsViewController?
     
     private var users: [User] = []
     private var isLoading = false
     private var currentPage = 0
-    private var currentSortType: SortType {
-        didSet{
-            UserDefaults.standard.set(currentSortType.rawValue, forKey: UserDefaultsKeys.sortType)
-        }
+    private var currentSortType: StatisticsSortType {
+        get { localStorage.statisticsSortType }
+        set { localStorage.statisticsSortType = newValue }
     }
     
     
-    init(servicesAssembly: ServicesAssembly) {
+    init(
+        servicesAssembly: ServicesAssembly,
+        localStorage: LocalStorageProtocol
+    ) {
         self.servicesAssembly = servicesAssembly
-        
-        if let savedSortTypeRawValue = UserDefaults.standard.string(forKey: UserDefaultsKeys.sortType),
-           let savedSortType = SortType(rawValue: savedSortTypeRawValue) {
-            currentSortType = savedSortType
-        } else {
-            currentSortType = .rating
-        }
+        self.localStorage = localStorage
     }
     
     func viewDidLoad() {

@@ -1,8 +1,6 @@
 import UIKit
 
-final class OnboardingPage: UIPageViewController {
-    static let onboardingKey = "onboardingCompleted"
-    
+final class OnboardingPage: UIPageViewController {    
     lazy var pages: [UIViewController] = {
         let firstPage = createPage(image: UIImage(resource: .firstPage),
                                    headerText: L10n.Onboarding.Header.firstPage,
@@ -29,6 +27,17 @@ final class OnboardingPage: UIPageViewController {
         control.translatesAutoresizingMaskIntoConstraints = false
         return control
     }()
+    
+    private var localStorage: LocalStorageProtocol
+    
+    init(localStorage: LocalStorageProtocol) {
+        self.localStorage = localStorage
+        super.init(transitionStyle: .scroll, navigationOrientation: .horizontal)
+    }
+
+    required init?(coder: NSCoder) {
+        fatalError("\(String(describing: OnboardingPage.self)).init(coder:) has not been implemented")
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -150,7 +159,7 @@ final class OnboardingPage: UIPageViewController {
     }
     
     @objc private func buttonTapped() {
-        UserDefaults.standard.set(true, forKey: OnboardingPage.onboardingKey)
+        localStorage.onboardingCompleted = true
         dismiss(animated: true)
     }
 }

@@ -1,12 +1,11 @@
-// TODO: Поговорить с командой об использовании этого сервиса
-// для ценрализованной записи и чтения данных из UserDefaults
-// (на данный момент все суют UserDefaults куда попало).
-
 import Foundation
 
 // MARK: - Protocol
 
 protocol LocalStorageProtocol {
+    var onboardingCompleted: Bool { get set }
+    var shoppingCartSortMethod: String { get set }
+    var statisticsSortType: StatisticsSortType { get set }
     var collectionSortField: CollectionFields { get set }
 }
 
@@ -14,8 +13,56 @@ protocol LocalStorageProtocol {
 
 final class UserDefaultsStorage: LocalStorageProtocol {
     
-    static let shared = UserDefaultsStorage()
+    // MARK: - Onboarding
+    
+    var onboardingCompleted: Bool {
+        get { storage.bool(forKey: Keys.onboardingCompleted.rawValue) }
+        set { storage.set(newValue, forKey: Keys.onboardingCompleted.rawValue) }
+    }
 
+    // MARK: - Shopping Cart
+    
+    var shoppingCartSortMethod: String {
+        get {
+            storage.string(
+                forKey: Keys.shoppingCartSortMethod.rawValue
+            ) ?? defaultShoppingCartSortMethod
+        }
+        set {
+            storage.set(
+                newValue,
+                forKey: Keys.shoppingCartSortMethod.rawValue
+            )
+        }
+    }
+    
+    private let defaultShoppingCartSortMethod: String = L10n.SortAlert.byName
+    
+    // MARK: - Statistics
+    
+    var statisticsSortType: StatisticsSortType {
+        get {
+            guard
+                let stringValue = storage.string(
+                    forKey: Keys.statisticsSortType.rawValue
+                ),
+                let value = StatisticsSortType(rawValue: stringValue)
+            else { return defaultStatisticsSortType }
+            
+            return value
+        }
+        set {
+            storage.set(
+                newValue.rawValue,
+                forKey: Keys.statisticsSortType.rawValue
+            )
+        }
+    }
+    
+    private let defaultStatisticsSortType: StatisticsSortType = .rating
+    
+    // MARK: - Collection
+    
     var collectionSortField: CollectionFields {
         get {
             guard
@@ -37,13 +84,14 @@ final class UserDefaultsStorage: LocalStorageProtocol {
     
     private let defaultCollectionSortField: CollectionFields = .name
     
-    
+    // MARK: - Private Components
     
     private enum Keys: String {
-        case collectionSortField
+        case onboardingCompleted,
+             shoppingCartSortMethod,
+             statisticsSortType,
+             collectionSortField
     }
     
     private let storage: UserDefaults = .standard
-    
-    private init() { }
 }

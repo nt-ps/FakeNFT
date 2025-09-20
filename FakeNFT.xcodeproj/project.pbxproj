@@ -278,7 +278,6 @@
 		C6AFBA712E7EC9F0006079FC /* ShoppingCart */ = {isa = PBXFileSystemSynchronizedRootGroup; exceptions = (C6AFBA772E7EC9F0006079FC /* PBXFileSystemSynchronizedBuildFileExceptionSet */, ); explicitFileTypes = {}; explicitFolders = (); path = ShoppingCart; sourceTree = "<group>"; };
 		CD95B1ED2E65D8B8008CDB81 /* Statistics */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = Statistics; sourceTree = "<group>"; };
 		CD95B2392E689171008CDB81 /* User */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = User; sourceTree = "<group>"; };
-		CD95B2402E68F83D008CDB81 /* UserDefaultsKeys */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = UserDefaultsKeys; sourceTree = "<group>"; };
 		CD95B2AB2E6F1DEC008CDB81 /* UsersProfile */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = UsersProfile; sourceTree = "<group>"; };
 /* End PBXFileSystemSynchronizedRootGroup section */
 
@@ -658,7 +657,6 @@
 				3A5844BE2E7741C600D295B2 /* ProfileCopyForCatalogueEpic */,
 				3A58434D2E7575C200D295B2 /* Pagination.swift */,
 				3A58434E2E7575C200D295B2 /* UserDefaultsStorage.swift */,
-				CD95B2402E68F83D008CDB81 /* UserDefaultsKeys */,
 				CD95B2392E689171008CDB81 /* User */,
 				CD95B1FC2E67217A008CDB81 /* Collection */,
 				CD95B2012E67217A008CDB81 /* Nft */,
@@ -748,7 +746,6 @@
 				3ADF2C9A2E7EE51000A9D7A0 /* Onboarding */,
 				CD95B1ED2E65D8B8008CDB81 /* Statistics */,
 				CD95B2392E689171008CDB81 /* User */,
-				CD95B2402E68F83D008CDB81 /* UserDefaultsKeys */,
 				CD95B2AB2E6F1DEC008CDB81 /* UsersProfile */,
 			);
 			name = FakeNFT;

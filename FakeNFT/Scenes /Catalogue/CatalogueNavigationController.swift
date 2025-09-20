@@ -5,11 +5,16 @@ final class CatalogueNavigationController: UINavigationController {
     // MARK: - Internal Properties
     
     let servicesAssembly: ServicesAssembly
+    let localStorage: LocalStorageProtocol
 
     // MARK: - Initializers
     
-    init(servicesAssembly: ServicesAssembly) {
+    init(
+        servicesAssembly: ServicesAssembly,
+        localStorage: LocalStorageProtocol
+    ) {
         self.servicesAssembly = servicesAssembly
+        self.localStorage = localStorage
         super.init(nibName: nil, bundle: nil)
     }
 
@@ -26,7 +31,7 @@ final class CatalogueNavigationController: UINavigationController {
         navigationBar.tintColor = .AppColors.black
         
         let cataloguePresenter = CataloguePresenter(
-            localStorage: UserDefaultsStorage.shared,
+            localStorage: localStorage,
             servicesAssembler: servicesAssembly
         )
         let catalogueViewController = CatalogueViewController(presenter: cataloguePresenter)

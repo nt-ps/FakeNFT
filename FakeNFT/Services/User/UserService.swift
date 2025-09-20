@@ -21,7 +21,7 @@ final class UserService: UserServiceProtocol {
         self.networkClient = networkClient
     }
     
-    static func serverSortBy(for sortType: SortType) -> String {
+    static func serverSortBy(for sortType: StatisticsSortType) -> String {
         switch sortType {
         case .rating:
             return "rating"

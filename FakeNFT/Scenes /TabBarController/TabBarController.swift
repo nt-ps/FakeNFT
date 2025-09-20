@@ -2,6 +2,7 @@ import UIKit
 
 final class TabBarController: UITabBarController {
     var servicesAssembly: ServicesAssembly!
+    var localStorage: LocalStorageProtocol!
 
     private let catalogTabBarItem = UITabBarItem(
         title: L10n.Tab.catalog,
@@ -48,11 +49,15 @@ final class TabBarController: UITabBarController {
         tabBar.tintColor = .AppColors.Universal.blue
         
         let catalogueController = CatalogueNavigationController(
-            servicesAssembly: servicesAssembly
+            servicesAssembly: servicesAssembly,
+            localStorage: localStorage
         )
         catalogueController.tabBarItem = catalogTabBarItem
         
-        let statisticsPresenter = StatisticsPresenter(servicesAssembly: servicesAssembly)
+        let statisticsPresenter = StatisticsPresenter(
+            servicesAssembly: servicesAssembly,
+            localStorage: localStorage
+        )
         let statisticsController = StatisticsViewController(presenter: statisticsPresenter)
         
         let statisticsNavigationController = UINavigationController(rootViewController: statisticsController)
@@ -76,14 +81,13 @@ final class TabBarController: UITabBarController {
     }
     
     private func checkOnboardingStatus() {
-        let onboardingCompleted = UserDefaults.standard.bool(forKey: OnboardingPage.onboardingKey)
-        if !onboardingCompleted {
+        if !localStorage.onboardingCompleted {
             showOnboarding()
         }
     }
     
     private func showOnboarding() {
-        let onboardingVC = OnboardingPage(transitionStyle: .scroll, navigationOrientation: .horizontal)
+        let onboardingVC = OnboardingPage(localStorage: localStorage)
         onboardingVC.modalPresentationStyle = .fullScreen
         DispatchQueue.main.async {
             self.present(onboardingVC, animated: true)
@@ -91,7 +95,10 @@ final class TabBarController: UITabBarController {
     }
     
     private func configureShoppingCart() -> UIViewController {
-        let shoppingCartModel = ShoppingCartModelImplementation(servicesAssembler: servicesAssembly)
+        let shoppingCartModel = ShoppingCartModelImplementation(
+            servicesAssembler: servicesAssembly,
+            localStorage: localStorage
+        )
         let shoppingCartViewController = ShoppingCartViewControllerImplementation()
         let shoppingCartPresenter = ShoppingCartPresenterImplementation(
             shoppingCartView: shoppingCartViewController,

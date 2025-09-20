@@ -31,11 +31,8 @@ final class ShoppingCartModelImplementation: ShoppingCartModelProtocol {
         }
     }
     var chosenSortMethod: String {
-        get {
-            UserDefaults.standard.string(forKey: "chosenSortMethod") ?? ""
-        } set {
-            UserDefaults.standard.set(newValue, forKey: "chosenSortMethod")
-        }
+        get { localStorage.shoppingCartSortMethod }
+        set { localStorage.shoppingCartSortMethod = newValue }
     }
 
     private var NFTsInCartTotalPrice: Float = 0
@@ -44,9 +41,15 @@ final class ShoppingCartModelImplementation: ShoppingCartModelProtocol {
     private let orderService: OrderServiceProtocol
     private let nftService: NftService
     
-    init(servicesAssembler: ServicesAssembly) {
+    private var localStorage: LocalStorageProtocol
+    
+    init(
+        servicesAssembler: ServicesAssembly,
+        localStorage: LocalStorageProtocol
+    ) {
         self.orderService = servicesAssembler.orderService
         self.nftService = servicesAssembler.nftService
+        self.localStorage = localStorage
     }
     
     func getOrder() {
