@@ -65,7 +65,7 @@ final class CollectionDataSource: UICollectionViewDiffableDataSource<CollectionC
             header.name = model.name
             header.descriptionText = model.description
             header.authorName = model.authorName
-            header.authorWebsite = model.authorName
+            header.authorWebsite = model.authorWebsite
             
             return header
         }

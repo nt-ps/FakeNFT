@@ -143,7 +143,6 @@ final class CollectionPresenter: CollectionPresenterProtocol {
         }
     }
     
-    // TODO: После слияния актуализировать этот метод относительно сервиса Вани.
     func switchStateInCart(for nftIndex: Int) {
         view?.showLoading()
         
@@ -228,7 +227,6 @@ final class CollectionPresenter: CollectionPresenterProtocol {
         }
     }
     
-    // TODO: После слияния актуализировать этот метод относительно сервиса Вани.
     private func loadOrder(dispatchGroup: DispatchGroup?) {
         dispatchGroup?.enter()
         orderService.fetchOrder() { [weak self] result in

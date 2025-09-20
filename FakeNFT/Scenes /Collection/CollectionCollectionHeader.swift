@@ -204,7 +204,8 @@ final class CollectionCollectionHeader: UICollectionReusableView, ReuseIdentifyi
         }
         
         let assembly = WebViewAssembly()
-        let viewController = assembly.build(with: URLRequest(url: url))
+        let request = URLRequest(url: url)
+        let viewController = assembly.build(with: request)
         delegate?.show(viewController: viewController)
     }
     

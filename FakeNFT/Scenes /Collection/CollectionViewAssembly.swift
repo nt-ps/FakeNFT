@@ -18,8 +18,7 @@ final class CollectionViewAssembly: CollectionViewAssemblyProtocol {
     }
     
     // MARK: - Internal Properties
-    
-    // Экран Collection.
+
     func build(with collection: Collection) -> UIViewController {
         var presenter: CollectionPresenterProtocol = CollectionPresenter(
             for: collection,
@@ -28,8 +27,7 @@ final class CollectionViewAssembly: CollectionViewAssemblyProtocol {
         let viewController = build(with: &presenter)
         return viewController
     }
-    
-    // Экран Users collection.
+
     func build(with nftIds: [String], title: String) -> UIViewController {
         var presenter: CollectionPresenterProtocol = CollectionPresenter(
             for: nftIds,

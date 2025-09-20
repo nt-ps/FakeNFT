@@ -12,7 +12,7 @@ final class TabBarController: UITabBarController {
     private let statisticsTabBarItem = UITabBarItem(
         title: L10n.Tab.statistics,
         image: UIImage(resource: .Icons.statisticTab),
-        tag: 4
+        tag: 3
     )
     
     private var profileNavigationController: UINavigationController {

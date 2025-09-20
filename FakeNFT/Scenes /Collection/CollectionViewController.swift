@@ -18,8 +18,6 @@ protocol CollectionViewControllerProtocol: AnyObject, LoadingView, ErrorView {
 
 final class CollectionViewController: UICollectionViewController, CollectionViewControllerProtocol {
     
-    // TODO: Добавить прогресс (показывается при нажатии лайка и кнопки корзины).
-    
     // MARK: - Views
     
     lazy var activityIndicator: UIActivityIndicatorView = {
@@ -170,6 +168,7 @@ final class CollectionViewController: UICollectionViewController, CollectionView
             scrollAppearance.configureWithTransparentBackground()
 
             navigationItem.scrollEdgeAppearance = scrollAppearance
+            navigationItem.backButtonDisplayMode = .minimal
             
             collectionView.contentInsetAdjustmentBehavior = .never
         }
