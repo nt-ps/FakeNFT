@@ -71,7 +71,7 @@ final class ShoppingCartModelImplementation: ShoppingCartModelProtocol {
     }
     
     func postNewOrderWithoutDeletedNFT() {
-        let NFTsInCartNames = NFTsInCart.map { $0.name }
+        let NFTsInCartNames = NFTsInCart.map { $0.id }
         postNewShoppingCartService?.postNewOrder(with: NFTsInCartNames) { _ in }
     }
     

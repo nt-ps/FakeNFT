@@ -126,7 +126,6 @@ final class ShoppingCartViewControllerImplementation: UIViewController, Shopping
         goBackFromDeletingNFTButton.layer.cornerRadius = 12
         goBackFromDeletingNFTButton.backgroundColor = .AppColors.black
         goBackFromDeletingNFTButton.setTitleColor(.AppColors.white, for: .normal)
-        goBackFromDeletingNFTButton.setTitleColor(UIColor(hexString: "#1A1B22"), for: .normal)
         goBackFromDeletingNFTButton.isHidden = true
         goBackFromDeletingNFTButton.alpha = 0
         goBackFromDeletingNFTButton.addTarget(self, action: #selector(goBackFromDeletingNFTButtonTapped), for: .touchUpInside)
@@ -177,14 +176,15 @@ final class ShoppingCartViewControllerImplementation: UIViewController, Shopping
     }
     
     func reloadDataInTableView(nfts: [NFT], totalNFTsPrice: Float, totalNFTsAmount: Int) {
+        var snapshot = NSDiffableDataSourceSnapshot<Int, NFT>()
+        snapshot.appendSections([0])
+        let uniqueNFTs = Array(Set(nfts))
+        snapshot.appendItems(uniqueNFTs)
         DispatchQueue.main.async {
             self.NFTsCounterLabel.text = "\(totalNFTsAmount) NFT"
             self.NFTsTotalPriceLabel.text = "\(totalNFTsPrice) ETH"
+            self.diffableDataSource?.apply(snapshot, animatingDifferences: true)
         }
-        var snapshot = NSDiffableDataSourceSnapshot<Int, NFT>()
-        snapshot.appendSections([0])
-        snapshot.appendItems(nfts)
-        diffableDataSource?.apply(snapshot, animatingDifferences: true)
         ProgressHUDProvider.dismissProgressHUD()
     }
     
