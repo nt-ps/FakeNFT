@@ -58,9 +58,6 @@
 		3A5843CA2E76E1C500D295B2 /* CollectionHeaderModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A5843C92E76E1BB00D295B2 /* CollectionHeaderModel.swift */; };
 		3A5844772E76FC7600D295B2 /* ProfileStorage_old.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A5844762E76FC7600D295B2 /* ProfileStorage_old.swift */; };
 		3A5844782E76FC7600D295B2 /* ProfileService_old.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A5844752E76FC7600D295B2 /* ProfileService_old.swift */; };
-		3A5844AE2E77014E00D295B2 /* OrderServiceProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A5844AD2E77014E00D295B2 /* OrderServiceProtocol.swift */; };
-		3A5844B02E77015E00D295B2 /* Order.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A5844AF2E77015E00D295B2 /* Order.swift */; };
-		3A5844B22E77016B00D295B2 /* PutNewOrderService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A5844B12E77016B00D295B2 /* PutNewOrderService.swift */; };
 		3A5844C02E77426200D295B2 /* ProfileService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A5844BF2E77426200D295B2 /* ProfileService.swift */; };
 		3A5844C22E77429200D295B2 /* ProfileStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A5844C12E77429200D295B2 /* ProfileStorage.swift */; };
 		3A5844C42E7742BD00D295B2 /* ProfileSortType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A5844C32E7742BD00D295B2 /* ProfileSortType.swift */; };
@@ -184,9 +181,6 @@
 		3A5843C92E76E1BB00D295B2 /* CollectionHeaderModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectionHeaderModel.swift; sourceTree = "<group>"; };
 		3A5844752E76FC7600D295B2 /* ProfileService_old.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileService_old.swift; sourceTree = "<group>"; };
 		3A5844762E76FC7600D295B2 /* ProfileStorage_old.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileStorage_old.swift; sourceTree = "<group>"; };
-		3A5844AD2E77014E00D295B2 /* OrderServiceProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrderServiceProtocol.swift; sourceTree = "<group>"; };
-		3A5844AF2E77015E00D295B2 /* Order.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Order.swift; sourceTree = "<group>"; };
-		3A5844B12E77016B00D295B2 /* PutNewOrderService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PutNewOrderService.swift; sourceTree = "<group>"; };
 		3A5844BF2E77426200D295B2 /* ProfileService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileService.swift; sourceTree = "<group>"; };
 		3A5844C12E77429200D295B2 /* ProfileStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileStorage.swift; sourceTree = "<group>"; };
 		3A5844C32E7742BD00D295B2 /* ProfileSortType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileSortType.swift; sourceTree = "<group>"; };
@@ -252,11 +246,39 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		C6AFBA6B2E7EC9D5006079FC /* PBXFileSystemSynchronizedBuildFileExceptionSet */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				"Currency (model).swift",
+				"NFT (model).swift",
+				"Order (model).swift",
+				"Payment (model).swift",
+			);
+			target = 3F68069229CBBAF100B4F915 /* FakeNFT */;
+		};
+		C6AFBA772E7EC9F0006079FC /* PBXFileSystemSynchronizedBuildFileExceptionSet */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				CurrenciesService.swift,
+				NFTByIDService.swift,
+				"OrderService [sc].swift",
+				PaymentService.swift,
+				"PutNewOrderService [sc].swift",
+			);
+			target = 3F68069229CBBAF100B4F915 /* FakeNFT */;
+		};
 		C6FB368B2E7EBF6E0090BE73 /* PBXFileSystemSynchronizedBuildFileExceptionSet */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
-				"Helpers (shopping cart)/Models for shopping cart/Payment (model).swift",
-				"Helpers (shopping cart)/Network services for shopping cart/PaymentService.swift",
+				Payment/PaymentModel.swift,
+				Payment/PaymentPresenter.swift,
+				Payment/PaymentView.swift,
+				"Shopping Cart/ShoppingCartModel.swift",
+				"Shopping Cart/ShoppingCartPresenter.swift",
+				"Shopping Cart/ShoppingCartView.swift",
+				"UI Helpers for shopping cart/CurrenciesCollectionViewCell.swift",
+				"UI Helpers for shopping cart/NFTTableViewCell.swift",
+				"UI Helpers for shopping cart/ProgressHUDProvider.swift",
 			);
 			target = 3F68069229CBBAF100B4F915 /* FakeNFT */;
 		};
@@ -264,6 +286,8 @@
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		C664F0C22E661DB6006AE8EB /* Shopping Cart */ = {isa = PBXFileSystemSynchronizedRootGroup; exceptions = (C6FB368B2E7EBF6E0090BE73 /* PBXFileSystemSynchronizedBuildFileExceptionSet */, ); explicitFileTypes = {}; explicitFolders = (); path = "Shopping Cart"; sourceTree = "<group>"; };
+		C6AFBA662E7EC9D5006079FC /* Models for shopping cart */ = {isa = PBXFileSystemSynchronizedRootGroup; exceptions = (C6AFBA6B2E7EC9D5006079FC /* PBXFileSystemSynchronizedBuildFileExceptionSet */, ); explicitFileTypes = {}; explicitFolders = (); path = "Models for shopping cart"; sourceTree = "<group>"; };
+		C6AFBA712E7EC9F0006079FC /* Network services for shopping cart */ = {isa = PBXFileSystemSynchronizedRootGroup; exceptions = (C6AFBA772E7EC9F0006079FC /* PBXFileSystemSynchronizedBuildFileExceptionSet */, ); explicitFileTypes = {}; explicitFolders = (); path = "Network services for shopping cart"; sourceTree = "<group>"; };
 		CD91EC8C2E7B3D8F005065CC /* Onboarding */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = Onboarding; sourceTree = "<group>"; };
 		CD95B1ED2E65D8B8008CDB81 /* Statistics */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = Statistics; sourceTree = "<group>"; };
 		CD95B2392E689171008CDB81 /* User */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = User; sourceTree = "<group>"; };
@@ -422,16 +446,6 @@
 			path = Models;
 			sourceTree = "<group>";
 		};
-		3A5844AC2E77013C00D295B2 /* OrderCopyForCatalogueEpic */ = {
-			isa = PBXGroup;
-			children = (
-				3A5844B12E77016B00D295B2 /* PutNewOrderService.swift */,
-				3A5844AF2E77015E00D295B2 /* Order.swift */,
-				3A5844AD2E77014E00D295B2 /* OrderServiceProtocol.swift */,
-			);
-			path = OrderCopyForCatalogueEpic;
-			sourceTree = "<group>";
-		};
 		3A5844BE2E7741C600D295B2 /* ProfileCopyForCatalogueEpic */ = {
 			isa = PBXGroup;
 			children = (
@@ -483,6 +497,7 @@
 				3F68069429CBBAF100B4F915 /* Products */,
 			);
 			sourceTree = "<group>";
+			usesTabs = 0;
 		};
 		3F68069429CBBAF100B4F915 /* Products */ = {
 			isa = PBXGroup;
@@ -564,6 +579,7 @@
 				3A58410B2E6DCF6800D295B2 /* EditProfileModel.swift */,
 				3A5841032E6DCF0700D295B2 /* ProfileInfoModel.swift */,
 				3F6806D829CC979D00B4F915 /* Network */,
+				C6AFBA662E7EC9D5006079FC /* Models for shopping cart */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -660,7 +676,6 @@
 			isa = PBXGroup;
 			children = (
 				3A5844BE2E7741C600D295B2 /* ProfileCopyForCatalogueEpic */,
-				3A5844AC2E77013C00D295B2 /* OrderCopyForCatalogueEpic */,
 				3A5844752E76FC7600D295B2 /* ProfileService_old.swift */,
 				3A5844762E76FC7600D295B2 /* ProfileStorage_old.swift */,
 				3A58434D2E7575C200D295B2 /* Pagination.swift */,
@@ -672,6 +687,7 @@
 				CD95B2042E67217A008CDB81 /* Requests */,
 				CD95B2052E67217A008CDB81 /* ExamplePutService.swift */,
 				CD95B2072E67217A008CDB81 /* ServicesAssemly.swift */,
+				C6AFBA712E7EC9F0006079FC /* Network services for shopping cart */,
 			);
 			path = Services;
 			sourceTree = "<group>";
@@ -923,7 +939,6 @@
 				3A5841382E6DD0F100D295B2 /* GetProfileRequest.swift in Sources */,
 				3F478ED129DB476500F6D39E /* Fonts.swift in Sources */,
 				CD95B2092E67217A008CDB81 /* ServicesAssemly.swift in Sources */,
-				3A5844AE2E77014E00D295B2 /* OrderServiceProtocol.swift in Sources */,
 				CD95B20A2E67217A008CDB81 /* ExamplePutRequest.swift in Sources */,
 				CD95B22E2E672363008CDB81 /* UIView+Constraints.swift in Sources */,
 				CD95B22F2E672363008CDB81 /* NftStorage.swift in Sources */,
@@ -931,9 +946,7 @@
 				CD95B2312E672363008CDB81 /* NetworkTask.swift in Sources */,
 				CD95B2322E672363008CDB81 /* NetworkClient.swift in Sources */,
 				3A5844C62E77444000D295B2 /* SetLikesRequest.swift in Sources */,
-				3A5844B22E77016B00D295B2 /* PutNewOrderService.swift in Sources */,
 				CD95B2332E672363008CDB81 /* NetworkRequest.swift in Sources */,
-				3A5844B02E77015E00D295B2 /* Order.swift in Sources */,
 				3A5841262E6DD03B00D295B2 /* ProfileCellType.swift in Sources */,
 				CD95B2342E672363008CDB81 /* DateFormatters+Presets.swift in Sources */,
 				CD95B20B2E67217A008CDB81 /* ExamplePutService.swift in Sources */,

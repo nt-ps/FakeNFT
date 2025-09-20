@@ -53,6 +53,6 @@ final class PaymentModel: PaymentModelProtocol {
     }
     
     private func clearOrder() {
-        postNewOrderService.postNewOrder(with: [])
+        postNewOrderService.postNewOrder(with: []) { _ in }
     }
 }

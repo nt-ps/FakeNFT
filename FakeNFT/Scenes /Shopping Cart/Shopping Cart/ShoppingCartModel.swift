@@ -52,21 +52,27 @@ final class ShoppingCartModelImplementation: ShoppingCartModelProtocol {
     }
     
     func getOrder() {
-        orderService?.fetchOrder() { [weak self] order in
+        orderService?.fetchOrder() { [weak self] result in
             guard let self else { return }
-            guard order.nfts.count != 0 else {
+            switch result {
+            case .success(let order):
+                guard order.nfts.count != 0 else {
+                    shoppingCartPresenter?.showPlaceholderIf(needed: true)
+                    return
+                }
+                for nft in order.nfts {
+                    getNFTByID(id: nft)
+                }
+                shoppingCartPresenter?.showPlaceholderIf(needed: false)
+            case .failure:
                 shoppingCartPresenter?.showPlaceholderIf(needed: true)
-                return
             }
-            for nft in order.nfts {
-                getNFTByID(id: nft)
-            }
-            shoppingCartPresenter?.showPlaceholderIf(needed: false)
         }
     }
     
     func postNewOrderWithoutDeletedNFT() {
-        postNewShoppingCartService?.postNewOrder(with: NFTsInCart)
+        let NFTsInCartNames = NFTsInCart.map { $0.name }
+        postNewShoppingCartService?.postNewOrder(with: NFTsInCartNames) { _ in }
     }
     
     func sortOrderBy(_ parameter: String) {

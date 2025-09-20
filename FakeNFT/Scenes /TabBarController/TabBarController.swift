@@ -27,7 +27,11 @@ final class TabBarController: UITabBarController {
         return navigationController
     }
     
-    private let shoppingCartTabBarItem = UITabBarItem(title: L10n.Tab.cart, image: .Icons.cartTab, tag: 2)
+    private let shoppingCartTabBarItem = UITabBarItem(
+        title: L10n.Tab.cart,
+        image: .Icons.cartTab,
+        tag: 2
+    )
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -83,8 +87,6 @@ final class TabBarController: UITabBarController {
             self.present(onboardingVC, animated: true)
         }
     }
-
-    }
     
     private func configureShoppingCart() -> UIViewController {
         let shoppingCartModel = ShoppingCartModelImplementation()
@@ -96,3 +98,4 @@ final class TabBarController: UITabBarController {
         return UINavigationController(rootViewController: shoppingCartViewController)
     }
 }
+
