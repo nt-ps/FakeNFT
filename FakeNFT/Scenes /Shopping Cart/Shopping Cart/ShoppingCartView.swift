@@ -147,6 +147,7 @@ final class ShoppingCartViewControllerImplementation: UIViewController, Shopping
     
     // MARK: Overrides methods
     override func viewDidLoad() {
+        super.viewDidLoad()
         setupView()
         NFTTableView.delegate = self
         diffableDataSource = UITableViewDiffableDataSource(tableView: NFTTableView) { [weak self]
@@ -163,6 +164,7 @@ final class ShoppingCartViewControllerImplementation: UIViewController, Shopping
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        navigationController?.setNavigationBarHidden(true, animated: true)
         ProgressHUDProvider.showProgressHUD()
         shoppingCartPresenter?.getOrder()
     }

@@ -134,6 +134,7 @@ final class PaymentViewController: UIViewController, PaymentViewProtocol {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        navigationController?.setNavigationBarHidden(false, animated: true)
         setupView()
         currenciesCollectionView.delegate = self
     }
