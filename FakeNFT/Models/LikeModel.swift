@@ -1,10 +1,13 @@
-// TODO: Измененная копия реализации Амины.
-//       Помнить про это при слиянии.
-
+//
+//  LikeModel.swift
+//  FakeNFT
+//
+//  Created by Amina Khusnutdinova on 10.09.2025.
+//
 
 struct LikeModel: Dto {
     let likes: [String]
-    
+
     enum CodingKeys: String, CodingKey {
         case likes
     }

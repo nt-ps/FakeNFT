@@ -47,7 +47,6 @@ final class ProfilePresenter: ProfilePresenterProtocol {
             self.view?.showProfile(model: cachedProfile)
         }
         
-        // Затем загружаем свежие данные
         view?.changeSkeletonState(isShown: true)
         fetchProfile { [weak self] result in
             guard let self else { return }

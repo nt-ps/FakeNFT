@@ -119,7 +119,7 @@ final class CollectionPresenter: CollectionPresenterProtocol {
             newLike = true
         }
         
-        profileService.sendLikeRequest(likes: newLikes) { [weak self] result in
+        profileService.setLikeRequest(likes: newLikes) { [weak self] result in
             guard let self else { return }
             switch result {
             case .success:
@@ -130,8 +130,8 @@ final class CollectionPresenter: CollectionPresenterProtocol {
                 let errorModel = ErrorModel(
                     title: L10n.Error.data,
                     message: nil,
-                    actionText: nil,
-                    action: nil
+                    actionText: L10n.Error.cancel,
+                    action: {}
                 )
                 self.view?.showError(errorModel)
             }
@@ -165,8 +165,8 @@ final class CollectionPresenter: CollectionPresenterProtocol {
                 let errorModel = ErrorModel(
                     title: L10n.Error.data,
                     message: nil,
-                    actionText: nil,
-                    action: nil
+                    actionText: L10n.Error.cancel,
+                    action: {}
                 )
                 self.view?.showError(errorModel)
             }
@@ -216,8 +216,8 @@ final class CollectionPresenter: CollectionPresenterProtocol {
                 let errorModel = ErrorModel(
                     title: L10n.Error.data,
                     message: nil,
-                    actionText: nil,
-                    action: nil
+                    actionText: L10n.Error.cancel,
+                    action: {}
                 )
                 self.view?.showError(errorModel)
             }
@@ -238,8 +238,8 @@ final class CollectionPresenter: CollectionPresenterProtocol {
                 let errorModel = ErrorModel(
                     title: L10n.Error.data,
                     message: nil,
-                    actionText: nil,
-                    action: nil
+                    actionText: L10n.Error.cancel,
+                    action: {}
                 )
                 self.view?.showError(errorModel)
             }
@@ -265,8 +265,8 @@ final class CollectionPresenter: CollectionPresenterProtocol {
                 let errorModel = ErrorModel(
                     title: L10n.Error.data,
                     message: nil,
-                    actionText: nil,
-                    action: nil
+                    actionText: L10n.Error.cancel,
+                    action: {}
                 )
                 
                 self.view?.showError(errorModel)

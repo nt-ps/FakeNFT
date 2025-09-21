@@ -1,19 +1,18 @@
-import Foundation
+//
+//  ProfileService.swift
+//  FakeNFT
+//
+//  Created by Amina Khusnutdinova on 02.09.2025.
+//
 
-// TODO: Копия реализации Аминыс о следующими изменениями:
-//
-//       - Метод sendLikeRequest перенесен сюда из NFTImageView.
-//         Добавил в него complition, убрал лишние методы и networkClient.
-//         Заменил входные параметры nftId и isLiked на likes.
-//
-//       Помнить про это при слиянии.
+import Foundation
 
 // MARK: - Protocol
 protocol ProfileServiceProtocol {
     func fetchProfile(completion: @escaping (Result<ProfileInfoModel, Error>) -> Void)
     func editProfile(_ editProfileModel: EditProfileModel, completion: @escaping (Result<ProfileInfoModel, Error>) -> Void)
     func getNFTs(completion: @escaping (Result<[Nft], Error>) -> Void)
-    func sendLikeRequest(likes: [String], completion: @escaping (Result<Bool, Error>) -> Void)
+    func setLikeRequest(likes: [String], completion: @escaping (Result<ProfileInfoModel, Error>) -> Void)
 }
 
 // MARK: - Implementation
@@ -84,25 +83,6 @@ final class ProfileService: ProfileServiceProtocol {
         }
     }
     
-    func sendLikeRequest(
-        likes: [String],
-        completion: @escaping (Result<Bool, Error>) -> Void
-    ) {
-        let request = SetLikesRequest(likes: likes)
-        networkClient.send(request: request, type: ProfileInfoModel.self) { result in
-            DispatchQueue.main.async {
-                switch result {
-                case .success:
-                    completion(.success(true))
-                    break
-                case .failure(let error):
-                    print("Like request failed: \(error)")
-                    completion(.failure(error))
-                }
-            }
-        }
-    }
-    
     // MARK: Private
     
     private func loadNFTs(ids: [String], completion: @escaping (Result<[Nft], Error>) -> Void) {
@@ -133,6 +113,35 @@ final class ProfileService: ProfileServiceProtocol {
             } else {
                 completion(.success(nftModels))
             }
+        }
+    }
+    
+    func setLikeRequest(likes: [String], completion: @escaping (Result<ProfileInfoModel, Error>) -> Void) {
+        let request = SetLikeRequest(likes: likes)
+        
+        networkClient.send(request: request, type: ProfileInfoModel.self) { result in
+            DispatchQueue.main.async {
+                switch result {
+                case .success(let updatedProfile):
+                    ProfileStorage.shared.profile = updatedProfile
+                    completion(.success(updatedProfile))
+                case .failure(let error):
+                    print("Like request failed: \(error)")
+                    completion(.failure(error))
+                }
+            }
+        }
+    }
+}
+
+// MARK: - Errors
+enum ProfileServiceError: Error {
+    case noProfileFound
+    
+    var localizedDescription: String {
+        switch self {
+        case .noProfileFound:
+            return "No profile found in storage"
         }
     }
 }

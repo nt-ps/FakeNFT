@@ -1,11 +1,11 @@
-import Foundation
+//
+//  ProfileStorage.swift
+//  FakeNFT
+//
+//  Created by Amina Khusnutdinova on 02.09.2025.
+//
 
-// TODO: Копия реализации Амины со следующими изменениями:
-//
-//       - SortType переименован в ProfileSortType из-за конфликта с
-//         StatisticsPresenter.
-//
-//       Помнить про это при слиянии.
+import Foundation
 
 final class ProfileStorage {
 
@@ -19,7 +19,7 @@ final class ProfileStorage {
 
     var profile: ProfileInfoModel? {
         get {
-            if let cached = cachedProfile, 
+            if let cached = cachedProfile,
                let lastTime = lastCacheTime,
                Date().timeIntervalSince(lastTime) < cacheLifetime {
                 print("Using cached profile")
@@ -27,8 +27,8 @@ final class ProfileStorage {
             }
             
             guard let data = userDefaults.data(forKey: Keys.profile.rawValue),
-                  let record = try? JSONDecoder().decode(ProfileInfoModel.self, from: data) else { 
-                return nil 
+                  let record = try? JSONDecoder().decode(ProfileInfoModel.self, from: data) else {
+                return nil
             }
             
             cachedProfile = record
@@ -48,11 +48,11 @@ final class ProfileStorage {
         }
     }
     
-    var sortType: ProfileSortType {
+    var sortType: SortType {
         get {
             guard
                 let sortTypeString = userDefaults.string(forKey: Keys.sortType.rawValue),
-                let sortType = ProfileSortType(rawValue: sortTypeString)
+                let sortType = SortType(rawValue: sortTypeString)
             else {
                 return .byRating
             }

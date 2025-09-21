@@ -1,11 +1,16 @@
+//
+//  SetLikeRequest.swift
+//  FakeNFT
+//
+//  Created by Amina Khusnutdinova on 10.09.2025.
+//
+
 import Foundation
 
-// TODO: Измененная копия SetLikeRequest Амины.
-//       Помнить про это при слиянии.
+struct SetLikeRequest: NetworkRequest {
 
-struct SetLikesRequest: NetworkRequest {
     let likes: [String]
-    
+
     var endpoint: URL? {
         RequestConstants.Endpoint.profile.url
     }
@@ -19,7 +24,7 @@ struct SetLikesRequest: NetworkRequest {
     }
     
     var query: (any Query)?
-    
+
     init(likes: [String]) {
         self.likes = likes
     }

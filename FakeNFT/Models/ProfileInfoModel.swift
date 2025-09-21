@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct ProfileInfoModel: Codable, Equatable {
+struct ProfileInfoModel: Codable, Equatable, Dto {
     let name: String
     let avatar: String
     let description: String?
@@ -22,5 +22,19 @@ struct ProfileInfoModel: Codable, Equatable {
         lhs.website == rhs.website &&
         Set(lhs.nfts) == Set(rhs.nfts) &&
         Set(lhs.likes) == Set(rhs.likes)
+    }
+    
+    func asDictionary() -> [String: String] {
+        let nftsString = nfts.joined(separator: ",")
+        let likesString = likes.joined(separator: ",")
+        
+        return [
+            "name": name,
+            "avatar": avatar,
+            "description": description ?? "",
+            "website": website,
+            "nfts": nftsString,
+            "likes": likesString
+        ]
     }
 }

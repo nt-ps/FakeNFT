@@ -33,6 +33,7 @@ final class ProfileViewController: UIViewController {
 
     private let profileView = ProfileView()
     private let presenter: ProfilePresenterProtocol
+    private var profileService: ProfileServiceProtocol
 
     private var editButton: UIBarButtonItem? {
         navigationItem.rightBarButtonItem
@@ -40,6 +41,9 @@ final class ProfileViewController: UIViewController {
 
     init(presenter: ProfilePresenterProtocol) {
         self.presenter = presenter
+        
+        self.profileService = ProfileService.shared
+        
         super.init(nibName: nil, bundle: nil)
         if let presenter = self.presenter as? ProfilePresenter {
             presenter.view = self
@@ -139,14 +143,15 @@ extension ProfileViewController: ProfileViewProtocol {
     }
 
     func showError(message: String, retryAction: @escaping () -> Void) {
-        let alert = UIAlertController(
+        let alertModel = AlertModel(
             title: L10n.Error.title,
             message: message,
-            preferredStyle: .alert
+            buttons: [
+                AlertButton(text: L10n.Error.repeat, action: retryAction),
+                AlertButton(text: L10n.Cart.DeleteAlert.cancel, style: .cancel)
+            ]
         )
-        alert.addAction(UIAlertAction(title: L10n.Error.repeat, style: .default) { _ in retryAction() })
-        alert.addAction(UIAlertAction(title: L10n.Cart.DeleteAlert.cancel, style: .cancel))
-        present(alert, animated: true)
+        AlertPresenter.present(in: self, model: alertModel)
     }
 
     func openEditProfile() {
@@ -163,6 +168,8 @@ extension ProfileViewController: ProfileViewProtocol {
 
     func openMyNFT() {
         let vc = MyNFTViewController()
+        let presenter = MyNFTPresenter(view: vc, profileService: profileService)
+        vc.setPresenter(presenter)
         navigationController?.pushViewController(vc, animated: true)
     }
 
