@@ -71,6 +71,8 @@
 "error.title" = "Ошибка";
 "error.cancel" = "Отмена";
 
+"alert.ok" = "OK";
+
 "collection.authorCaption" = "Автор коллекции:";
 "collection.title" = "Коллекция NFT";
 

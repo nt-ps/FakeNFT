@@ -100,12 +100,7 @@ final class EditProfileView: UIView {
         return view
     }()
     
-    lazy var activityIndicator: UIActivityIndicatorView = {
-        let indicator = UIActivityIndicatorView(style: .large)
-        indicator.color = .AppColors.white
-        indicator.hidesWhenStopped = true
-        return indicator
-    }()
+    lazy var activityIndicatorView = UIBlockingProgressHUD()
     
     // MARK: Properties
     var onSave: ((String, String, String) -> Void)?
@@ -148,9 +143,7 @@ final class EditProfileView: UIView {
         enableKeyboardDismissOnScroll(for: scrollView)
 
         loadingView.translatesAutoresizingMaskIntoConstraints = false
-        activityIndicator.translatesAutoresizingMaskIntoConstraints = false
         addSubview(loadingView)
-        loadingView.addSubview(activityIndicator)
 
         saveButton.isHidden = true
         saveButton.isEnabled = false
@@ -190,10 +183,7 @@ final class EditProfileView: UIView {
             loadingView.topAnchor.constraint(equalTo: topAnchor),
             loadingView.leadingAnchor.constraint(equalTo: leadingAnchor),
             loadingView.trailingAnchor.constraint(equalTo: trailingAnchor),
-            loadingView.bottomAnchor.constraint(equalTo: bottomAnchor),
-            
-            activityIndicator.centerXAnchor.constraint(equalTo: loadingView.centerXAnchor),
-            activityIndicator.centerYAnchor.constraint(equalTo: loadingView.centerYAnchor)
+            loadingView.bottomAnchor.constraint(equalTo: bottomAnchor)
         ])
     }
     
@@ -265,13 +255,13 @@ final class EditProfileView: UIView {
     
     func showLoading() {
         loadingView.isHidden = false
-        activityIndicator.startAnimating()
+        UIBlockingProgressHUD.show()
         isUserInteractionEnabled = false
     }
     
     func hideLoading() {
         loadingView.isHidden = true
-        activityIndicator.stopAnimating()
+        UIBlockingProgressHUD.dismiss()
         isUserInteractionEnabled = true
     }
     
@@ -287,7 +277,7 @@ extension EditProfileView: UITextViewDelegate {
     }
 
     func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
-        if text == "\n" { 
+        if text == "\n" {
             endEditing(true)
             return false
         }

@@ -196,8 +196,8 @@ final class CollectionCollectionHeader: UICollectionReusableView, ReuseIdentifyi
             let errorModel = ErrorModel(
                 title: L10n.Error.unknown,
                 message: nil,
-                actionText: nil,
-                action: nil
+                actionText: L10n.Error.cancel,
+                action: {}
             )
             delegate?.show(error: errorModel)
             return
