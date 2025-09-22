@@ -175,6 +175,8 @@ extension ProfileViewController: ProfileViewProtocol {
 
     func openFavouriteNFT() {
         let vc = FavouriteNFTViewController()
+        let presenter = FavouriteNFTPresenter(view: vc)
+        vc.setPresenter(presenter)
         navigationController?.pushViewController(vc, animated: true)
     }
 

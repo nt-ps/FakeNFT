@@ -21,4 +21,8 @@ final class CurrencyFormatter: NumberFormatter, @unchecked Sendable {
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
+    
+    func string(for price: Float) -> String {
+        return string(from: NSNumber(value: price)) ?? "0 ETH"
+    }
 }
