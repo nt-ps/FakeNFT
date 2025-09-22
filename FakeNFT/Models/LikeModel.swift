@@ -13,7 +13,7 @@ struct LikeModel: Dto {
     }
 
     func asDictionary() -> [String: String] {
-        let likesString = likes.isEmpty ? "" : likes.joined(separator: ",")
+        let likesString = likes.isEmpty ? "null" : likes.joined(separator: ",")
         return [
             CodingKeys.likes.rawValue: likesString
         ]
