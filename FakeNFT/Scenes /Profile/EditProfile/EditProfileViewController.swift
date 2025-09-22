@@ -54,8 +54,9 @@ final class EditProfileViewController: UIViewController {
     // MARK: Setup
     private func setupView() {
         let backButton = NavigationBackButton()
-        backButton.addTarget(self, action: #selector(cancelTapped), for: .touchUpInside)
-        navigationItem.leftBarButtonItem = UIBarButtonItem(customView: backButton)
+        backButton.target = self
+        backButton.action = #selector(cancelTapped)
+        navigationItem.leftBarButtonItem = backButton
     }
     
     private func setupActions() {

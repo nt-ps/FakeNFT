@@ -48,7 +48,7 @@
 "editProfile.avatar.error.updateFailed" = "Failed to update avatar";
 
 "profile.myNFT.title" = "My NFTs";
-"profile.favoritenft.title" = "Favorites of NFT";
+"profile.favouriteNFT.title" = "Favorites of NFT";
 "profile.website.button" = "Go to user website";
 
 "myNFT.title" = "My NFTs";
@@ -56,7 +56,7 @@
 "myNFT.from" = "from";
 "myNFT.empty" = "You don't have NFT yet";
 
-"favoritenft.title" = "Favorites of NFT";
+"favouriteNFT.title" = "Favorites of NFT";
 "favouriteNFT.empty" = "You don't have any NFT favorites yet";
 
 "statistics.goToWebsite" = "Go to user website";

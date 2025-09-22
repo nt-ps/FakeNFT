@@ -101,7 +101,7 @@ final class NFTImageView: BaseImageView {
         
         
         let profileService = ProfileService.shared
-        
+        print("Sending like request: \(updatedLikes)")
         profileService.setLikeRequest(likes: updatedLikes) { [weak self] result in
             DispatchQueue.main.async {
                 switch result {

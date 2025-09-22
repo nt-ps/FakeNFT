@@ -41,7 +41,7 @@ final class ProfileInfoView: UIView {
         style.lineSpacing = 3
         let attributes: [NSAttributedString.Key: Any] = [
             .paragraphStyle: style,
-            .foregroundColor: UIColor.black,
+            .foregroundColor: UIColor.AppColors.black,
             .font: UIFont.caption2
         ]
         textView.typingAttributes = attributes

@@ -12,7 +12,7 @@ enum ProfileCellType {
     var name: String {
         switch self {
         case .myNFT(let number): return L10n.Profile.MyNFT.title + " (\(number))"
-        case .favouriteNFT(let number): return L10n.Profile.Favoritenft.title + " (\(number))"
+        case .favouriteNFT(let number): return L10n.Profile.FavouriteNFT.title + " (\(number))"
         }
     }
 }

@@ -41,7 +41,7 @@ final class EditProfileView: UIView {
 
     let contentView: UIView = {
         let view = UIView()
-        view.backgroundColor = .white
+        view.backgroundColor = .AppColors.white
         return view
     }()
     
