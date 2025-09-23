@@ -137,7 +137,7 @@ extension FavouriteNFTViewController: FavouriteNFTViewProtocol {
     }
     
     func showNFTs(_ nfts: [Nft]) {
-        favouriteNFTView.changeState(.standart)
+        favouriteNFTView.changeState(.standard)
         favouriteNFTView.collectionView.reloadData()
     }
     

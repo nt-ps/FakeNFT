@@ -123,7 +123,7 @@ extension MyNFTViewController: MyNFTViewProtocol {
     }
     
     func showNFTs(_ nfts: [Nft]) {
-        myNFTView.changeState(.standart)
+        myNFTView.changeState(.standard)
         myNFTView.tableView.reloadData()
     }
     

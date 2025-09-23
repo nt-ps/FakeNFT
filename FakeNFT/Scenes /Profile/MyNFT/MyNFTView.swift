@@ -13,7 +13,7 @@ final class MyNFTView: UIView {
     enum State {
         case loading
         case empty
-        case standart
+        case standard
     }
 
     let tableView: UITableView = {
@@ -59,7 +59,7 @@ final class MyNFTView: UIView {
             emptyLabel.isHidden = false
             tableView.isHidden = true
             emptyLabel.text = L10n.MyNFT.empty
-        case .standart:
+        case .standard:
             UIBlockingProgressHUD.dismiss()
             emptyLabel.isHidden = true
             tableView.isHidden = false

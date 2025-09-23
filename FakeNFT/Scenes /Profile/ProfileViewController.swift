@@ -7,7 +7,6 @@
 
 import UIKit
 
-// Import for EditProfile functionality
 import Foundation
 
 protocol ProfileViewProtocol: AnyObject {

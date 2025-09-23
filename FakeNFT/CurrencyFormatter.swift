@@ -23,6 +23,6 @@ final class CurrencyFormatter: NumberFormatter, @unchecked Sendable {
     }
     
     func string(for price: Float) -> String {
-        return string(from: NSNumber(value: price)) ?? "0 ETH"
+        string(from: NSNumber(value: price)) ?? "0 ETH"
     }
 }

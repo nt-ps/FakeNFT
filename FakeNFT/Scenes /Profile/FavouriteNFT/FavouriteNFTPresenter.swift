@@ -64,8 +64,7 @@ final class FavouriteNFTPresenter: FavouriteNFTPresenterProtocol {
     }
     
     func getNFT(at index: Int) -> Nft? {
-        guard index < nftList.count else { return nil }
-        return nftList[index]
+        index < nftList.count ? nftList[index] : nil
     }
     
     func shouldShowSkeleton() -> Bool {

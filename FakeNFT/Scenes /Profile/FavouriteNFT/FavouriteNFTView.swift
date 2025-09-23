@@ -13,7 +13,7 @@ final class FavouriteNFTView: UIView {
     enum State {
         case loading
         case empty
-        case standart
+        case standard
     }
 
     let collectionView: UICollectionView = {
@@ -58,7 +58,7 @@ final class FavouriteNFTView: UIView {
             emptyLabel.isHidden = false
             collectionView.isHidden = true
             emptyLabel.text = L10n.FavouriteNFT.empty
-        case .standart:
+        case .standard:
             UIBlockingProgressHUD.dismiss()
             emptyLabel.isHidden = true
             collectionView.isHidden = false
