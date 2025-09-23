@@ -7,14 +7,13 @@
 
 import UIKit
 
-final class NavigationBackButton: UIButton {
+final class NavigationBackButton: UIBarButtonItem {
 
     // MARK: Initializers
-    override init(frame: CGRect) {
-        super.init(frame: frame)
-        setImage(.Icons.backward, for: .normal)
-        tintColor = .AppColors.black
-        translatesAutoresizingMaskIntoConstraints = false
+    override init() {
+        super.init()
+        image = .Icons.backward
+        style = .plain
     }
 
     required init?(coder: NSCoder) {

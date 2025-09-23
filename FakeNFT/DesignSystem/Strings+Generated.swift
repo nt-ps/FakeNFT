@@ -112,13 +112,11 @@ internal enum L10n {
     /// An unknown error has occurred
     internal static let unknown = L10n.tr("Localizable", "error.unknown", fallback: "An unknown error has occurred")
   }
-  internal enum Favoritenft {
-    /// Favorites of NFT
-    internal static let title = L10n.tr("Localizable", "favoritenft.title", fallback: "Favorites of NFT")
-  }
   internal enum FavouriteNFT {
     /// You don't have any NFT favorites yet
     internal static let empty = L10n.tr("Localizable", "favouriteNFT.empty", fallback: "You don't have any NFT favorites yet")
+    /// Favorites of NFT
+    internal static let title = L10n.tr("Localizable", "favouriteNFT.title", fallback: "Favorites of NFT")
   }
   internal enum MyNFT {
     /// You don't have NFT yet
@@ -179,9 +177,9 @@ internal enum L10n {
     }
   }
   internal enum Profile {
-    internal enum Favoritenft {
+    internal enum FavouriteNFT {
       /// Favorites of NFT
-      internal static let title = L10n.tr("Localizable", "profile.favoritenft.title", fallback: "Favorites of NFT")
+      internal static let title = L10n.tr("Localizable", "profile.favouriteNFT.title", fallback: "Favorites of NFT")
     }
     internal enum MyNFT {
       /// My NFTs

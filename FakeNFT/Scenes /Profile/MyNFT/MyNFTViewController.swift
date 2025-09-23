@@ -57,9 +57,20 @@ final class MyNFTViewController: UIViewController, ViewControllerDelegate {
     
     // MARK: Setup
     private func setupView() {
+        view.backgroundColor = .AppColors.white
+        
         let backButton = NavigationBackButton()
-        backButton.addTarget(self, action: #selector(cancelTapped), for: .touchUpInside)
-        navigationItem.leftBarButtonItem = UIBarButtonItem(customView: backButton)
+        backButton.target = self
+        backButton.action = #selector(cancelTapped)
+        navigationItem.leftBarButtonItem = backButton
+                
+        let appearance = UINavigationBarAppearance()
+        appearance.configureWithTransparentBackground()
+        appearance.backgroundColor = .AppColors.white
+        navigationItem.standardAppearance = appearance
+        navigationItem.scrollEdgeAppearance = appearance
+        navigationItem.compactAppearance = appearance
+
         
         let sortButton = NavigationSortButton()
         sortButton.addTarget(self, action: #selector(sortTapped), for: .touchUpInside)
@@ -112,7 +123,7 @@ extension MyNFTViewController: MyNFTViewProtocol {
     }
     
     func showNFTs(_ nfts: [Nft]) {
-        myNFTView.changeState(.standart)
+        myNFTView.changeState(.standard)
         myNFTView.tableView.reloadData()
     }
     

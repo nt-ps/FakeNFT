@@ -1,13 +1,13 @@
 //
-//  MyNFTView.swift
+//  FavouriteNFTViewProtocol.swift
 //  FakeNFT
 //
-//  Created by Amina Khusnutdinova on 07.09.2025.
+//  Created by Amina Khusnutdinova on 21.09.2025.
 //
 
 import UIKit
 
-final class MyNFTView: UIView {
+final class FavouriteNFTView: UIView {
 
     // MARK: Properties
     enum State {
@@ -16,14 +16,13 @@ final class MyNFTView: UIView {
         case standard
     }
 
-    let tableView: UITableView = {
-        let tableView = UITableView()
-        tableView.separatorStyle = .none
-        tableView.backgroundColor = .AppColors.white
-        tableView.tableFooterView = UIView()
-        tableView.allowsSelection = false
-        tableView.register(MyNFTTableViewCell.self)
-        return tableView
+    let collectionView: UICollectionView = {
+        let layout = UICollectionViewFlowLayout()
+        let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
+        collectionView.backgroundColor = .AppColors.white
+        collectionView.allowsSelection = false
+        collectionView.register(FavouriteNFTCollectionViewCell.self)
+        return collectionView
     }()
     
     private let emptyLabel: UILabel = {
@@ -53,16 +52,16 @@ final class MyNFTView: UIView {
         case .loading:
             UIBlockingProgressHUD.show()
             emptyLabel.isHidden = true
-            tableView.isHidden = true
+            collectionView.isHidden = true
         case .empty:
             UIBlockingProgressHUD.dismiss()
             emptyLabel.isHidden = false
-            tableView.isHidden = true
-            emptyLabel.text = L10n.MyNFT.empty
+            collectionView.isHidden = true
+            emptyLabel.text = L10n.FavouriteNFT.empty
         case .standard:
             UIBlockingProgressHUD.dismiss()
             emptyLabel.isHidden = true
-            tableView.isHidden = false
+            collectionView.isHidden = false
         }
     }
 
@@ -72,17 +71,17 @@ final class MyNFTView: UIView {
     }
 
     private func setupLayout() {
-        tableView.translatesAutoresizingMaskIntoConstraints = false
+        collectionView.translatesAutoresizingMaskIntoConstraints = false
         emptyLabel.translatesAutoresizingMaskIntoConstraints = false
 
-        addSubview(tableView)
+        addSubview(collectionView)
         addSubview(emptyLabel)
 
         NSLayoutConstraint.activate([
-            tableView.leadingAnchor.constraint(equalTo: leadingAnchor),
-            tableView.topAnchor.constraint(equalTo: topAnchor),
-            tableView.trailingAnchor.constraint(equalTo: trailingAnchor),
-            tableView.bottomAnchor.constraint(equalTo: bottomAnchor),
+            collectionView.leadingAnchor.constraint(equalTo: leadingAnchor),
+            collectionView.topAnchor.constraint(equalTo: topAnchor),
+            collectionView.trailingAnchor.constraint(equalTo: trailingAnchor),
+            collectionView.bottomAnchor.constraint(equalTo: bottomAnchor),
             
             emptyLabel.leadingAnchor.constraint(equalTo: safeAreaLayoutGuide.leadingAnchor),
             emptyLabel.trailingAnchor.constraint(equalTo: safeAreaLayoutGuide.trailingAnchor),

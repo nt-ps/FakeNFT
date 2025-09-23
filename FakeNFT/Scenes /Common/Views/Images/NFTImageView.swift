@@ -11,23 +11,27 @@ final class NFTImageView: BaseImageView {
     
     // MARK: Properties
     private enum Constants {
-        static let size: CGFloat = 40
+        static let size: CGFloat = 108
+        static let cornerRadius: CGFloat = 12
+        static let likeButtonSize: CGFloat = 40
     }
     
     private let likeButton = UIButton(type: .custom)
     private var isLiked: Bool = false
     private var nftId: String?
+    private var likeButtonSize: CGFloat = Constants.likeButtonSize
     var onLikeTapped: ((Bool) -> Void)?
     var onLikeError: ((String) -> Void)?
     
     // MARK: Initializers
-    init() {
+    init(size: CGFloat = Constants.size, likeButtonSize: CGFloat = Constants.likeButtonSize, cornerRadius: CGFloat = Constants.cornerRadius) {
         super.init(
-            size: 108,
-            cornerRadius: 12,
+            size: size,
+            cornerRadius: cornerRadius,
             defaultSystemImage: "photo",
             fallbackSystemImage: "photo.fill"
         )
+        self.likeButtonSize = likeButtonSize
         setupLikeButton()
         isUserInteractionEnabled = true
     }
@@ -61,8 +65,8 @@ final class NFTImageView: BaseImageView {
         NSLayoutConstraint.activate([
             likeButton.topAnchor.constraint(equalTo: topAnchor),
             likeButton.trailingAnchor.constraint(equalTo: trailingAnchor),
-            likeButton.widthAnchor.constraint(equalToConstant: Constants.size),
-            likeButton.heightAnchor.constraint(equalToConstant: Constants.size)
+            likeButton.widthAnchor.constraint(equalToConstant: likeButtonSize),
+            likeButton.heightAnchor.constraint(equalToConstant: likeButtonSize)
         ])
         
         updateLikeButton()
@@ -97,7 +101,7 @@ final class NFTImageView: BaseImageView {
         
         
         let profileService = ProfileService.shared
-        
+        print("Sending like request: \(updatedLikes)")
         profileService.setLikeRequest(likes: updatedLikes) { [weak self] result in
             DispatchQueue.main.async {
                 switch result {

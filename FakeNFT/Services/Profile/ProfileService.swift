@@ -12,6 +12,7 @@ protocol ProfileServiceProtocol {
     func fetchProfile(completion: @escaping (Result<ProfileInfoModel, Error>) -> Void)
     func editProfile(_ editProfileModel: EditProfileModel, completion: @escaping (Result<ProfileInfoModel, Error>) -> Void)
     func getNFTs(completion: @escaping (Result<[Nft], Error>) -> Void)
+    func getFavouriteNFTs(completion: @escaping (Result<[Nft], Error>) -> Void)
     func setLikeRequest(likes: [String], completion: @escaping (Result<ProfileInfoModel, Error>) -> Void)
 }
 
@@ -69,6 +70,25 @@ final class ProfileService: ProfileServiceProtocol {
             switch result {
             case .success(let profile):
                 let nftIds = profile.nfts
+                
+                guard !nftIds.isEmpty else {
+                    completion(.success([]))
+                    return
+                }
+                
+                self.loadNFTs(ids: nftIds, completion: completion)
+                
+            case .failure(let error):
+                completion(.failure(error))
+            }
+        }
+    }
+    
+    func getFavouriteNFTs(completion: @escaping (Result<[Nft], Error>) -> Void) {
+        fetchProfile { result in
+            switch result {
+            case .success(let profile):
+                let nftIds = profile.likes
                 
                 guard !nftIds.isEmpty else {
                     completion(.success([]))
