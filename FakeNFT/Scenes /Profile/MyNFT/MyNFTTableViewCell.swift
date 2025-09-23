@@ -39,7 +39,7 @@ final class MyNFTTableViewCell: UITableViewCell, ReuseIdentifying {
     
     private lazy var nftImageView = NFTImageView()
     
-    private lazy var ratingView = RatingView_A()
+    private lazy var ratingView = RatingView()
 
     private lazy var infoStack: UIStackView = {
         let stackView = UIStackView()

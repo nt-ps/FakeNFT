@@ -32,8 +32,8 @@ final class FavouriteNFTCollectionViewCell: UICollectionViewCell, ReuseIdentifyi
         return nftImageView
     }()
     
-    private lazy var ratingView: RatingView_A = {
-        let ratingView = RatingView_A()
+    private lazy var ratingView: RatingView = {
+        let ratingView = RatingView()
         ratingView.translatesAutoresizingMaskIntoConstraints = false
         return ratingView
     }()

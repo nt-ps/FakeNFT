@@ -112,9 +112,9 @@ final class CollectionCollectionCell: UICollectionViewCell, ReuseIdentifying {
         }
     }
     
-    var rating: UInt? {
+    var rating: Int? {
         didSet {
-            ratingView.value = rating ?? 0
+            ratingView.setRating(rating: rating ?? 0)
         }
     }
     

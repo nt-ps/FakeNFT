@@ -33,7 +33,7 @@ final class CollectionDataSource: UICollectionViewDiffableDataSource<CollectionC
             let cell: CollectionCollectionCell = collectionView.dequeueReusableCell(indexPath: indexPath)
             
             cell.delegate = cellDelegate
-            cell.rating = UInt(nft.rating)
+            cell.rating = nft.rating
             cell.name = nft.name
             cell.price = nft.price
             cell.isLiked = nft.isLiked
