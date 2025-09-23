@@ -126,8 +126,7 @@ final class CollectionCollectionCell: UICollectionViewCell, ReuseIdentifying {
     
     var price: Float? {
         didSet {
-            // TODO: После слития заюзать CurrencyFormatter.
-            priceLabel.text = String(format: "%.2f", price ?? 0) + " ETH"
+            priceLabel.text = CurrencyFormatter.shared.string(for: price ?? 0)
         }
     }
     

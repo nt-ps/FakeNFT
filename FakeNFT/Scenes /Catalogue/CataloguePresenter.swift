@@ -46,8 +46,11 @@ final class CataloguePresenter: CataloguePresenterProtocol {
                 let errorModel = ErrorModel(
                     title: L10n.Catalog.FailureAlert.title,
                     message: nil,
-                    actionText: L10n.Catalog.FailureAlert.repeat
-                ) { [weak self] in self?.fetchNextPage() }
+                    actionText: L10n.Catalog.FailureAlert.repeat,
+                    action: { [weak self] in self?.fetchNextPage() },
+                    cancelText: L10n.Error.cancel,
+                    cancelAction: nil
+                )
                 
                 self?.view?.showError(errorModel)
             }

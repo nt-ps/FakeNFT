@@ -105,7 +105,6 @@ final class CollectionPresenter: CollectionPresenterProtocol {
         }
     }
     
-    // TODO: После слияния актуализировать этот метод относительно сервиса Амины.
     func switchLike(for nftIndex: Int) {
         view?.showLoading()
 
@@ -246,10 +245,6 @@ final class CollectionPresenter: CollectionPresenterProtocol {
         }
     }
     
-    // TODO: После слияния актуализировать этот метод относительно сервиса Амины.
-    //
-    // Пока на всякий случай каждый раз при открытии экрана коллекции
-    // загружаю актуальный профайл, потому что в кэше может лежать неактуальная версия.
     private func loadLikes(dispatchGroup: DispatchGroup?) {
         dispatchGroup?.enter()
         profileService.fetchProfile { [weak self] result in

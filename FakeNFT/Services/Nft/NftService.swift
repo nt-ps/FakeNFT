@@ -21,8 +21,6 @@ enum NftServiceError: Error {
 // MARK: - Implementation
 
 final class NftServiceImpl: NftService {
-    
-    // TODO: Дописать по аналогии с CollectionService.
 
     private let networkClient: NetworkClient
     private let storage: NftStorage
@@ -51,8 +49,6 @@ final class NftServiceImpl: NftService {
         }
     }
     
-    // TODO: Взял реализацию Амины из ProfileService с некоторыми доработками.
-    //       Учесть это при слиянии.
     func loadNfts(ids: [String], completion: @escaping NftsCompletion) {
         let group = DispatchGroup()
         var nfts: [Nft] = []
