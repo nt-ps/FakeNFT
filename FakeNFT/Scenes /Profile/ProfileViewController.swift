@@ -19,7 +19,7 @@ protocol ProfileViewProtocol: AnyObject {
     func openEditProfile()
     func openMyNFT()
     func openFavouriteNFT()
-    func openWebsite()
+    func openWebsite(urlString: String)
 }
 
 final class ProfileViewController: UIViewController {
@@ -179,10 +179,15 @@ extension ProfileViewController: ProfileViewProtocol {
         navigationController?.pushViewController(vc, animated: true)
     }
 
-    func openWebsite() {
-        if let urlString = (profileView.subviews.compactMap { ($0 as? UILabel)?.text }.first),
-           let url = URL(string: urlString) {
-            UIApplication.shared.open(url)
+    func openWebsite(urlString: String) {
+        guard let url = URL(string: urlString) else {
+            print("Некорректный URL сайта")
+            return
         }
+        let urlRequest = URLRequest(url: url)
+        let vc = WebViewAssembly().build(with: urlRequest)
+        
+        vc.hidesBottomBarWhenPushed = true
+        navigationController?.pushViewController(vc, animated: true)
     }
 }
