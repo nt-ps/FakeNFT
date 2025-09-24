@@ -88,7 +88,7 @@ final class ProfilePresenter: ProfilePresenterProtocol {
     }
 
     func didTapWebsite() {
-        view?.openWebsite()
+        view?.openWebsite(urlString: model?.website ?? "")
     }
     
     func getCurrentProfile(completion: @escaping (ProfileInfoModel?) -> Void) {
