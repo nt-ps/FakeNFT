@@ -233,12 +233,12 @@ final class ShoppingCartViewControllerImplementation: UIViewController, Shopping
             self?.diffableDataSource?.apply(snapshot)
             self?.shoppingCartPresenter?.sortOrderBy(L10n.SortAlert.byPrice)
         })
-        alert.addAction(UIAlertAction(title: L10n.SortAlert.byRating, style: .default,) { [weak self] _ in
+        alert.addAction(UIAlertAction(title: L10n.SortAlert.byRating, style: .default) { [weak self] _ in
             let snapshot = NSDiffableDataSourceSnapshot<Int, Nft>()
             self?.diffableDataSource?.apply(snapshot)
             self?.shoppingCartPresenter?.sortOrderBy(L10n.SortAlert.byRating)
         })
-        alert.addAction(UIAlertAction(title: L10n.SortAlert.byName, style: .default,) { [weak self] _ in
+        alert.addAction(UIAlertAction(title: L10n.SortAlert.byName, style: .default) { [weak self] _ in
             let snapshot = NSDiffableDataSourceSnapshot<Int, Nft>()
             self?.diffableDataSource?.apply(snapshot)
             self?.shoppingCartPresenter?.sortOrderBy(L10n.SortAlert.byName)
