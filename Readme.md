@@ -1,6 +1,7 @@
 # ТЗ мобильного приложения FakeNFT
 
 ## Ссылки
+[Скринкасты](https://disk.yandex.ru/d/49ia49jeeEbzUg)
 
 [Дизайн Figma](https://www.figma.com/design/Uz5G39wRRCr2mRE4SbnNla/FakeNFT--YP-)
 
