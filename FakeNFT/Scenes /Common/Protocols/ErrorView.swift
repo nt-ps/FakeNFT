@@ -1,9 +1,28 @@
 import UIKit
 
 struct ErrorModel {
-    let message: String
+    let title: String?
+    let message: String?
     let actionText: String
     let action: () -> Void
+    let cancelText: String?
+    let cancelAction: (() -> Void)?
+    
+    init(
+        title: String?,
+        message: String?,
+        actionText: String,
+        action: @escaping () -> Void,
+        cancelText: String? = nil,
+        cancelAction: (() -> Void)? = nil
+    ) {
+        self.title = title
+        self.message = message
+        self.actionText = actionText
+        self.action = action
+        self.cancelText = cancelText
+        self.cancelAction = cancelAction
+    }
 }
 
 protocol ErrorView {
@@ -13,16 +32,26 @@ protocol ErrorView {
 extension ErrorView where Self: UIViewController {
 
     func showError(_ model: ErrorModel) {
-        let title = NSLocalizedString("Error.title", comment: "")
-        let alert = UIAlertController(
-            title: title,
-            message: model.message,
-            preferredStyle: .alert
-        )
-        let action = UIAlertAction(title: model.actionText, style: UIAlertAction.Style.default) {_ in
-            model.action()
+        var buttons: [AlertButton] = [
+            AlertButton(text: model.actionText, action: model.action)
+        ]
+        
+        if let cancelText = model.cancelText {
+            buttons.append(
+                AlertButton(
+                    text: cancelText,
+                    style: .cancel,
+                    action: model.cancelAction ?? {}
+                )
+            )
         }
-        alert.addAction(action)
-        present(alert, animated: true)
+        
+        let alertModel = AlertModel(
+            title: model.title ?? L10n.Error.title,
+            message: model.message,
+            buttons: buttons
+        )
+        
+        AlertPresenter.present(in: self, model: alertModel)
     }
 }

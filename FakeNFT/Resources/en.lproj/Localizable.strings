@@ -1,0 +1,96 @@
+"tab.catalog" = "Catalog";
+"tab.profile" = "Profile";
+"tab.cart" = "Shopping cart";
+"tab.statistics" = "Statistics";
+
+"sortAlert.title" = "Sorting";
+"sortAlert.byName" = "By name";
+"sortAlert.byAmount" = "By the number of NFTs";
+"sortAlert.byPrice" = "By price";
+"sortAlert.byRating" = "By rating";
+"sortAlert.close" = "Close";
+"sortAlert.byFirstName" = "By name";
+
+"cart.price" = "Price";
+"cart.toPayment" = "To be paid";
+"cart.deleteAlert.message" = "Are you sure you want to\ndelete the object from the trash?";
+"cart.deleteAlert.delete" = "Delete";
+"cart.deleteAlert.cancel" = "Go back";
+"cart.empty" = "The cart is empty";
+
+"payment.title" = "Choose a payment method";
+"payment.userAgreement.text" = "By making a purchase, you agree to the terms";
+"payment.userAgreement.link" = "User Agreement";
+"payment.pay" = "Pay";
+"payment.failureAlert.title" = "Failed to make\npayment";
+"payment.failureAlert.repeat" = "Repeat";
+"payment.failureAlert.cancel" = "Cancellation";
+"payment.success.title" = "Success! The payment has been completed,\ncongratulations on the purchase!";
+"payment.backToCataloge" = "Return to the catalog";
+
+"editProfile.name " = "Name";
+"editProfile.description" = "Description";
+"editProfile.website" = "Website";
+"editProfile.avatar.alert.title" = "Profile photo";
+"editProfile.avatar.alert.change" = "Edit photo";
+"editProfile.avatar.alert.delete" = "Delete photo";
+"editProfile.avatar.alert.cancel" = "Cancel";
+"editProfile.avatar.changeAlert.title" = "Link to photo";
+"editProfile.avatar.changeAlert.save" = "Save";
+"editProfile.avatar.alert.cancel" = "Cancel";
+"editProfile.saveAlert.title" = "Are you sure you want\nto log out?";
+"editProfile.saveAlert.save" = "Log out";
+"editProfile.saveAlert.cancel" = "Cancel";
+"editProfile.avatar.deleteAlert.title" = "Delete profile photo?";
+"editProfile.avatar.deleteAlert.message" = "This action cannot be undone";
+"editProfile.avatar.deleteAlert.delete" = "Delete";
+"editProfile.avatar.error.invalidURL" = "Invalid URL format";
+"editProfile.avatar.error.updateFailed" = "Failed to update avatar";
+
+"profile.myNFT.title" = "My NFTs";
+"profile.favouriteNFT.title" = "Favorites of NFT";
+"profile.website.button" = "Go to user website";
+
+"myNFT.title" = "My NFTs";
+"myNFT.price" = "Price";
+"myNFT.from" = "from";
+"myNFT.empty" = "You don't have NFT yet";
+
+"favouriteNFT.title" = "Favorites of NFT";
+"favouriteNFT.empty" = "You don't have any NFT favorites yet";
+
+"statistics.goToWebsite" = "Go to user website";
+"statistics.collectionNFT" = "NFT collection";
+"statistics.failureAlert.title" = "Data could not be\nretrieved";
+"statistics.failureAlert.repeat" = "Repeat";
+"statistics.failureAlert.cancel" = "Cancel";
+
+"catalog.openNft" = "Open Nft";
+"catalog.failureAlert.title" = "Data could not be\nretrieved";
+"catalog.failureAlert.repeat" = "Repeat";
+
+"error.network" = "A network error has occurred";
+"error.unknown" = "An unknown error has occurred";
+"error.data" = "Data could not be\nretrieved";
+"error.repeat" = "Repeat";
+"error.title" = "Error";
+"error.cancel" = "Сancel";
+
+"alert.ok" = "OK";
+
+"collection.authorCaption" = "Collection author:";
+"collection.title" = "Collection NFT";
+
+"editProfile.avatar.deleteAlert.title" = "Delete profile photo?";
+"editProfile.avatar.deleteAlert.message" = "This action cannot be undone";
+"editProfile.avatar.deleteAlert.delete" = "Delete";
+"editProfile.avatar.error.invalidURL" = "Invalid URL format";
+"editProfile.avatar.error.updateFailed" = "Failed to update avatar";
+
+"onboarding.header.firstPage" = "Explore";
+"onboarding.header.secondPage" = "Collect";
+"onboarding.header.thirdPage" = "Compete";
+"onboarding.description.firstPage" = "Join and discover a new world of unique NFTs for collectors";
+"onboarding.description.secondPage" = "Expand your collection with exclusive AI-generated artwork";
+"onboarding.description.thirdPage" = "Check others' stats and show everyone you have the most valuable collection";
+"onboarding.exitButton" = "What's inside?";

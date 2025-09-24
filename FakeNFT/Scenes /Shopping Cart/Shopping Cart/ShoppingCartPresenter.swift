@@ -1,0 +1,76 @@
+//
+//  ShoppingCartPresenter.swift
+//  FakeNFT
+//
+//  Created by oneche$$$ on 01.09.2025.
+//
+
+import Foundation
+
+protocol ShoppingCartPresenterProtocol: AnyObject {
+    var NFTsToDeleteName: String { get set }
+    func getOrder()
+    func reloadCartInUI(nfts: [Nft], totalNFTsPrice: Float, totalNFTsAmount: Int)
+    func clearNftsInCart()
+    func deleteNFTFromCart()
+    func showPlaceholderIf(needed: Bool)
+    func sortOrderBy(_ parameter: String)
+    func preparePaymentView() -> PaymentViewController
+}
+
+final class ShoppingCartPresenterImplementation: ShoppingCartPresenterProtocol {
+    // MARK: View and Model
+    private weak var shoppingCartView: ShoppingCartViewProtocol?
+    private let shoppingCartModel: ShoppingCartModelProtocol
+    private let servicesAssembler: ServicesAssembly
+    
+    var NFTsToDeleteName: String = ""
+    
+    init(
+        shoppingCartView: ShoppingCartViewProtocol,
+        shoppingCartModel: ShoppingCartModelProtocol,
+        servicesAssembler: ServicesAssembly
+    ) {
+        self.shoppingCartView = shoppingCartView
+        self.shoppingCartModel = shoppingCartModel
+        self.servicesAssembler = servicesAssembler
+    }
+    
+    func getOrder() {
+        shoppingCartModel.getOrder()
+    }
+    
+    func reloadCartInUI(nfts: [Nft], totalNFTsPrice: Float, totalNFTsAmount: Int) {
+        shoppingCartView?.reloadDataInTableView(nfts: nfts, totalNFTsPrice: totalNFTsPrice, totalNFTsAmount: totalNFTsAmount)
+    }
+    
+    func clearNftsInCart() {
+        shoppingCartModel.NFTsInCart = []
+    }
+    
+    func deleteNFTFromCart() {
+        shoppingCartModel.NFTsInCart.removeAll(where: { $0.name == NFTsToDeleteName })
+        if shoppingCartModel.NFTsInCart.isEmpty {
+            shoppingCartView?.showPlaceholderIf(needed: true)
+        }
+        shoppingCartModel.postNewOrderWithoutDeletedNFT()
+    }
+    
+    func showPlaceholderIf(needed: Bool) {
+        shoppingCartView?.showPlaceholderIf(needed: needed)
+    }
+    
+    func sortOrderBy(_ parameter: String) {
+        shoppingCartModel.sortOrderBy(parameter)
+    }
+    
+    func preparePaymentView() -> PaymentViewController {
+        let paymentModel = PaymentModel(servicesAssembler: servicesAssembler)
+        let paymentView = PaymentViewController()
+        let paymentPresenter = PaymentPresenter(paymentView: paymentView, paymentModel: paymentModel)
+        paymentModel.paymentPresenter = paymentPresenter
+        paymentView.paymentPresenter = paymentPresenter
+        paymentView.hidesBottomBarWhenPushed = true
+        return paymentView
+    }
+}
